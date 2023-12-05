@@ -1,0 +1,30 @@
+body{
+    font-family:monospace;
+    background-color: antiquewhite;
+}
+
+#form_container{
+    text-align: center;
+}
+#access_form{
+    margin-top:30px;
+}
+.sub_button{
+   
+    width:110px;
+}
+
+.text_input{
+    height:20px;
+    width:220px;
+}
+
+.index_error_display{
+   color:red;
+   opacity: 0%; 
+}
+
+#manual_p{
+    text-align: center;
+}
+
