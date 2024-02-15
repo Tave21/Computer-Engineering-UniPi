@@ -1,0 +1,100 @@
+C:/intelFPGA/20.1/progetto/tb/perceptron_tb.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/tb/perceptron_tb.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package utility
+-- Compiling entity perceptron_tb
+-- Compiling architecture bhv of perceptron_tb
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/DFF_N.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/DFF_N.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity DFF_N
+-- Compiling architecture struct of DFF_N
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/GenericRegisters.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/GenericRegisters.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package utility
+-- Compiling entity GenericRegisters
+-- Compiling architecture struct of GenericRegisters
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/perceptron.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/perceptron.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package utility
+-- Compiling entity perceptron
+-- Compiling architecture struct of perceptron
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/perceptron_wrapper.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/perceptron_wrapper.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package utility
+-- Compiling entity perceptron_wrapper
+-- Compiling architecture rtl of perceptron_wrapper
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/utility.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/utility.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Compiling package utility
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/InputRegisters.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/InputRegisters.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package utility
+-- Compiling entity InputRegisters
+-- Compiling architecture struct of InputRegisters
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/InputxRegisters.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/InputxRegisters.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package MATH_REAL
+-- Loading package utility
+-- Compiling entity InputxRegisters
+-- Compiling architecture struct of InputxRegisters
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/IntegerPartExtender.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/IntegerPartExtender.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity IntegerPartExtender
+-- Compiling architecture bhv of IntegerPartExtender
+
+} {} {}} C:/intelFPGA/20.1/progetto/src/SpecialExtender.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/intelFPGA/20.1/progetto/src/SpecialExtender.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 2020.1 Compiler 2020.02 Feb 28 2020
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity SpecialExtender
+-- Compiling architecture Behavioral of SpecialExtender
+
+} {} {}}

@@ -1,0 +1,487 @@
+m255
+K4
+z2
+!s11e vcom 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/intelFPGA/20.1/progetto
+Edff_n
+Z0 w1706870151
+Z1 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z2 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 131
+Z3 dC:/intelFPGA/20.1/progetto/src
+Z4 8C:/intelFPGA/20.1/progetto/src/DFF_N.vhd
+Z5 FC:/intelFPGA/20.1/progetto/src/DFF_N.vhd
+l0
+L4 1
+V<9KGiPk@oQ^eI_JOCY;kl2
+!s100 KGAKF8:oSW]NO:=BaabZ72
+Z6 OV;C;2020.1;71
+32
+Z7 !s110 1707669807
+!i10b 1
+Z8 !s108 1707669806.000000
+Z9 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/DFF_N.vhd|
+Z10 !s107 C:/intelFPGA/20.1/progetto/src/DFF_N.vhd|
+!i113 1
+Z11 o-work work -2002 -explicit
+Z12 tExplicit 1 CvgOpt 0
+Astruct
+R1
+R2
+DEx4 work 5 dff_n 0 22 <9KGiPk@oQ^eI_JOCY;kl2
+!i122 131
+l20
+L15 17
+VSh1HXb6zFNnz2iZRG?KR31
+!s100 Eh1J^=_`X]o]L_0V0?Y8G0
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+R12
+Egenericregisters
+Z13 w1707259026
+Z14 DPx4 ieee 9 math_real 0 22 gNk<PdFJ<XNPcfef`f?Z81
+Z15 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z16 DPx4 work 7 utility 0 22 k>kLO_C^ah_am3SX=hO;F2
+R1
+R2
+!i122 132
+R3
+Z17 8C:/intelFPGA/20.1/progetto/src/GenericRegisters.vhd
+Z18 FC:/intelFPGA/20.1/progetto/src/GenericRegisters.vhd
+l0
+L5 1
+VzcRTN<J=IaeCBDMWO_Z0Z2
+!s100 DI5MmfSWnO;X359K=7JaG3
+R6
+32
+R7
+!i10b 1
+Z19 !s108 1707669807.000000
+Z20 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/GenericRegisters.vhd|
+Z21 !s107 C:/intelFPGA/20.1/progetto/src/GenericRegisters.vhd|
+!i113 1
+R11
+R12
+Astruct
+R14
+R15
+R16
+R1
+R2
+DEx4 work 16 genericregisters 0 22 zcRTN<J=IaeCBDMWO_Z0Z2
+!i122 132
+l45
+L20 50
+V0dGKAz3`0Bd7fXRLWkCVa0
+!s100 Uz1[I=C5]ebSSo_`]3PnY1
+R6
+32
+R7
+!i10b 1
+R19
+R20
+R21
+!i113 1
+R11
+R12
+Einputregisters
+Z22 w1706973873
+R14
+R15
+R16
+R1
+R2
+!i122 133
+R3
+Z23 8C:/intelFPGA/20.1/progetto/src/InputRegisters.vhd
+Z24 FC:/intelFPGA/20.1/progetto/src/InputRegisters.vhd
+l0
+L6 1
+V_8DG<:X:2[WILOScWUi3Y1
+!s100 W]eX:g4:`A12gMg@fjV`<3
+R6
+32
+R7
+!i10b 1
+R19
+Z25 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/InputRegisters.vhd|
+Z26 !s107 C:/intelFPGA/20.1/progetto/src/InputRegisters.vhd|
+!i113 1
+R11
+R12
+Astruct
+R14
+R15
+R16
+R1
+R2
+DEx4 work 14 inputregisters 0 22 _8DG<:X:2[WILOScWUi3Y1
+!i122 133
+l33
+Z27 L20 28
+VTBCm=KL>zU4LT3h[X_fz`1
+!s100 LFabEAmKR5Aa8@mKJ=hem2
+R6
+32
+R7
+!i10b 1
+R19
+R25
+R26
+!i113 1
+R11
+R12
+Einputxregisters
+Z28 w1707251588
+R14
+R15
+R16
+R1
+R2
+!i122 134
+R3
+Z29 8C:/intelFPGA/20.1/progetto/src/InputxRegisters.vhd
+Z30 FC:/intelFPGA/20.1/progetto/src/InputxRegisters.vhd
+l0
+L6 1
+V_`<F8TL9<EjIkWE=E_BKc1
+!s100 i^AdPn<?PeV7YzkN8WCmb0
+R6
+32
+R7
+!i10b 1
+R19
+Z31 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/InputxRegisters.vhd|
+Z32 !s107 C:/intelFPGA/20.1/progetto/src/InputxRegisters.vhd|
+!i113 1
+R11
+R12
+Astruct
+R14
+R15
+R16
+R1
+R2
+DEx4 work 15 inputxregisters 0 22 _`<F8TL9<EjIkWE=E_BKc1
+!i122 134
+l33
+R27
+V32LcJm1VmL9T;lS:ZRY^^3
+!s100 _f>?<mZCZ^C9c7Ynbk>673
+R6
+32
+R7
+!i10b 1
+R19
+R31
+R32
+!i113 1
+R11
+R12
+Eintegerpartextender
+Z33 w1707256519
+R1
+R2
+!i122 135
+R3
+Z34 8C:/intelFPGA/20.1/progetto/src/IntegerPartExtender.vhd
+Z35 FC:/intelFPGA/20.1/progetto/src/IntegerPartExtender.vhd
+l0
+L4 1
+VEa<Y[9oi^1j5jR[J@<n?U0
+!s100 KHfAH7EWE_Q7BK0>O[0Zl1
+R6
+32
+Z36 !s110 1707669809
+!i10b 1
+Z37 !s108 1707669808.000000
+Z38 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/IntegerPartExtender.vhd|
+Z39 !s107 C:/intelFPGA/20.1/progetto/src/IntegerPartExtender.vhd|
+!i113 1
+R11
+R12
+Abhv
+R1
+R2
+DEx4 work 19 integerpartextender 0 22 Ea<Y[9oi^1j5jR[J@<n?U0
+!i122 135
+l17
+L15 6
+VFPV4J?LU;nTE;fKzfD@E=2
+!s100 U;]h6SR6PdU_TPZ>;>2hS3
+R6
+32
+R36
+!i10b 1
+R37
+R38
+R39
+!i113 1
+R11
+R12
+Eperceptron
+Z40 w1707652018
+R16
+R14
+R15
+R1
+R2
+!i122 136
+R3
+Z41 8C:/intelFPGA/20.1/progetto/src/perceptron.vhd
+Z42 FC:/intelFPGA/20.1/progetto/src/perceptron.vhd
+l0
+L7 1
+V<M9no;Ykg]OcY4f[:9DKP1
+!s100 NKI@[V=FR7i0o3`BFK_743
+R6
+32
+Z43 !s110 1707669815
+!i10b 1
+Z44 !s108 1707669815.000000
+Z45 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/perceptron.vhd|
+Z46 !s107 C:/intelFPGA/20.1/progetto/src/perceptron.vhd|
+!i113 1
+R11
+R12
+Astruct
+R16
+R14
+R15
+R1
+R2
+DEx4 work 10 perceptron 0 22 <M9no;Ykg]OcY4f[:9DKP1
+!i122 136
+l134
+L29 265
+V[gX_h<WUTWl?^eR?OBamF0
+!s100 i2Y455klh]h[_Q1MYlKAT2
+R6
+32
+R43
+!i10b 1
+R44
+R45
+R46
+!i113 1
+R11
+R12
+Eperceptron_tb
+Z47 w1707563981
+R14
+R16
+R15
+R1
+R2
+!i122 140
+R3
+Z48 8C:/intelFPGA/20.1/progetto/tb/perceptron_tb.vhd
+Z49 FC:/intelFPGA/20.1/progetto/tb/perceptron_tb.vhd
+l0
+L6 1
+VM=ANGGHozP0Pfg3do2bXj2
+!s100 DD`^BlMBe7IbVj?ORN00H1
+R6
+32
+Z50 !s110 1707669826
+!i10b 1
+Z51 !s108 1707669826.000000
+Z52 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/tb/perceptron_tb.vhd|
+Z53 !s107 C:/intelFPGA/20.1/progetto/tb/perceptron_tb.vhd|
+!i113 1
+R11
+R12
+Abhv
+R14
+R16
+R15
+R1
+R2
+DEx4 work 13 perceptron_tb 0 22 M=ANGGHozP0Pfg3do2bXj2
+!i122 140
+l43
+L9 101
+V@BZX^`oPFFzSBhg<7Ib>D1
+!s100 ^ez0z73_1V5>fAmTIj40D1
+R6
+32
+R50
+!i10b 1
+R51
+R52
+R53
+!i113 1
+R11
+R12
+Eperceptron_wrapper
+Z54 w1707560127
+R16
+R14
+R15
+R1
+R2
+!i122 137
+R3
+Z55 8C:/intelFPGA/20.1/progetto/src/perceptron_wrapper.vhd
+Z56 FC:/intelFPGA/20.1/progetto/src/perceptron_wrapper.vhd
+l0
+L7 1
+ViKFfS;2lYboAofae_5Fl40
+!s100 2kjRa?:f@MTamfRj]PR830
+R6
+32
+R50
+!i10b 1
+R51
+Z57 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/perceptron_wrapper.vhd|
+Z58 !s107 C:/intelFPGA/20.1/progetto/src/perceptron_wrapper.vhd|
+!i113 1
+R11
+R12
+Artl
+R16
+R14
+R15
+R1
+R2
+DEx4 work 18 perceptron_wrapper 0 22 iKFfS;2lYboAofae_5Fl40
+!i122 137
+l37
+L20 34
+VbKWM4fFEn?IaD_IZ7R68Z1
+!s100 J;R?UQ8UGZ1VB9VXa^eIf1
+R6
+32
+R50
+!i10b 1
+R51
+R57
+R58
+!i113 1
+R11
+R12
+Eperceptron_wrapper_tb
+Z59 w1707564440
+R14
+R16
+R15
+R1
+R2
+!i122 141
+R3
+Z60 8C:/intelFPGA/20.1/progetto/tb/perceptron_wrapper_tb.vhd
+Z61 FC:/intelFPGA/20.1/progetto/tb/perceptron_wrapper_tb.vhd
+l0
+L6 1
+VoTURIi?=Ha`BHGhDUgjj[1
+!s100 Rm^Fmnh@Z8d>MI<9IAHgV2
+R6
+32
+Z62 !s110 1707669827
+!i10b 1
+R51
+Z63 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/tb/perceptron_wrapper_tb.vhd|
+Z64 !s107 C:/intelFPGA/20.1/progetto/tb/perceptron_wrapper_tb.vhd|
+!i113 1
+R11
+R12
+Abhv
+R14
+R16
+R15
+R1
+R2
+Z65 DEx4 work 21 perceptron_wrapper_tb 0 22 oTURIi?=Ha`BHGhDUgjj[1
+!i122 141
+l40
+Z66 L9 75
+Z67 VQd6B@jaicQo>3M1n8Kh?P1
+Z68 !s100 2[_P]6nkFTQgTagWYKFgm2
+R6
+32
+R62
+!i10b 1
+R51
+R63
+R64
+!i113 1
+R11
+R12
+Especialextender
+Z69 w1707250711
+R1
+R2
+!i122 138
+R3
+Z70 8C:/intelFPGA/20.1/progetto/src/SpecialExtender.vhd
+Z71 FC:/intelFPGA/20.1/progetto/src/SpecialExtender.vhd
+l0
+L4 1
+V7IaT:C5<VD:X[0Rmbd;C>1
+!s100 ;2biUhU`EMTK1aK=KlF4<3
+R6
+32
+R50
+!i10b 1
+R51
+Z72 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/SpecialExtender.vhd|
+Z73 !s107 C:/intelFPGA/20.1/progetto/src/SpecialExtender.vhd|
+!i113 1
+R11
+R12
+Abehavioral
+R1
+R2
+DEx4 work 15 specialextender 0 22 7IaT:C5<VD:X[0Rmbd;C>1
+!i122 138
+l19
+L16 8
+VknXmmMKSzUeP:HhFlbcA=3
+!s100 KQmVaKG6^g@[G5EfmBKOH2
+R6
+32
+R50
+!i10b 1
+R51
+R72
+R73
+!i113 1
+R11
+R12
+Putility
+R14
+R15
+R1
+R2
+!i122 139
+w1707659514
+R3
+8C:/intelFPGA/20.1/progetto/src/utility.vhd
+FC:/intelFPGA/20.1/progetto/src/utility.vhd
+l0
+L6 1
+Vk>kLO_C^ah_am3SX=hO;F2
+!s100 14ki@_e68WCDJYCK:YH4b1
+R6
+32
+R50
+!i10b 1
+R51
+!s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/intelFPGA/20.1/progetto/src/utility.vhd|
+!s107 C:/intelFPGA/20.1/progetto/src/utility.vhd|
+!i113 1
+R11
+R12
