@@ -20,7 +20,7 @@ public class slipsCartPage {
     private VBox creditColumn;
     private VBox slipsCartColumn;
     private List<totalValueLabel> totalValueLabelList = new ArrayList<>();
-    private double userCredit;
+    private Double userCredit;
 
     public StackPane getContent(){
 
@@ -441,7 +441,9 @@ public class slipsCartPage {
                 VBox parentVBox = (VBox) currentParent;
                 ((VBox)  parentVBox.getParent()).getChildren().remove( parentVBox);
             }
-            userCredit-=amount;
+            userCredit = userCredit - amount;
+            System.out.println(amount);
+            System.out.println(userCredit);
             valueLabel.setText(Double.toString(userCredit));
 
             SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
