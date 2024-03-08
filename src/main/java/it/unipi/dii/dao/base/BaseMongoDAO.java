@@ -55,7 +55,7 @@ public class BaseMongoDAO {
         if (this.client == null) {
             try {
                 ConnectionString uriString = new ConnectionString(DB_URL);
-                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).build();
+                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primaryPreferred()).retryWrites(true).writeConcern(WriteConcern.W1).build();
                 this.client = MongoClients.create(mcs);
                 this.mongoDB = this.client.getDatabase(MONGO_DATABASE_NAME);
             } catch (Exception e) {
