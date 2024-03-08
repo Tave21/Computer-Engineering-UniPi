@@ -38,7 +38,7 @@ public class slipsCartPage {
         slipsCartColumn = createSlipsColumn("Slips");
         slipsCartColumn.setMaxWidth(700);
         CustomerMongoDBDAO customerMongoDBDAO = new CustomerMongoDBDAO();
-        customerMongoDBDAO.openConnection();
+        customerMongoDBDAO.openConnection(); //open with strict
         userCredit = customerMongoDBDAO.getCreditOfCustomer(Session.getUsername()); //take credit of specific user
         customerMongoDBDAO.closeConnection();
         creditColumn = createCreditColumn("Credit");
@@ -439,11 +439,17 @@ public class slipsCartPage {
 
             if (currentParent != null) {
                 VBox parentVBox = (VBox) currentParent;
-                ((VBox)  parentVBox.getParent()).getChildren().remove( parentVBox);
+                int l = ((VBox) parentVBox.getParent()).getChildren().size();
+                ((VBox) parentVBox.getParent()).getChildren().remove(parentVBox);
+
+                if ( l == 1) {
+                    Label emptyCartLabel = new Label("The are not slips in the cart");
+                    emptyCartLabel.getStyleClass().add("input-label");
+                    ((VBox) parentVBox.getParent()).getChildren().add(emptyCartLabel);
+                }
+
             }
             userCredit = userCredit - amount;
-            System.out.println(amount);
-            System.out.println(userCredit);
             valueLabel.setText(Double.toString(userCredit));
 
             SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
