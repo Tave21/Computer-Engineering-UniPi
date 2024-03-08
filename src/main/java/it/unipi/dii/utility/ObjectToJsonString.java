@@ -1,7 +1,6 @@
 package it.unipi.dii.utility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unipi.dii.model.Match;
 
 public class ObjectToJsonString {
     /**

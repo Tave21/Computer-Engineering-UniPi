@@ -37,3 +37,5 @@ build/
 ### Mac OS ###
 .DS_Store
 /src/main/java/it/unipi/dii/generation/matches.json
+/src/main/java/it/unipi/dii/generation/slips.json
+/src/main/java/it/unipi/dii/generation/customers.json

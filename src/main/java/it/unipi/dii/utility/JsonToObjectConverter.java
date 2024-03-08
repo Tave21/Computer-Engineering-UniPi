@@ -1,7 +1,6 @@
 package it.unipi.dii.utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
-import java.util.List;
 
 public class JsonToObjectConverter {
     /**

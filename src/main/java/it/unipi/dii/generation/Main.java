@@ -57,6 +57,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         deactivateMongoDBNotifications();
 
+
         CustomerMongoDBDAO cl = new CustomerMongoDBDAO();
         cl.openConnection();
         dropCollection(cl.mongoDB, "customers");
@@ -264,7 +265,7 @@ public class Main {
                 System.out.println("75%");
             }
             subDate = users.get(i).getRegistrationDate();
-            number_of_slips = (int) generateExponentialDistributedNumber(30);
+            number_of_slips = (int) generateExponentialDistributedNumber(40);
 
             if (number_of_slips == 0) {
                 if (generateRandomDoubleNumber(0, 100) >= 10) {
@@ -273,7 +274,7 @@ public class Main {
             }
 
             for (j = 0; j < number_of_slips; j++) {
-                how_many_bets = (int) generateExponentialDistributedNumber(5);
+                how_many_bets = (int) generateExponentialDistributedNumber(10);
                 if (how_many_bets < 1) {
                     how_many_bets = 1;
                 }
@@ -349,10 +350,11 @@ public class Main {
                 slipCounter++;
             }
         }
+        PollMongoDBDAO pl = new PollMongoDBDAO();
+        pl.openConnection();
 
         Poll p = new Poll();
         p.setPollType("Best Player");
-        p.setPollID(0);
         p.setPollName("Best players of this season");
         p.setCreationDate(getCurrentInstantString());
         p.setActivationDate(getCurrentInstant().plusSeconds(3600).toString());
@@ -368,11 +370,11 @@ public class Main {
         options.add(pollOpt);
         p.setOptions(options);
         p.UpdateNumberOfVotes();
+        pl.addPoll(p);
 
-        Poll p1 = new Poll();
-        p1.setPollType("Best Player");
-        p1.setPollID(1);
-        p1.setPollName("Best players of this season");
+        p = new Poll();
+        p.setPollType("Best Player");
+        p.setPollName("Best players of this season");
         p.setCreationDate(Instant.parse("2023-02-01T12:00:00Z").toString());
         p.setActivationDate(Instant.parse("2023-02-01T12:00:00Z").plusSeconds(3600).toString());
         options = new ArrayList<>();
@@ -385,15 +387,15 @@ public class Main {
         pollOpt = new pollOption("Taverna");
         pollOpt.multipleVoteOption(10);
         options.add(pollOpt);
-        p1.setOptions(options);
-        p1.UpdateNumberOfVotes();
+        p.setOptions(options);
+        p.UpdateNumberOfVotes();
+        pl.addPoll(p);
 
-        Poll p2 = new Poll();
-        p2.setPollType("Best Team");
-        p2.setPollID(0);
-        p2.setPollName("Best Team of this season");
-        p2.setCreationDate("2024-01-20");
-        p2.setActivationDate("2024-01-26");
+        p = new Poll();
+        p.setPollType("Best Team");
+        p.setPollName("Best Team of this season");
+        p.setCreationDate("2024-01-20");
+        p.setActivationDate("2024-01-26");
         options = new ArrayList<>();
         pollOpt = new pollOption("Udinese");
         pollOpt.multipleVoteOption(0);
@@ -404,15 +406,15 @@ public class Main {
         pollOpt = new pollOption("AC Milan");
         pollOpt.multipleVoteOption(0);
         options.add(pollOpt);
-        p2.setOptions(options);
-        p2.UpdateNumberOfVotes();
+        p.setOptions(options);
+        p.UpdateNumberOfVotes();
+        pl.addPoll(p);
 
-        Poll p3 = new Poll();
-        p3.setPollType("Best Team");
-        p3.setPollID(0);
-        p3.setPollName("Best Team of this season");
-        p3.setCreationDate("2024-01-20");
-        p3.setActivationDate("2024-01-26");
+        p = new Poll();
+        p.setPollType("Best Team");
+        p.setPollName("Best Team of this season");
+        p.setCreationDate("2024-01-20");
+        p.setActivationDate("2024-01-26");
         options = new ArrayList<>();
         pollOpt = new pollOption("Inter");
         pollOpt.multipleVoteOption(3);
@@ -423,40 +425,142 @@ public class Main {
         pollOpt = new pollOption("Juventus");
         pollOpt.multipleVoteOption(200);
         options.add(pollOpt);
-        p3.setOptions(options);
-        p3.UpdateNumberOfVotes();
-
-        PollMongoDBDAO pl = new PollMongoDBDAO();
-        pl.openConnection();
+        p.setOptions(options);
+        p.UpdateNumberOfVotes();
         pl.addPoll(p);
-        pl.addPoll(p1);
-        pl.addPoll(p2);
-        pl.addPoll(p3);
         pl.closeConnection();
 
-        MatchMongoDBDAO ms = new MatchMongoDBDAO();
-        ms.openConnection();
-        System.out.println(ms.getLastID());
-        ms.updateMatches(); // Update the matches list.
-        System.out.println(ms.getLastID());
-        ms.closeConnection();
-
         System.out.println("Slips insertion start. [ " + slips.size() + " ]");
-        /*
-        for (i = 0; i < slips.size() - 1; i++) {
-            if(!slips.get(i).checkSlipValidity()){
-                slips.remove(i);
-                i--;
-            }
-        }
-
-         */
 
         writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
 
         System.out.println("Slips insertion ended. [ " + slips.size() + " ]");
 
+        // Get new matches update.
+        MatchMongoDBDAO ms = new MatchMongoDBDAO();
+        ms.openConnection();
+        System.out.println("Before the update: " + ms.getLastID());
+        ms.updateMatches(); // Update the matches list.
+
+        final String thisInstant = getCurrentInstant().plusSeconds(500).toString();
+
+        Match e = new Match();
+        List<Match> ml = new ArrayList<>();
+
+        int matchIdtemp = ms.getLastID();
+        e.setMatchID(matchIdtemp);
+        e.setStatus("TIMED");
+        e.setTeam_home("Playing Team 1");
+        e.setTeam_away("Playing Team 2");
+        e.setMatchDate(thisInstant);
+        e.setHome_goals(0);
+        e.setAway_goals(0);
+        e.setCompetition_id("IT1");
+        ml.add(e);
+
+        e = new Match();
+        e.setMatchID(matchIdtemp + 1);
+        e.setStatus("TIMED");
+        e.setTeam_home("Playing Team 3");
+        e.setTeam_away("Playing Team 4");
+        e.setMatchDate(thisInstant);
+        e.setHome_goals(0);
+        e.setAway_goals(0);
+        e.setCompetition_id("GB1");
+        ml.add(e);
+
+        e.setMatchID(matchIdtemp + 2);
+        e.setStatus("TIMED");
+        e.setTeam_home("Playing Team 5");
+        e.setTeam_away("Playing Team 6");
+        e.setMatchDate(thisInstant);
+        e.setHome_goals(0);
+        e.setAway_goals(0);
+        e.setCompetition_id("IT1");
+        ml.add(e);
+
+        try {
+            ms.updateMatches(ml);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        ml = new ArrayList<>();
+        e = new Match();
+        e.setMatchID(matchIdtemp);
+        e.setStatus("IN_PLAY");
+        e.setTeam_home("Playing Team 1");
+        e.setTeam_away("Playing Team 2");
+        e.setMatchDate(thisInstant);
+        e.setHome_goals(1);
+        e.setAway_goals(0);
+        e.setCompetition_id("IT1");
+        ml.add(e);
+
+        e = new Match();
+        e.setMatchID(matchIdtemp + 1);
+        e.setStatus("IN_PLAY");
+        e.setTeam_home("Playing Team 3");
+        e.setTeam_away("Playing Team 4");
+        e.setMatchDate(thisInstant);
+        e.setHome_goals(0);
+        e.setAway_goals(1);
+        e.setCompetition_id("GB1");
+        ml.add(e);
+
+        e = new Match();
+        e.setMatchID(matchIdtemp + 2);
+        e.setStatus("IN_PLAY");
+        e.setTeam_home("Playing Team 5");
+        e.setTeam_away("Playing Team 6");
+        e.setMatchDate(thisInstant);
+        e.setHome_goals(1);
+        e.setAway_goals(0);
+        e.setCompetition_id("IT1");
+        ml.add(e);
+
+        try {
+            ms.updateMatches(ml);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+
+        System.out.println("After the update: " + ms.getLastID());
+
         System.out.println("Generation of the DataSet ended");
+
+        System.out.println("Start the generation of the indexes");
+
+        // Slips indexes.
+        createIndex(ms.mongoDB , "slips" , "confirmationDate" , -1);
+        createIndex(ms.mongoDB , "slips" , "username" , 1);
+        createIndex(ms.mongoDB , "slips" , "slipID" , -1);
+        createIndex(ms.mongoDB , "slips" , "betList.matchID" , -1);
+
+        // Polls indexes.
+        createIndex(ms.mongoDB , "polls" , "activationDate" , -1);
+        createIndex(ms.mongoDB , "polls" , "pollType" , 1);
+
+        // Matches indexes.
+        createIndex(ms.mongoDB , "matches" , "matchDate" , -1);
+        createIndex(ms.mongoDB , "matches" , "matchID" , -1);
+        createIndex(ms.mongoDB , "matches" , "status" , 1);
+
+        String[] indexFields = {"matchDate", "team_home" , "team_away"};
+        Integer[] indexOrder = { - 1, 1 , 1};
+        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
+
+        indexFields[0] = "competition_id";
+        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
+        ms.closeConnection();
+
+        // Customer indexes
+        indexFields = new String[]{"username", "name", "surname"};
+        indexOrder = new Integer[]{1, 1, 1};
+        createCompoundIndex(ms.mongoDB , "customers" , indexFields, indexOrder);
+
+        System.out.println("Generation of the indexes ended");
     }
 }
 

@@ -10,11 +10,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.unipi.dii.utility.DateTimes.*;
-import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
+import static it.unipi.dii.utility.MongoUtility.*;
+import static it.unipi.dii.utility.MongoUtility.createCompoundIndex;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        deactivateMongoDBNotifications();
+        // Slips indexes.
+        MatchMongoDBDAO ms = new MatchMongoDBDAO();
+        ms.openConnection();
+        ms.updateMatches();
+
+        createIndex(ms.mongoDB , "slips" , "confirmationDate" , -1);
+        createIndex(ms.mongoDB , "slips" , "username" , 1);
+        createIndex(ms.mongoDB , "slips" , "slipID" , -1);
+        createIndex(ms.mongoDB , "slips" , "betList.matchID" , -1);
+
+        // Polls indexes.
+        createIndex(ms.mongoDB , "polls" , "activationDate" , -1);
+        createIndex(ms.mongoDB , "polls" , "pollType" , 1);
+
+        // Matches indexes.
+        createIndex(ms.mongoDB , "matches" , "matchDate" , -1);
+        createIndex(ms.mongoDB , "matches" , "matchID" , -1);
+        createIndex(ms.mongoDB , "matches" , "status" , 1);
+
+        String[] indexFields = {"matchDate", "team_home" , "team_away"};
+        Integer[] indexOrder = { - 1, 1 , 1};
+        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
+
+        indexFields[0] = "competition_id";
+        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
+        ms.closeConnection();
+
+        // Customer indexes
+        indexFields = new String[]{"username", "name", "surname"};
+        indexOrder = new Integer[]{1, 1, 1};
+        createCompoundIndex(ms.mongoDB , "customers" , indexFields, indexOrder);
+
+        ms.closeConnection();
+
+        /*
         Match e = new Match();
         MatchMongoDBDAO mDAO = new MatchMongoDBDAO();
         List<Match> ml = new ArrayList<>();
@@ -28,11 +63,11 @@ public class Main {
         System.out.println(ms.getLastID());
         ms.closeConnection();
 
-        /*
-        TEST FOR CONTROL STATUS OF A SLIP
-        ADD A SLIP TO CONFIRMED SLIPS with one or more matches, THEN CHANGE status of a match or more (if more than one)
-        THEN RUN THIS 4 LINES AND THEN CHECK THE STATUS OF THE SLIP IN THE DEDICATED PAGE
-        */
+
+        //TEST FOR CONTROL STATUS OF A SLIP
+        //ADD A SLIP TO CONFIRMED SLIPS with one or more matches, THEN CHANGE status of a match or more (if more than one)
+        //THEN RUN THIS 4 LINES AND THEN CHECK THE STATUS OF THE SLIP IN THE DEDICATED PAGE
+
 
         mDAO.openConnection();
         e = new Match();
@@ -178,6 +213,7 @@ public class Main {
 
         mDAO.closeConnection();
 
+         */
 
     }
 }
