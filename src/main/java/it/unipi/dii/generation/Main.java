@@ -439,6 +439,7 @@ public class Main {
         // Get new matches update.
         MatchMongoDBDAO ms = new MatchMongoDBDAO();
         ms.openConnection();
+        /* DA ESEGUIRE DOPO AVER CARICATO IL FILE JSON
         System.out.println("Before the update: " + ms.getLastID());
         ms.updateMatches(); // Update the matches list.
 
@@ -524,7 +525,7 @@ public class Main {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
+*/
 
         System.out.println("After the update: " + ms.getLastID());
 

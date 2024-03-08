@@ -15,41 +15,10 @@ import static it.unipi.dii.utility.MongoUtility.createCompoundIndex;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // Slips indexes.
-        MatchMongoDBDAO ms = new MatchMongoDBDAO();
-        ms.openConnection();
-        ms.updateMatches();
 
-        createIndex(ms.mongoDB , "slips" , "confirmationDate" , -1);
-        createIndex(ms.mongoDB , "slips" , "username" , 1);
-        createIndex(ms.mongoDB , "slips" , "slipID" , -1);
-        createIndex(ms.mongoDB , "slips" , "betList.matchID" , -1);
+        deactivateMongoDBNotifications();
 
-        // Polls indexes.
-        createIndex(ms.mongoDB , "polls" , "activationDate" , -1);
-        createIndex(ms.mongoDB , "polls" , "pollType" , 1);
 
-        // Matches indexes.
-        createIndex(ms.mongoDB , "matches" , "matchDate" , -1);
-        createIndex(ms.mongoDB , "matches" , "matchID" , -1);
-        createIndex(ms.mongoDB , "matches" , "status" , 1);
-
-        String[] indexFields = {"matchDate", "team_home" , "team_away"};
-        Integer[] indexOrder = { - 1, 1 , 1};
-        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
-
-        indexFields[0] = "competition_id";
-        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
-        ms.closeConnection();
-
-        // Customer indexes
-        indexFields = new String[]{"username", "name", "surname"};
-        indexOrder = new Integer[]{1, 1, 1};
-        createCompoundIndex(ms.mongoDB , "customers" , indexFields, indexOrder);
-
-        ms.closeConnection();
-
-        /*
         Match e = new Match();
         MatchMongoDBDAO mDAO = new MatchMongoDBDAO();
         List<Match> ml = new ArrayList<>();
@@ -138,6 +107,8 @@ public class Main {
         sDAO.addSlip(s);
         sDAO.closeConnection();
 
+        //POST CREAZIONE SLIP DALLA GUI
+
         // Those 3 matches go "IN_PLAY".
         ml = new ArrayList<>();
         e = new Match();
@@ -213,7 +184,7 @@ public class Main {
 
         mDAO.closeConnection();
 
-         */
+
 
     }
 }
