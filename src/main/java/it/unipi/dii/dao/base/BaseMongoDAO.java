@@ -23,7 +23,7 @@ public class BaseMongoDAO {
     public static final String MONGO_USERNAME = "save";
     public static final String MONGO_PASSWORD = "save";
     public static final String MONGO_PRIMARY_HOST = "localhost"; //10.1.1.55
-    public static final Integer MONGO_PRIMARY_HOST_PORT = 27018;
+    public static final Integer MONGO_PRIMARY_HOST_PORT = 27017;
     public static String MONGO_SECONDARY_HOST = "localhost";//"10.1.1.54";
     public static int MONGO_SECONDARY_HOST_PORT = 27019;
     public static String MONGO_THIRD_HOST = "localhost";//"10.1.1.48";
