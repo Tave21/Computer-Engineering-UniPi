@@ -36,8 +36,14 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             slip.setSlipID(this.getLastID() + 1);
             List<Document> documents = new ArrayList<>();
             documents.add(Document.parse(convertObjectToJsonString(slip)));
-            insertDocuments(this.mongoDB.getCollection("slips"), documents);
-            return slip.getSlipID();
+            boolean x = insertDocuments(this.mongoDB.getCollection("slips"), documents);
+            if(x) {
+                return slip.getSlipID();
+            } else {
+                return -1;
+            }
+
+
         }
         return -1;
     }
@@ -428,7 +434,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                 UnsupportedOperationException("Not supported in MongoDB implementation");
     }
 
-    public void sendConfirmedSlipToMongo(String username, Integer slipID, double betAmount) {
+    public boolean sendConfirmedSlipToMongo(String username, Integer slipID, double betAmount) {
         throw new
                 UnsupportedOperationException("Not supported in MongoDB implementation");
     }

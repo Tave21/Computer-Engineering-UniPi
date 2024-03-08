@@ -367,25 +367,7 @@ public class slipsCartPage {
         updateTotalValueLabel(totalValueLabelList.get(index).getTotalLabel(), betAmount, retrievedValue);
         HBox.setMargin(amountRow, new Insets(5, 5, 5, 5));
 
-        /*
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
-            if (newText.matches("\\d*")) {
-                int newValue = newText.isEmpty() ? 0 : Integer.parseInt(newText);
-                if (newValue <= 200) {
-                    int index1 = getPositionById(totalValueLabelList, id);
-                    double retrievedValue1 = totalValueLabelList.get(index1).getMultiplierProduct();
-                    updateTotalValueLabel(totalValueLabelList.get(index1).getTotalLabel(), newValue, retrievedValue1);
-                    System.out.println("unary operator");
-                    return change;
-                }
-            }
-            return null;
-        };
-        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
-        amountField.setTextFormatter(textFormatter);
 
-         */
 
         amountField.textProperty().addListener((observable, oldValue, newValue) -> {
             String regex = "^(2[0-9]?|[3-9][0-9]?|1[0-9]{1,2}|200)$";
@@ -408,8 +390,6 @@ public class slipsCartPage {
                 amountField,
                 payButton,
                 errorLabel,
-                //totalValueLabelList.get(index).getTotalLabel(),
-                //totalValueLabelList.get(index).getMultiplierProduct(),
                 id
         ));
 
@@ -441,7 +421,7 @@ public class slipsCartPage {
         }
 
         System.out.println("amount = "+ amount+ " userCredit = "+ userCredit);
-        if (/*amountText.isEmpty()  || amountText.equals("0") || amountText.equals("1") ||*/ !isMatch) {
+        if (!isMatch) {
             errorLabel.setText("Enter a number between 2 and 200");
             errorLabel.getStyleClass().add("error");
         }else if(amount > userCredit) {
@@ -470,7 +450,11 @@ public class slipsCartPage {
             customerMongoDBDAO.openConnection();
             boolean t = customerMongoDBDAO.pay(Session.getUsername(), amount); //remove credit from user
             if(t){
-                slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount );
+                boolean v = slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount );
+                if(v){
+                    errorLabel.setText("Error processing the payment, please refresh the page and try again");
+                    errorLabel.getStyleClass().add("error");
+                }
             }
             customerMongoDBDAO.closeConnection();
 

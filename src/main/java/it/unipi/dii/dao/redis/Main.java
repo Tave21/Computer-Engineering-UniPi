@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         /*
         SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
-        Slip slip = new Slip("dio", " ","2022-01-01",5);
+        Slip slip = new Slip("ciao", " ","2022-01-01",5);
         slip.setSlipID(3);
         Bet bet = new Bet(1,  4.2 , "1X" , "2022-09-28T07:06:56Z");
         bet.setTeamAway("Juventus");
@@ -82,13 +82,9 @@ public class Main {
         //slipRedisDAO.addBetToSlip("mauro", 8,bet4);
         //la addbet funziona
 
-        //DUBBIO: se aggiungo una bet ad una chiave il suo TTL si aggiorna!?
-
         //slipRedisDAO.deleteBetFromSlip("mauro", 12, bet);
-        //aggiungere hascode e equals a bet
         //la deletebet funziona
 
-        //sendtomongodb da provare con save
 
         //ObjectMapper objectMapper = new ObjectMapper();
         //String str = objectMapper.writeValueAsString( slipRedisDAO.load("mauro", 121));
@@ -98,7 +94,6 @@ public class Main {
 
         //slipRedisDAO.refreshTTL("mauro");
         //la refresh funziona
-        //attenzione che anche refreshando il ttl non va oltre il valore di refresh
 
          */
 

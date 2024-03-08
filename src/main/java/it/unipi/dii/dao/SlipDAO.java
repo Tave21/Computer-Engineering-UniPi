@@ -43,7 +43,7 @@ import java.util.List;
 
      int addBetToSlip(String username, Integer slipID, Bet bet);
 
-     void sendConfirmedSlipToMongo(String username, Integer slipID , double betAmount);
+     boolean sendConfirmedSlipToMongo(String username, Integer slipID , double betAmount);
 
 
 

@@ -3,6 +3,7 @@ package it.unipi.dii.utility;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.*;
 import com.mongodb.client.result.InsertManyResult;
 import org.bson.Document;
@@ -52,16 +53,27 @@ public class MongoUtility {
      * @param dstCollection Collection where insert the new documents.
      * @param documents Documents to insert.
      */
-    public static void insertDocuments(MongoCollection<Document> dstCollection, List<Document> documents) {
+    public static boolean insertDocuments(MongoCollection<Document> dstCollection, List<Document> documents) {
         if (documents.size() == 1) {
-            dstCollection.insertOne(documents.get(0));
+            try {
+                dstCollection.insertOne(documents.get(0));
+            } catch (Exception e) {
+                System.out.println("Error in the insertion of the document");
+                return false;
+            }
         } else if (documents.size() > 1) {
-            InsertManyResult insertResults = dstCollection.insertMany(documents);
-            List<ObjectId> insertedIds = new ArrayList<>();
-            insertResults.getInsertedIds().values()
-                    .forEach(doc -> insertedIds.add(doc.asObjectId().getValue()));
+            try {
+                InsertManyResult insertResults = dstCollection.insertMany(documents);
+                List<ObjectId> insertedIds = new ArrayList<>();
+                insertResults.getInsertedIds().values()
+                        .forEach(doc -> insertedIds.add(doc.asObjectId().getValue()));
+            } catch (Exception e) {
+                System.out.println("Error in the insertion of the documents");
+                return false;
+            }
 
         }
+        return true;
     }
 
     /**

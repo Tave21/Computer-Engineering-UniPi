@@ -242,7 +242,7 @@ public class SlipRedisDAO extends BaseRedisDAO implements SlipDAO {
 
 
     @Override
-    public void sendConfirmedSlipToMongo(String username, Integer slipID , double betAmount) {
+    public boolean sendConfirmedSlipToMongo(String username, Integer slipID , double betAmount) {
         SlipMongoDBDAO slipMongoDBDAO = new SlipMongoDBDAO();
         slipMongoDBDAO.openConnection();
         Slip slip = load(username, slipID , betAmount);
@@ -264,9 +264,15 @@ public class SlipRedisDAO extends BaseRedisDAO implements SlipDAO {
             bet.setCompetition_id(result.getString("competition_id"));
         }
 
-        slipMongoDBDAO.addSlip(slip); // Add the slip to MongoDB.
+        int x = slipMongoDBDAO.addSlip(slip); // Add the slip to MongoDB.
+        if(x == -1){
+            //slip not inserted, user will see an error message for failed insertion
+            slipMongoDBDAO.closeConnection();
+            return false; // no need to delete the slip from Redis
+        }
         slipMongoDBDAO.closeConnection();
         delete_Slip(username, slipID); // Delete the slip from Redis.
+        return true;
     }
 
 
