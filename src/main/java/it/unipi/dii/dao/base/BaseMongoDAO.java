@@ -22,14 +22,14 @@ public class BaseMongoDAO {
     protected CodecRegistry codecRegistry;
     public static final String MONGO_USERNAME = "save";
     public static final String MONGO_PASSWORD = "save";
-    public static final String MONGO_PRIMARY_HOST = "localhost";
-    public static final Integer MONGO_PRIMARY_HOST_PORT = 27017;
+    public static final String MONGO_PRIMARY_HOST = "localhost"; //10.1.1.55
+    public static final Integer MONGO_PRIMARY_HOST_PORT = 27018;
     public static String MONGO_SECONDARY_HOST = "localhost";//"10.1.1.54";
-    public static int MONGO_SECONDARY_HOST_PORT = 27017;
+    public static int MONGO_SECONDARY_HOST_PORT = 27019;
     public static String MONGO_THIRD_HOST = "localhost";//"10.1.1.48";
-    public static int MONGO_THIRD_HOST_PORT = 27017;
+    public static int MONGO_THIRD_HOST_PORT = 27020;
     public static final String MONGO_DATABASE_NAME = "BeansBet";
-    public static final String DB_URL = "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_SECONDARY_HOST_PORT;
+    public static final String DB_URL = "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_PRIMARY_HOST_PORT;
     private static final Integer MIN_IDLE_TIME = 5;
     private static final Integer MAX_IDLE_TIME = 10;
     private static final Integer MAX_OPEN_PREPARED_STATEMENTS = 100;
@@ -72,43 +72,10 @@ public class BaseMongoDAO {
         } else {
             // Client not connected.
             try {
-                /*
-                String uri = "mongodb://" +
-                        MONGO_PRIMARY_HOST + ":" +
-                        MONGO_PRIMARY_HOST_PORT + "," +
-                        MONGO_SECONDARY_HOST + ":" +
-                        MONGO_SECONDARY_HOST_PORT + "," +
-                        MONGO_THIRD_HOST + ":" +
-                        MONGO_THIRD_HOST_PORT;
-
-                ConnectionString connectionString = new ConnectionString(uri);
-
-               codecRegistry = fromRegistries(
-                        MongoClientSettings.getDefaultCodecRegistry(),
-                        fromProviders(PojoCodecProvider.builder().automatic(true).build())
-                );
-
-                MongoClientSettings clientSettings = MongoClientSettings
-                        .builder()
-                        .applyConnectionString(connectionString)
-                        .readPreference(ReadPreference.nearest()) // Read from the fastest node.
-                        .retryWrites(true)
-                        .writeConcern(WriteConcern.MAJORITY) // Return only after 2 writes.
-                        .codecRegistry(codecRegistry)
-                        .build();
-
-                client = MongoClients.create(clientSettings); // Create the MongoClient object.
-                */
-
-                client = MongoClients.create(
-                        "mongodb://"
-                                +MONGO_PRIMARY_HOST+":"+
-                                MONGO_THIRD_HOST_PORT+","
-                                +MONGO_SECONDARY_HOST+":"+
-                                MONGO_SECONDARY_HOST_PORT+
-                                ","+MONGO_THIRD_HOST+
-                                ":"+MONGO_THIRD_HOST_PORT+"/" +
-                                "?retryWrites=true&w=majority&timeout=10000");
+                String url= "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_PRIMARY_HOST_PORT + "," + MONGO_SECONDARY_HOST + ":" + MONGO_SECONDARY_HOST_PORT + "," + MONGO_THIRD_HOST + ":" + MONGO_THIRD_HOST_PORT;
+                ConnectionString uriString = new ConnectionString(url);
+                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primaryPreferred()).retryWrites(true).writeConcern(WriteConcern.W1).build();
+                this.client = MongoClients.create(mcs);
                 this.mongoDB = this.client.getDatabase(MONGO_DATABASE_NAME);
 
                 System.out.println("Connection to MongoDB.");

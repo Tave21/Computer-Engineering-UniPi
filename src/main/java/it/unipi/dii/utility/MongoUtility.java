@@ -73,6 +73,7 @@ public class MongoUtility {
             }
 
         }
+        System.out.println("Documents inserted successfully");
         return true;
     }
 

@@ -40,6 +40,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             if(x) {
                 return slip.getSlipID();
             } else {
+                System.out.println("no");
                 return -1;
             }
 

@@ -452,6 +452,7 @@ public class slipsCartPage {
             if(t){
                 boolean v = slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount );
                 if(v){
+
                     errorLabel.setText("Error processing the payment, please refresh the page and try again");
                     errorLabel.getStyleClass().add("error");
                 }
