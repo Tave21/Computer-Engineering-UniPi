@@ -63,7 +63,18 @@ public class BaseMongoDAO {
             }
         }
     }
-
+    public void openStrictConnection(){
+        if (this.client == null) {
+            try {
+                ConnectionString uriString = new ConnectionString(DB_URL);
+                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primary()).retryWrites(true).writeConcern(WriteConcern.W3).build();
+                this.client = MongoClients.create(mcs);
+                this.mongoDB = this.client.getDatabase(MONGO_DATABASE_NAME);
+            } catch (Exception e) {
+                System.out.println("problems with connection to mongodb");
+            }
+        }
+    }
 
     public MongoClient openConnectiona() {
         if (client != null) {

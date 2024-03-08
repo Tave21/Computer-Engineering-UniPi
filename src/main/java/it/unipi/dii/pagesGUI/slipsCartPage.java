@@ -38,7 +38,7 @@ public class slipsCartPage {
         slipsCartColumn = createSlipsColumn("Slips");
         slipsCartColumn.setMaxWidth(700);
         CustomerMongoDBDAO customerMongoDBDAO = new CustomerMongoDBDAO();
-        customerMongoDBDAO.openConnection(); //open with strict
+        customerMongoDBDAO.openStrictConnection(); //open with strict
         userCredit = customerMongoDBDAO.getCreditOfCustomer(Session.getUsername()); //take credit of specific user
         customerMongoDBDAO.closeConnection();
         creditColumn = createCreditColumn("Credit");
@@ -455,7 +455,7 @@ public class slipsCartPage {
             SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
 
             CustomerMongoDBDAO customerMongoDBDAO= new CustomerMongoDBDAO();
-            customerMongoDBDAO.openConnection();
+            customerMongoDBDAO.openStrictConnection();
             boolean t = customerMongoDBDAO.pay(Session.getUsername(), amount); //remove credit from user
             if(t){
                 boolean v = slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount );
@@ -481,10 +481,10 @@ public class slipsCartPage {
             errorLabel.getStyleClass().add("error");
         } else {
             errorLabel.setText("");
-            userCredit += Integer.parseInt(amountText);
+            userCredit = userCredit + Integer.parseInt(amountText);
             valueLabel.setText(Double.toString(userCredit));
             CustomerMongoDBDAO customerMongoDBDAO= new CustomerMongoDBDAO();
-            customerMongoDBDAO.openConnection();
+            customerMongoDBDAO.openStrictConnection();
             customerMongoDBDAO.redeem(Session.getUsername(), Integer.parseInt(amountText)); //add credit to user
             customerMongoDBDAO.closeConnection();
         }
