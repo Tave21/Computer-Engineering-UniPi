@@ -451,6 +451,7 @@ public class slipsCartPage {
             boolean t = customerMongoDBDAO.pay(Session.getUsername(), amount); //remove credit from user
             if(t){
                 boolean v = slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount );
+                v = false;
                 if(!v){
                     errorLabel.setText("Error processing the payment, please refresh the page and try again");
                     errorLabel.getStyleClass().add("error");
