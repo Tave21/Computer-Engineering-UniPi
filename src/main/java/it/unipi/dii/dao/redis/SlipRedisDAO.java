@@ -267,7 +267,6 @@ public class SlipRedisDAO extends BaseRedisDAO implements SlipDAO {
         int x = slipMongoDBDAO.addSlip(slip); // Add the slip to MongoDB.
 
         if(x == -1){
-            System.out.println("not inserted");
             //slip not inserted, user will see an error message for failed insertion
             slipMongoDBDAO.closeConnection();
             return false; // no need to delete the slip from Redis
