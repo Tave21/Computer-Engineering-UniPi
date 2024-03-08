@@ -433,19 +433,22 @@ public class slipsCartPage {
             updateTotalValueLabel(totalValueLabel, Integer.parseInt(amountText), retrievedValue);
             // remove slips from column "Slips' Cart"
             Node currentParent = payButton.getParent();
+            Node currentParent1 = payButton.getParent();
             while (currentParent != null && !(currentParent instanceof VBox)) {
+                currentParent1 = currentParent1.getParent();
                 currentParent = currentParent.getParent().getParent();
             }
 
             if (currentParent != null) {
+                VBox parentVBox1 = (VBox) currentParent.getParent();
                 VBox parentVBox = (VBox) currentParent;
                 int l = ((VBox) parentVBox.getParent()).getChildren().size();
                 ((VBox) parentVBox.getParent()).getChildren().remove(parentVBox);
 
-                if ( l == 1) {
+                if ( l == 2) {
                     Label emptyCartLabel = new Label("The are not slips in the cart");
                     emptyCartLabel.getStyleClass().add("input-label");
-                    ((VBox) parentVBox.getParent()).getChildren().add(emptyCartLabel);
+                    parentVBox1.getChildren().add(emptyCartLabel);
                 }
 
             }
