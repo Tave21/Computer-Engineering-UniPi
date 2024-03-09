@@ -536,7 +536,6 @@ public class Main {
         // Slips indexes.
         createIndex(ms.mongoDB , "slips" , "confirmationDate" , -1);
         createIndex(ms.mongoDB , "slips" , "username" , 1);
-        createIndex(ms.mongoDB , "slips" , "slipID" , -1);
         createIndex(ms.mongoDB , "slips" , "betList.matchID" , -1);
 
         // Polls indexes.
@@ -545,7 +544,6 @@ public class Main {
 
         // Matches indexes.
         createIndex(ms.mongoDB , "matches" , "matchDate" , -1);
-        createIndex(ms.mongoDB , "matches" , "matchID" , -1);
         createIndex(ms.mongoDB , "matches" , "status" , 1);
 
         String[] indexFields = {"matchDate", "team_home" , "team_away"};

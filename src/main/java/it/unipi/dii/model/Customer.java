@@ -101,7 +101,7 @@ public class Customer extends User {
      */
     public boolean pay(double howMuch){
         if(howMuch <= this.credit){
-            this.credit -= howMuch;
+            this.credit = this.credit - howMuch;
             return true;
         }else{
             return false;
@@ -112,7 +112,7 @@ public class Customer extends User {
      * @param howMuch are the moneys inserted by the user
      */
     public void redeem(double howMuch){
-        this.credit += howMuch;
+        this.credit = this.credit + howMuch;
     }
 
     /**

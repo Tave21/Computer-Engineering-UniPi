@@ -9,14 +9,12 @@ import it.unipi.dii.model.Bet;
 import it.unipi.dii.model.Slip;
 import org.bson.Document;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.checkTimestampFormat;
-import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
+import static it.unipi.dii.utility.DateTimes.*;
 import static it.unipi.dii.utility.JsonToDocument.convertJsonToDocument;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 import static it.unipi.dii.utility.MongoUtility.*;
@@ -51,7 +49,10 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
 
     private int getLastID() {
-        List<Document> pipeline = Arrays.asList(new Document("$project",
+        List<Document> pipeline = Arrays.asList(new Document("$match",
+                        new Document("confirmationDate",
+                                new Document("$gt", getCurrentDate().minusMonths(4).toString()))),
+                new Document("$project",
                         new Document("slipID", 1L)
                                 .append("_id", 0L)),
                 new Document("$sort",

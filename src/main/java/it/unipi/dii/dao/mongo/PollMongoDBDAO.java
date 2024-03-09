@@ -10,8 +10,11 @@ import it.unipi.dii.model.pollOption;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import static it.unipi.dii.utility.DateTimes.getCurrentDate;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 import static it.unipi.dii.utility.MongoUtility.deleteDocuments;
 import static it.unipi.dii.utility.MongoUtility.insertDocuments;
@@ -40,14 +43,19 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
      */
 
     private Integer getLastID() {
-        MongoCollection<Document> poll_coll = this.mongoDB.getCollection("polls");
-        AggregateIterable<Document> result = poll_coll.aggregate(List.of(
-                new Document("$group", new Document("_id", null).append("maxValue", new Document("$max", "$" + "pollID")))
-        ));
-        Document resultDoc = result.first();
-        if (resultDoc != null) {
-            return (Integer) resultDoc.get("maxValue");
-        } else {
+        List<Document> pipeline = Arrays.asList(new Document("$match",
+                        new Document("activationDate",
+                                new Document("$gt", getCurrentDate().minusYears(2).toString()))),
+                new Document("$project",
+                        new Document("pollID", 1L)
+                                .append("_id", 0L)),
+                new Document("$sort",
+                        new Document("pollID", -1L)),
+                new Document("$limit", 1L));
+        AggregateIterable<Document> result = this.mongoDB.getCollection("polls").aggregate(pipeline);
+        try {
+            return Objects.requireNonNull(result.first()).getInteger("pollID");
+        }catch(NullPointerException e){
             return -1;
         }
     }

@@ -69,7 +69,10 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
      */
     @Override
     public Customer fetchCustomerInformation(String username) {
-        List<Customer> ml = getCustomers(new Document("username", username), new Document("_id", 0));
+        List<Customer> ml = getCustomers(
+                new Document("username", username),
+                new Document("_id", 0)
+        );
         if (ml.isEmpty()) {
             return null;
         } else {
@@ -183,40 +186,36 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
     public void redeem(String Username, double howMuch) {
         howMuch = truncateNumber(abs(howMuch),2);
         if (howMuch > 0) {
-            Customer c = fetchCustomerInformation(Username);
-            if (c != null) {
-                c.redeem(howMuch);
-                Document query = new Document("username", new Document("$eq", Username));
-                Document update = new Document("$inc", new Document("credit", howMuch));
-                updateCustomer(query,update);
-            }
+            Document query = new Document("username", new Document("$eq", Username));
+            Document update = new Document("$inc", new Document("credit", howMuch));
+            updateCustomer(query,update);
+
         }
     }
     /**
-     * remove credit to a user in the database.
+     * Remove credit to a user in the MongoDB database.
      * @param Username The username of the customer.
      * @param howMuch How much credit it has to be removed; if a negative number is given, the absolute value will be used.
      */
     @Override
     public boolean pay(String Username, double howMuch) {
-        howMuch = truncateNumber(abs(howMuch) , 2);
+        howMuch = truncateNumber(abs(howMuch) , 2); // Clear the input.
         if (howMuch != 0) {
-            Customer c = fetchCustomerInformation(Username);
-            if (c == null) {
-                return false;
+            double cred = getCreditOfCustomer(Username);
+            if (cred == -1) {
+                return false; // The user does not exist.
             } else {
-                if(c.pay(howMuch)) {
+                if(cred >= howMuch) {
                     Document query = new Document("username", Username);
                     Document update = new Document("$inc", new Document("credit", -1 * howMuch));
                     updateCustomer(query, update);
                     return true;
                 }else{
-                    // Not enough money
-                    return false;
+                    return false; // The customer does not have enough money
                 }
             }
         }
-        return true;
+        return true; // Payment successfully done.
     }
 
     /**
@@ -234,7 +233,7 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
 
     /**
      * Retrieve from the database the credit of the target user.
-     * @param username The target username.
+     * @param username The target customer's username.
      * @return The credit of the user.
      */
     @Override
@@ -242,11 +241,14 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("username", username)),
                 new Document("$project",
-                        new Document("credit",
-                                new Document("$round", Arrays.asList("$credit", 2L)))
+                        new Document("credit", "$credit")
                                 .append("_id", 0L)),
                 new Document("$limit", 1L));
         AggregateIterable<Document> docs = this.mongoDB.getCollection("customers").aggregate(pipeline);
-        return truncateNumber(Objects.requireNonNull(docs.first()).getDouble("credit"), 2);
+        try {
+            return Objects.requireNonNull(docs.first()).getDouble("credit");
+        }catch(NullPointerException e){
+            return -1;
+        }
     }
 }

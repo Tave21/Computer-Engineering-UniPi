@@ -11,8 +11,8 @@ import org.bson.Document;
 
 import java.io.IOException;
 import java.util.*;
-import static it.unipi.dii.utility.DateTimes.differenceDays;
-import static it.unipi.dii.utility.DateTimes.stringToDate;
+
+import static it.unipi.dii.utility.DateTimes.*;
 import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 import static it.unipi.dii.utility.ObjectToDocument.*;
@@ -73,14 +73,19 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
     @Override
     public Integer getLastID() {
-        MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
-        AggregateIterable<Document> result = match_coll.aggregate(List.of(
-                new Document("$group", new Document("_id", null).append("maxValue", new Document("$max", "$" + "matchID")))
-        ));
-        Document resultDoc = result.first();
-        if (resultDoc != null) {
-            return (Integer) resultDoc.get("maxValue");
-        } else {
+        List<Document> pipeline = Arrays.asList(new Document("$match",
+                        new Document("matchDate",
+                                new Document("$gt", getCurrentDate().minusMonths(3).toString()))),
+                new Document("$project",
+                        new Document("matchID", 1L)
+                                .append("_id", 0L)),
+                new Document("$sort",
+                        new Document("matchID", -1L)),
+                new Document("$limit", 1L));
+        AggregateIterable<Document> result = this.mongoDB.getCollection("matches").aggregate(pipeline);
+        try {
+            return Objects.requireNonNull(result.first()).getInteger("matchID");
+        }catch(NullPointerException e){
             return -1;
         }
     }
@@ -140,13 +145,13 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
             for (int i = 0; i < size; i++) {
                 if (Objects.equals(ml.get(i).getStatus(), "TIMED")) {
                     // The match must be inserted in MongoDB.
-                    if (!matchAlreadyPresent(ml.get(i))) {
+                    if (matchAlreadyPresent(ml.get(i))) {
                         ml.get(i).randomizeMultipliers();
                         addMatch(ml.get(i));
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
                     // The match must be canceled from MongoDB.
-                    if (!matchAlreadyPresent(ml.get(i))) {
+                    if (matchAlreadyPresent(ml.get(i))) {
                         sDAO.removeAllBetsOfMatch(ml.get(i).getMatchID()); // And we must remove all bets of this match.
                         removeMatch(getAndCondition(ml.get(i) , "date"));
                     }
@@ -250,7 +255,21 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
      */
 
     private boolean matchAlreadyPresent(Match match) {
-        return !getMatches(getAndCondition(match , "date"), new Document("_id", 0)).isEmpty();
+        List<Document> pipeline = Arrays.asList(new Document("$match",
+                        new Document("$and", Arrays.asList(new Document("matchDate", match.getMatchDate()),
+                                new Document("team_home", match.getTeam_home()),
+                                new Document("team_away", match.getTeam_away())))),
+                new Document("$project",
+                        new Document("matchID", 1L)
+                                .append("_id", 0L)));
+
+        AggregateIterable<Document> docs = this.mongoDB.getCollection("matches").aggregate(pipeline);
+        try {
+            Objects.requireNonNull(docs.first()).getInteger("matchID");
+            return false;
+        }catch(NullPointerException e){
+            return true;
+        }
     }
 
     /**
