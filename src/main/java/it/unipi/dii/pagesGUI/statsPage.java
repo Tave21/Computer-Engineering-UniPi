@@ -37,15 +37,15 @@ public class statsPage {
         st.openConnection();
 
         List<String> financialArray = new ArrayList<>();
-        financialArray.add(String.valueOf(st.showFinancialResults(getCurrentDate().minusYears(1).toString(), getCurrentDateString())));
+        financialArray.add(String.valueOf(st.showFinancialResults(getCurrentDate().minusYears(2).toString(), getCurrentDateString())));
 
         List<String> appreciatedTeams = st.showMostAppreciatedTeamsPolls();
 
         List<String> appreciatedPlayers = st.showMostAppreciatedPlayersPolls();
 
-        AggregateIterable<Document> av = st.averageNumberOfMatchesForEachChampionshipForEachSlip(getCurrentDate().minusYears(4).toString(), getCurrentDateString());
+        AggregateIterable<Document> av = st.averageNumberOfMatchesForEachChampionshipForEachSlip(getCurrentDate().minusYears(1).toString(), getCurrentDateString());
 
-        List<String> topTeams = st.showUsersFavouriteTeams(getCurrentDate().minusYears(4).toString(), getCurrentDateString(), 10);
+        List<String> topTeams = st.showUsersFavouriteTeams(getCurrentDate().minusYears(1).toString(), getCurrentDateString(), 10);
 
         List<String> averageMatches = new ArrayList<>();
 
