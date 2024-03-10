@@ -97,7 +97,7 @@ public class Poll {
     /**
      * This function update the numberOfVotes field to the current situation.
      */
-    public void UpdateNumberOfVotes(){ //numero di voti totali aggiornato
+    public void UpdateNumberOfVotes(){
         this.numberOfVotes = 0;
         for(int i = 0; i < this.options.size(); i++){
             this.numberOfVotes = this.numberOfVotes + this.options.get(i).optionVotes;
