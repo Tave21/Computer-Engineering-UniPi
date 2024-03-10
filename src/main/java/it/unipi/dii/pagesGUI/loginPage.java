@@ -5,6 +5,8 @@ import it.unipi.dii.HomeAdmin;
 import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.AdminMongoDBDAO;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
+import it.unipi.dii.userCookie.CustomerInfo;
+import it.unipi.dii.userCookie.customerVotedPollVoice;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.geometry.Pos;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
 import static it.unipi.dii.userCookie.usernameCookie.getVotedList;
 
 public class loginPage {
@@ -154,6 +157,13 @@ public class loginPage {
                 //login success
                 Session.setUsername(username);
                 Session.setCustomerInfo(getVotedList(username));
+
+                if(getVotedList(username) == null){
+                    //create the user cookie if it doesn't exist
+                    CustomerInfo customer = new CustomerInfo(username, new ArrayList<>());
+                    List<customerVotedPollVoice> voices = new ArrayList<>();
+                    createUserCookie(customer);
+                }
 
                 errorLabel.setText("");
                 accessCustomer = 1;
