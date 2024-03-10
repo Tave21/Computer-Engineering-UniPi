@@ -13,7 +13,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 
@@ -25,7 +25,7 @@ public class BeansBetGUI extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
+    public void start(Stage primaryStage) {
 
         deactivateMongoDBNotifications();
         primaryStage.setTitle("BeansBet");
@@ -36,7 +36,7 @@ public class BeansBetGUI extends Application {
         HBox header = new HBox();
         header = newHeader.createHeader(header, 0);
         root.setTop(header);
-        root.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
 
         root.setCenter(createHomeContent());
         Scene scene = new Scene(root, 800, 600);
@@ -60,7 +60,7 @@ public class BeansBetGUI extends Application {
         titleLabel.getStyleClass().add("welcome-title");
 
         //creation of the image and its ImageView
-        Image image = new Image(getClass().getResourceAsStream("/image/footballers.png"));
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/image/footballers.png")));
         ImageView imageView = new ImageView(image);
 
         //set the size of the image

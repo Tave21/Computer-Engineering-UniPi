@@ -1,8 +1,6 @@
 package it.unipi.dii;
 
 import it.unipi.dii.dao.redis.PollRedisDAO;
-import it.unipi.dii.dao.mongo.MatchMongoDBDAO;
-import it.unipi.dii.model.Match;
 import it.unipi.dii.model.Poll;
 import it.unipi.dii.model.pollOption;
 import javafx.geometry.Insets;
@@ -13,7 +11,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -24,64 +21,22 @@ import java.util.regex.Pattern;
 import static it.unipi.dii.utility.DateTimes.checkTimestampFormat;
 
 public class addElement {
-    private List<Label> additionalLabels = new ArrayList<>();
+    private List<Label> additionalLabels;
     public StackPane getContent(){
-        /*//TEST FOR LIVE MATCH CONSISTENCY
-        List<Match> ml = new ArrayList<>();
-        MatchMongoDBDAO c = new MatchMongoDBDAO();
-        c.openConnection();
-        Match match = new Match();
-        match.setMatchID(10165); //change matchID
-        match.setTeam_home("Fulham FC"); //change team names and data for testing in another match
-        match.setTeam_away("Tottenham Hotspur FC");
-        match.setAway_goals(0);
-        match.setHome_goals(0);
-        match.setMatchDate("2024-03-16T17:30:00Z");
-        match.setCompetition_id("GB1");
-        match.setStatus("IN_PLAY");
-        match.setMultiplier(0, "1", 1.2);
-        match.setMultiplier(1, "1", 1.2);
-        match.setMultiplier(2, "1", 1.2);
-        match.setMultiplier(3, "1", 1.2);
-        match.setMultiplier(4, "1", 1.2);
-        match.setMultiplier(5, "1", 1.2);
-        match.setMultiplier(6, "1", 1.2);
-        match.setMultiplier(7, "1", 1.2);
-        match.setMultiplier(8, "1", 1.2);
-        match.setMultiplier(9, "1", 1.2);
-        match.setMultiplier(10, "1", 1.2);
-        match.setMultiplier(11, "1", 1.2);
-        match.setMultiplier(12, "1", 1.2);
-        match.setMultiplier(13, "1", 1.2);
-        match.setMultiplier(14, "1", 1.2);
-        match.setMultiplier(15, "1", 1.2);
-        match.setMultiplier(16, "1", 1.2);
-        match.setMultiplier(17, "1", 1.2);
-        match.setMultiplier(18, "1", 1.2);
-        match.setMultiplier(19, "1", 1.2);
-        match.setMultiplier(20, "1", 1.2);
-        match.setMultiplier(21, "1", 1.2);
-        match.setMultiplier(22, "1", 1.2);
-        ml.add(match);
-        try {
-            c.updateMatches(ml);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
+        this.additionalLabels = new ArrayList<>();
 
-        //main content of the addElemt page
+        // Main content of the addElement page.
         StackPane stackPane = new StackPane();
 
-        //white space before the title
+        // Add the white space before the title.
         Region topSpacer = new Region();
         topSpacer.setPrefHeight(20);
 
-        //new white space
+        // New white space.
         Region bottomSpacer = new Region();
         bottomSpacer.setPrefHeight(50);
 
-        //add title
+        // Add the title.
         Label titleLabel = new Label("Add New Elements");
         titleLabel.getStyleClass().add("live-title");
 
@@ -98,34 +53,33 @@ public class addElement {
 
         HBox.setHgrow(survey, Priority.ALWAYS);
 
-        //add everything to the content
+        // Add everything to the page content.
         VBox liveContent = new VBox();
         liveContent.setMaxWidth(700);
         liveContent.setAlignment(Pos.CENTER);
         liveContent.setSpacing(20);
         liveContent.getChildren().addAll(topSpacer, titleLabel, matchesContainer, bottomSpacer);
 
-        //add content to the StackPane
+        // Add content to the StackPane.
         stackPane.getChildren().addAll(liveContent);
-        //add StackPane to the ScrollPane
+        // Add StackPane to the ScrollPane.
         ScrollPane scrollPane = new ScrollPane(stackPane);
-        scrollPane.setFitToWidth(true); //fit the ScrollPane to the width
+        scrollPane.setFitToWidth(true); // Fit the ScrollPane to the width.
         scrollPane.getStyleClass().add("matches_scroll");
 
-        //center alignment for the ScrollPane
+        // Center alignment for the ScrollPane.
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
         return new StackPane(scrollPane);
     }
     protected VBox createNewElement() {
-
         VBox form = new VBox();
         form.getStyleClass().addAll("form", "form-container");
-        //add center alignment and inside spacing
+        // Add center alignment and inside spacing.
         form.setAlignment(Pos.CENTER);
         form.setSpacing(5);
 
-        //add match
+        // Add a poll object to the page.
         Region titleSpacer = new Region();
         titleSpacer.setPrefHeight(20);
 
@@ -141,7 +95,7 @@ public class addElement {
         HBox questionBox1 = new HBox();
 
         Region spacingRegion = new Region();
-        HBox.setHgrow(spacingRegion, Priority.ALWAYS);  //space to insert the second label on the right
+        HBox.setHgrow(spacingRegion, Priority.ALWAYS);  // Space to insert the second label on the right
         HBox.setMargin(spacingRegion, new Insets(0, 0, 0, 55));
 
         questionBox1.getChildren().addAll(errorQuestionLabel1, spacingRegion, errorQuestionLabel2);
@@ -177,7 +131,7 @@ public class addElement {
         HBox qBox = new HBox();
 
         Region Typeregion1 = new Region();
-        HBox.setHgrow(Typeregion1, Priority.ALWAYS);  // seconda label a destra
+        HBox.setHgrow(Typeregion1, Priority.ALWAYS);  // The second label to the right.
         HBox.setMargin(Typeregion1, new Insets(0, 0, 0, 55));
 
         qBox.getChildren().addAll(type, Typeregion1, TypeField);
@@ -205,7 +159,6 @@ public class addElement {
         HBox.setMargin(DateRegion1, new Insets(0, 0, 0, 55));
 
         qBox1.getChildren().addAll(Date, DateRegion1, DateField);
-
 
         Label errorOption1Label1 = new Label("");
         Label errorOption1Label2 = new Label("");
@@ -323,7 +276,7 @@ public class addElement {
     }
     private void handleSurvey(String question,String type, String date, String option1, String option2, String option3 , String option4 , String option5){
         int countErrors=0;
-        //check only in the firt two options
+        // Check only in the first two options.
         if (question.isEmpty() || option1.isEmpty() || option2.isEmpty() || type.isEmpty() || date.isEmpty()) {
             additionalLabels.get(5).setText("Please, fill all the mandatory fields");
             countErrors++;
@@ -379,9 +332,9 @@ public class addElement {
             countErrors++;
         }
 
-        //if all mandatory the fields are filled and correct, we add the element
+        // If all mandatory the fields are filled and correct, we add the element.
         if(countErrors == 0){
-            //add element
+            // Add the element.
             List<String> options = new ArrayList<>();
 
             options.add(option1);
@@ -397,9 +350,9 @@ public class addElement {
                 options.add(option5);
             }
             List<pollOption> pollOptions = new ArrayList<>();
-            for(int i = 0; i < options.size(); i++){
+            for (String string : options) {
                 pollOption option = new pollOption();
-                option.setOptionCaption(options.get(i));
+                option.setOptionCaption(string);
                 option.setOptionVotes(0);
                 pollOptions.add(option);
             }
@@ -412,9 +365,8 @@ public class addElement {
             poll.setActivationDate(date);
 
             PollRedisDAO pollRedisDAO = new PollRedisDAO();
-            List<Poll> list = new ArrayList<>();
-            list = pollRedisDAO.getAllPollFromRedis();
-            int i = 1; //prendo il primo indice disponibile
+            List<Poll> list =  pollRedisDAO.getAllPollFromRedis();
+            int i = 1; // Get the first available index.
             for (Poll s : list) {
                 if(i != s.getPollID()){
                     break;
@@ -422,7 +374,6 @@ public class addElement {
                 i++;
             }
             poll.setPollID(i);
-
             pollRedisDAO.addPollToRedis(poll);
         }
     }

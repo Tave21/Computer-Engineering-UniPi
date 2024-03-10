@@ -4,7 +4,7 @@ import it.unipi.dii.pagesGUI.navBar;
 import javafx.scene.layout.HBox;
 
 public class HomeAdmin {
-    private BeansBetGUI beansBetGUI;
+    private final BeansBetGUI beansBetGUI;
     public HomeAdmin(BeansBetGUI beansBetGUI) {
         this.beansBetGUI = beansBetGUI;
     }

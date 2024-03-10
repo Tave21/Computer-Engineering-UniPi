@@ -14,24 +14,33 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.util.Objects;
+
 
 public class navBar {
 
-    private BeansBetGUI beansBetGUI;
+    private final BeansBetGUI beansBetGUI;
 
     public navBar(BeansBetGUI beansBetGUI) {
         this.beansBetGUI = beansBetGUI;
     }
 
+    /**
+     * @param header The header.
+     * @param type   indicates type of header.
+     *               <ul>
+     *               <li> 0 -> unregistered header.</li>
+     *               <li> 1 -> login/register header.</li>
+     *               <li> 2 -> registered header.</li>
+     *               <li> 3 -> admin header.</li>
+     *               </ul>
+     * @return An HBox object.
+     */
     public HBox createHeader(HBox header, int type) {
-        //type indicates type of header
-        //0 = unregistered header
-        //1 = login/register header
-        //2 = registered header
-        //3 = admin header
+
         header.setPadding(new Insets(10));
         header.getStyleClass().add("header");
-        Image logoImage = new Image(getClass().getResourceAsStream("/image/logo_BeansBet.png"));
+        Image logoImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/image/logo_BeansBet.png")));
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitWidth(110);
         logoImageView.setPreserveRatio(true);
@@ -40,7 +49,7 @@ public class navBar {
         //set the Insets to achieve the desired space between elements
         HBox.setMargin(logoImageView, new Insets(0, 20, 0, 0));
 
-        if(type == 0 || type == 2 || type == 3) {
+        if (type == 0 || type == 2 || type == 3) {
             // Login and Register buttons
             HBox rightButtons = createRightButtons(type);
             HBox.setMargin(menu, new Insets(0, 20, 0, 0));
@@ -49,7 +58,7 @@ public class navBar {
             HBox.setHgrow(spacer, Priority.ALWAYS);
             header.getChildren().addAll(logoImageView, menu, spacer, rightButtons);
 
-        }else if (type == 1) {
+        } else if (type == 1) {
 
             header.getChildren().addAll(logoImageView, menu);
         }
@@ -57,29 +66,30 @@ public class navBar {
 
         return header;
     }
+
     private HBox createMenu(int type) {
         //25 is the distance between all the labels inside the HBox
         HBox menu = new HBox(25);
         menu.setAlignment(Pos.CENTER);
         Label homeLabel = createMenuLabel("", "/image/home1.png", type);
-       if(type == 0){
-           Label liveLabel = createMenuLabel("Live", "", type);
-           Label matchesLabel = createMenuLabel("Matches", "", type);
-           Label acitivePollsLabel = createMenuLabel("Active Polls", "", type);
-           Label terminatedPollsLabel = createMenuLabel("Terminated Polls", "", type);
-           menu.getChildren().addAll(homeLabel, liveLabel, matchesLabel, acitivePollsLabel, terminatedPollsLabel);
-       }else if(type == 1){
-           Label homeLabel2 = createMenuLabel("", "/image/home.png", type);
-           menu.getChildren().addAll(homeLabel2);
-       }else if(type == 2) {
-           Label liveLabel = createMenuLabel("Live", "", type);
-           Label matchesLabel = createMenuLabel("Matches", "", type);
-           Label acitivePollsLabel = createMenuLabel("Active Polls", "", type);
-           Label terminatedPollsLabel = createMenuLabel("Terminated Polls", "", type);
-           Label slipsCartLabel = createMenuLabel("Slips' Cart", "", type);
-           Label ConfirmedSlipsLabel = createMenuLabel("Confirmed Slips", "", type);
-           menu.getChildren().addAll(homeLabel, liveLabel, matchesLabel, acitivePollsLabel, terminatedPollsLabel, slipsCartLabel, ConfirmedSlipsLabel);
-        }else if(type == 3){
+        if (type == 0) {
+            Label liveLabel = createMenuLabel("Live", "", type);
+            Label matchesLabel = createMenuLabel("Matches", "", type);
+            Label acitivePollsLabel = createMenuLabel("Active Polls", "", type);
+            Label terminatedPollsLabel = createMenuLabel("Terminated Polls", "", type);
+            menu.getChildren().addAll(homeLabel, liveLabel, matchesLabel, acitivePollsLabel, terminatedPollsLabel);
+        } else if (type == 1) {
+            Label homeLabel2 = createMenuLabel("", "/image/home.png", type);
+            menu.getChildren().addAll(homeLabel2);
+        } else if (type == 2) {
+            Label liveLabel = createMenuLabel("Live", "", type);
+            Label matchesLabel = createMenuLabel("Matches", "", type);
+            Label acitivePollsLabel = createMenuLabel("Active Polls", "", type);
+            Label terminatedPollsLabel = createMenuLabel("Terminated Polls", "", type);
+            Label slipsCartLabel = createMenuLabel("Slips' Cart", "", type);
+            Label ConfirmedSlipsLabel = createMenuLabel("Confirmed Slips", "", type);
+            menu.getChildren().addAll(homeLabel, liveLabel, matchesLabel, acitivePollsLabel, terminatedPollsLabel, slipsCartLabel, ConfirmedSlipsLabel);
+        } else if (type == 3) {
             Label addLabel = createMenuLabel("Add Element", "", type);
             Label statsLabel = createMenuLabel("Stats", "", type);
             Label customersLabel = createMenuLabel("Customers", "", type);
@@ -88,6 +98,7 @@ public class navBar {
 
         return menu;
     }
+
     private Label createMenuLabel(String text, String imagePath, int type) {
         Label label = new Label(text);
         label.getStyleClass().add("menu-label");
@@ -106,42 +117,44 @@ public class navBar {
 
         return label;
     }
-    private void assignImageToLabel(Label label, String imagePath){
 
-        Image icon = new Image(getClass().getResourceAsStream(imagePath));
+    private void assignImageToLabel(Label label, String imagePath) {
+
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView iconImageView = new ImageView(icon);
         iconImageView.setFitWidth(20);
         iconImageView.setFitHeight(20);
         label.setGraphic(iconImageView);
     }
+
     //handle the mouse on the home icon when mouse is over the icon
     //handle both the cases, when the mouse is IN and when is OUT the icon
-    private void handleMouse(Label selectedLabel, boolean in_out){
+    private void handleMouse(Label selectedLabel, boolean in_out) {
         boolean isFirstLabel = true;
         HBox parentHBox = (HBox) selectedLabel.getParent();
         int numberOfLabels = parentHBox.getChildren().size();
 
-        if(in_out) {
+        if (in_out) {
             assignImageToLabel(selectedLabel, "/image/home1.png");
         }
 
         for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()) {
-            if (node instanceof Label) {
-                Label currentLabel = (Label) node;  //the current label in the for loop
+            if (node instanceof Label currentLabel) {
+                //the current label in the for loop
                 //we recognize the first label (home)
                 if (isFirstLabel) {
                     //if the selected label by the user is not the first (home), the home logo must be white
-                    if(currentLabel.equals(selectedLabel)) {
+                    if (currentLabel.equals(selectedLabel)) {
                         //if there is only one label, we have to switch only the home label
                         //without these, the checkColor function won't recognize if the home
                         //label is green or white, it checks the text colors of the other labels
-                        if(checkColor(selectedLabel) || numberOfLabels == 1) {
+                        if (checkColor(selectedLabel) || numberOfLabels == 1) {
                             //if in_out is true, handle the mouse over event
                             //otherwise handle the mouse out event
 
-                           if(in_out) {
+                            if (in_out) {
                                 assignImageToLabel(currentLabel, "/image/home1.png");
-                            }else{
+                            } else {
                                 assignImageToLabel(currentLabel, "/image/home.png");
                             }
                         }
@@ -151,32 +164,30 @@ public class navBar {
             }
         }
     }
+
     //check the colors of all the labels in the menu, if one is green, return true,
     //if returns true, the icon of the home is white and must become green,
     //otherwise the icon is green and must be green, in the cae of mouse IN.
     //In the case of mouse OUT, if the icon of the home is white, must return white,
     //if the icon is green, must be green.
-    private boolean checkColor(Label selectedLabel){
+    private boolean checkColor(Label selectedLabel) {
         boolean isFirstLabel = true;
-        boolean isGreen =false;
+        boolean isGreen = false;
         Color textColor;
         double red;
         double green;
         double blue;
 
-        for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()){
-            if (node instanceof Label) {
-                Label currentLabel = (Label) node;
+        for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()) {
+            if (node instanceof Label currentLabel) {
                 //we need this because, otherwise the first element is counted as green and when the
                 //mouse goes out, the icon will become white instead of remaining green
-                if(!isFirstLabel) {
+                if (!isFirstLabel) {
                     textColor = (Color) currentLabel.getTextFill();
                     red = textColor.getRed();
                     green = textColor.getGreen();
                     blue = textColor.getBlue();
-                    if (red == 1.0 && green == 1.0 && blue == 1.0) {
-                        //color white
-                    } else {
+                    if (!(red == 1.0 && green == 1.0 && blue == 1.0)) {
                         isGreen = true;
                         break;
                     }
@@ -186,14 +197,15 @@ public class navBar {
         }
         return isGreen;
     }
+
     //handle the navigation between all the labels in the menu
     private void handleNavigation(Label selectedLabel, String section, int type) {
 
         boolean isFirstLabel = true;
 
         for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()) {
-            if (node instanceof Label) {
-                Label currentLabel = (Label) node;  //the current label in the for loop
+            if (node instanceof Label currentLabel) {
+                //the current label in the for loop
                 //we recognize the first label (home)
                 if (isFirstLabel) {
                     //if the selected label by the user is not the first (home), the home logo must be white
@@ -201,7 +213,6 @@ public class navBar {
                         assignImageToLabel(currentLabel, "/image/home.png");
                     } else {
                         //if the selected label by the user is the first (home), the home logo must be green
-                        //System.out.println("entra?");
                         assignImageToLabel(currentLabel, "/image/home1.png");
                     }
                     isFirstLabel = false;   //we are not in the first lable anymore
@@ -212,7 +223,7 @@ public class navBar {
             if (node instanceof Label) {
                 //necessary, otherwise, the label is still green
                 ((Label) node).getStyleClass().remove("selected-label");
-                ((Label) node).getStyleClass().add("menu-label");
+                node.getStyleClass().add("menu-label");
             }
         }
         //we add the class selected-label,to the selected one by the user
@@ -220,8 +231,9 @@ public class navBar {
 
         navigate(section, type);
     }
-    private void navigate(String section, int type){
-        if(type == 0){
+
+    private void navigate(String section, int type) {
+        if (type == 0) {
             switch (section) {
                 case "":
                     VBox homeContent = beansBetGUI.createHomeContent();
@@ -244,7 +256,7 @@ public class navBar {
                     beansBetGUI.getRoot().setCenter(terminatedPollsPage.getContent(false, false));
                     break;
             }
-        }else if(type == 1){
+        } else if (type == 1) {
 
             HBox header = new HBox();
             HBox originalHeader = createHeader(header, 0);
@@ -253,7 +265,7 @@ public class navBar {
             //set the navigation bar and content in the BorderPane of BeansBetGUI
             beansBetGUI.getRoot().setTop(originalHeader);
             beansBetGUI.getRoot().setCenter(homeContent);
-        }else if(type == 2){
+        } else if (type == 2) {
             switch (section) {
                 case "":
                     VBox homeContent = beansBetGUI.createHomeContent();
@@ -284,7 +296,7 @@ public class navBar {
                     beansBetGUI.getRoot().setCenter(confirmedSlipsPage.getContent());
                     break;
             }
-        }else if(type == 3){
+        } else if (type == 3) {
             switch (section) {
                 case "":
                     VBox homeContent = beansBetGUI.createHomeContent();
@@ -305,32 +317,35 @@ public class navBar {
             }
         }
     }
+
     private HBox createRightButtons(int type) {
         HBox rightButtons = new HBox(10);
         rightButtons.setAlignment(Pos.CENTER);
 
-       if(type == 2 || type == 3) {
-           Button logoutButton = createButton("LOG OUT");
-           logoutButton.setOnMouseClicked(event -> handleLogout());
+        if (type == 2 || type == 3) {
+            Button logoutButton = createButton("LOG OUT");
+            logoutButton.setOnMouseClicked(event -> handleLogout());
 
-           rightButtons.getChildren().add(logoutButton);
-       }else if(type == 0) {
-           //box globale di entrambi i bottoni
-           Button loginButton = createButton("LOG IN");
-           loginButton.setOnMouseClicked(event -> handleLogin());
-           Button registerButton = createButton("REGISTER");
-           registerButton.setOnMouseClicked(event -> handleRegister());
+            rightButtons.getChildren().add(logoutButton);
+        } else if (type == 0) {
+            //box globale di entrambi i bottoni
+            Button loginButton = createButton("LOG IN");
+            loginButton.setOnMouseClicked(event -> handleLogin());
+            Button registerButton = createButton("REGISTER");
+            registerButton.setOnMouseClicked(event -> handleRegister());
 
-           rightButtons.getChildren().addAll(loginButton, registerButton);
-       }
+            rightButtons.getChildren().addAll(loginButton, registerButton);
+        }
 
         return rightButtons;
     }
+
     private Button createButton(String text) {
         Button button = new Button(text);
         button.getStyleClass().add("right-buttons");
         return button;
     }
+
     private void handleLogout() {
 
         HBox header = new HBox();
@@ -340,6 +355,7 @@ public class navBar {
         beansBetGUI.getRoot().setTop(originalHeader);
         beansBetGUI.getRoot().setCenter(homeContent);
     }
+
     private void handleLogin() {
 
         loginPage loginPage = new loginPage(beansBetGUI);
@@ -352,6 +368,7 @@ public class navBar {
 
         beansBetGUI.getRoot().setCenter(loginContent);
     }
+
     private void handleRegister() {
 
         registerPage registerPage = new registerPage(beansBetGUI);

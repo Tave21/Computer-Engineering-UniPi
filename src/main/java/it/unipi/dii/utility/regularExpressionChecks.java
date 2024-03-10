@@ -1,5 +1,4 @@
 package it.unipi.dii.utility;
-
 import java.util.regex.Pattern;
 
 public class regularExpressionChecks {
