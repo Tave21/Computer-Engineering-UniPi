@@ -66,7 +66,7 @@ public class confirmedSlipsPage {
                 new Document("$project",
                         new Document("_id", 0L)),
                 new Document("$sort",
-                        new Document("slipID", -1L)));
+                        new Document("confirmationDate", -1L)));
 
         SlipMongoDBDAO slipMongoDBDAO = new SlipMongoDBDAO();
         slipMongoDBDAO.openConnection();
@@ -74,16 +74,11 @@ public class confirmedSlipsPage {
         int p = 0;
         List<Slip> slips = new ArrayList<>();
         for (Document document : docs) {
-            int win= document.getInteger("win");
-           //System.out.println("win = "+ win);
             slips.add(convertJsonToObject(convertDocumentToJson(document), Slip.class));
-           //System.out.println("win dopo = "+ win);
-            //slips.get(p).setWin(win);
-            //System.out.println("win dopo ancora = "+ slips.get(p).getWin());
+
             //set the win value for each bet inside a slip
             List<Document> betsList = document.getList("betsList", Document.class);
 
-            // Itera sulla lista "betsList" e leggi l'attributo "win" da ciascun documento
             int x = 0;
             for (Document betDocument : betsList) {
                 int winValue = betDocument.getInteger("win", -1); // Default a -1 se non è presente
