@@ -65,7 +65,11 @@ public class RandomNumber {
 
         return Double.parseDouble(res.toString());
     }
-
+    /**
+     * @param num The number to truncate.
+     * @param how_much How many numbers after the comma you need to cut.
+     * @return The truncate number.
+     */
     public static double truncateNumber(Double num, int how_much) {
         if(how_much == 0){
             return floor(num);
