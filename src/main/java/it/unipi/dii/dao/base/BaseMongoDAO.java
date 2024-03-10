@@ -67,12 +67,28 @@ public class BaseMongoDAO {
         if (this.client == null) {
             try {
                 ConnectionString uriString = new ConnectionString(DB_URL);
-                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primary()).retryWrites(true).writeConcern(WriteConcern.W1).build(); //da rimettere 3
+                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primary()).retryWrites(true).writeConcern(WriteConcern.W1).build(); //W3 for replicas
                 this.client = MongoClients.create(mcs);
                 this.mongoDB = this.client.getDatabase(MONGO_DATABASE_NAME);
             } catch (Exception e) {
                 System.out.println("problems with connection to mongodb");
             }
+        }
+    }
+    public void openStrictConnectiona(){
+        if (client == null) {
+            // Client not connected.
+            try {
+                String url= "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_PRIMARY_HOST_PORT + "," + MONGO_SECONDARY_HOST + ":" + MONGO_SECONDARY_HOST_PORT + "," + MONGO_THIRD_HOST + ":" + MONGO_THIRD_HOST_PORT;
+                ConnectionString uriString = new ConnectionString(url);
+                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primary()).retryWrites(true).writeConcern(WriteConcern.W1).build(); //W3 for replicas
+                this.client = MongoClients.create(mcs);
+                this.mongoDB = this.client.getDatabase(MONGO_DATABASE_NAME);
+            } catch (Exception e) {
+                System.out.println("Problems occurs with the connection to MongoDB!");
+                e.printStackTrace();
+            }
+
         }
     }
 
