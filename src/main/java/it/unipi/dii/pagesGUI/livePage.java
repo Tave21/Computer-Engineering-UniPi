@@ -117,7 +117,7 @@ public class livePage {
             Match m = convertJsonToObject(convertDocumentToJson(document), Match.class);
 
             assert m != null;
-            if(m.getStatus().equals("TIMED") && differenceDays(m.getMatchDate(), getCurrentDateString()) <= 0) {
+            if((m.getStatus().equals("IN_PLAY") || m.getStatus().equals("PAUSED")) && differenceDays(m.getMatchDate(), getCurrentDateString()) <= 0) {
                 if (Objects.equals(m.getCompetition_id(), "IT1")) {
                     gridPane.add(createColumn(registered, m.getMatchDate(), "Serie A", m.getTeam_home(), m.getTeam_away(), m.getHome_goals().toString(), m.getAway_goals().toString(), m.getStatus(), m.getMultipliers()), 1, it);
                     it++;
