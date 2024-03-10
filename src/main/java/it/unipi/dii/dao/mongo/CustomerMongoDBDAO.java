@@ -91,12 +91,10 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
 
     @Override
     public boolean customerInfoAlreadyPresent(Customer user) {
-        Document projection = new Document("_id", 0);
-        List<Document> orConditions = new ArrayList<>();
-        Document condition = new Document("username", new Document("$eq", user.getUsername()));
-        orConditions.add(condition);
-        Document query = new Document("$or", orConditions);
-        List<Customer> lc = getCustomers(query, projection);
+        List<Customer> lc = getCustomers(
+                new Document("username", user.getUsername()),
+                new Document("_id", 0)
+        );
         return lc.isEmpty();
     }
 
