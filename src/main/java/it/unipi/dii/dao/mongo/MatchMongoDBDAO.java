@@ -76,7 +76,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     public Integer getLastID() {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("matchDate",
-                                new Document("$gt", getCurrentDate().minusMonths(3).toString()))),
+                                new Document("$gt", getCurrentDate().minusMonths(24).toString()))),
                 new Document("$project",
                         new Document("matchID", 1L)
                                 .append("_id", 0L)),

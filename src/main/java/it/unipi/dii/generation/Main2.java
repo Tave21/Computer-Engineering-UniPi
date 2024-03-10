@@ -15,18 +15,20 @@ public class Main2 {
         ms.openConnection(); // Get new matches update.
 
         System.out.println("Before the matches update: " + ms.getLastID());
+        /*
         try {
             ms.updateMatches();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+         */
 
         final String thisInstant = getCurrentInstant().plusSeconds(500).toString();
 
         Match e = new Match();
         List<Match> ml = new ArrayList<>();
-
         int matchIdtemp = ms.getLastID();
+
         e.setMatchID(matchIdtemp);
         e.setStatus("TIMED");
         e.setTeam_home("Playing Team 1");
@@ -48,6 +50,7 @@ public class Main2 {
         e.setCompetition_id("GB1");
         ml.add(e);
 
+        e = new Match();
         e.setMatchID(matchIdtemp + 2);
         e.setStatus("TIMED");
         e.setTeam_home("Playing Team 5");

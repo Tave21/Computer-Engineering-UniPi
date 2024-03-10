@@ -66,7 +66,7 @@ public class livePage {
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);
-        box.setMargin(titleLabel, new Insets(20, 0, 20, 0));
+        VBox.setMargin(titleLabel, new Insets(20, 0, 20, 0));
         box.getChildren().addAll(topSpacer, titleLabel, scrollPane);
 
         return new StackPane(box);
@@ -88,10 +88,10 @@ public class livePage {
             gridPane.getColumnConstraints().add(column);
             gridPane.add(columnTitle, i, 0);
             //add margin to create space below the title, negative, otherwise title overlaps
-            gridPane.setMargin(columnTitle, new Insets(-5, 0, 0, 0));
+            GridPane.setMargin(columnTitle, new Insets(-5, 0, 0, 0));
 
-            gridPane.setValignment(columnTitle, VPos.TOP);
-            gridPane.setHalignment(columnTitle, HPos.CENTER); //set horizontal alignment to center
+            GridPane.setValignment(columnTitle, VPos.TOP);
+            GridPane.setHalignment(columnTitle, HPos.CENTER); //set horizontal alignment to center
         }
 
         MatchMongoDBDAO md = new MatchMongoDBDAO();
@@ -99,7 +99,7 @@ public class livePage {
 
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("status",
-                                new Document("$in", Arrays.asList("IN_PLAY", "PAUSED")))),
+                                new Document("$in", Arrays.asList("IN_PLAY" , "PAUSED")))),
                 new Document("$sort",
                         new Document("matchDate", -1L)),
                 new Document("$project",
@@ -339,10 +339,10 @@ public class livePage {
 
         button.setOnAction(event -> {
 
-            String[] values = label.split("   "); //mettere label al posto di val
+            String[] values = label.split("   ");
             String un = values[0];
             String du = values[1];
-            String concat = un + "_" + du + "_" + teams; //1X_2.1_Milan_Inter_2022-01-01
+            String concat = un + "_" + du + "_" + teams;
 
             dialog.close();
 
@@ -381,9 +381,8 @@ public class livePage {
         HBox.setMargin(spacingRegion, new Insets(0, 0, 0, 55));
         HBox row = new HBox(label1,  spacingRegion, label2);
 
-        //if it is the last row in the HBox, we insert a 5 below margin
+        // If it is the last row in the HBox, we insert a 5 below margin.
         if(lastRow) {
-            // Imposta margini
             HBox.setMargin(label1, new Insets(5, 5, 5, 5));
             HBox.setMargin(label2, new Insets(5, 5, 5, 5));
         }else{
