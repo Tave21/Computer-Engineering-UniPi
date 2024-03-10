@@ -46,8 +46,10 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
         return -1;
     }
 
-
-
+    /**
+     *
+     * @return The biggest value of slipID from MongoDB.
+     */
     private int getLastID() {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("confirmationDate",

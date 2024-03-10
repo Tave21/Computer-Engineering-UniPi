@@ -68,7 +68,8 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
-     * @return The biggest value of MatchID in the database.
+     *
+     * @return The biggest value of MatchID from MongoDB.
      */
 
     @Override

@@ -100,7 +100,7 @@ public class Poll {
     public void UpdateNumberOfVotes(){ //numero di voti totali aggiornato
         this.numberOfVotes = 0;
         for(int i = 0; i < this.options.size(); i++){
-            this.numberOfVotes += this.options.get(i).optionVotes;
+            this.numberOfVotes = this.numberOfVotes + this.options.get(i).optionVotes;
         }
     }
 

@@ -304,7 +304,7 @@ public class livePage {
             }
 
             VList.add(buttonsRow);
-            i += 5;
+            i = i + 5;
         }
 
         for (VBox vBox : VList) {

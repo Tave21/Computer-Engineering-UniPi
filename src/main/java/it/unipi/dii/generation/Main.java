@@ -56,14 +56,16 @@ public class Main {
     public static void main(String[] args) throws IOException {
         deactivateMongoDBNotifications();
 
-
         CustomerMongoDBDAO cl = new CustomerMongoDBDAO();
         cl.openConnection();
+
+        // Drop the collections.
         dropCollection(cl.mongoDB, "customers");
         dropCollection(cl.mongoDB, "slips");
         dropCollection(cl.mongoDB, "matches");
         dropCollection(cl.mongoDB, "polls");
 
+        // Create again the collection
         createCollection(cl.mongoDB, "customers");
         createCollection(cl.mongoDB, "slips");
         createCollection(cl.mongoDB, "matches");
@@ -73,7 +75,7 @@ public class Main {
 
         List<Customer> users = new ArrayList<>();
         List<Match> matches = new ArrayList<>();
-        System.out.println("Percorso corrente: " + System.getProperty("user.dir"));
+        System.out.println("Current Path: " + System.getProperty("user.dir"));
 
         System.out.println("Start the Customers generation.");
 
@@ -103,9 +105,7 @@ public class Main {
                     us.setName(name);
                     us.setSurname(surname);
                     us.setGender(gender);
-                    us.setCredit(generateSumOfMoney(2000));
-                    // Generate the credit of the user with an exponential distribution.
-
+                    us.setCredit(generateSumOfMoney(2000)); // Generate the credit of the user with an exponential distribution.
 
                     us.setEmail(name + "." + surname + "." + i + j + "@" + eMails[(int) generateRandomNaturalNumber(0, eMails.length - 1)]);
                     us.setCellNumber(generatePhoneNumber("+39")); // Generate the phone number.
@@ -142,15 +142,15 @@ public class Main {
             System.out.println("Customers generation ended. [ " + users.size() + " ]");
 
         } catch (IOException | ParseException e) {
-            System.out.println("Error in customers generation.");
+            System.out.println("Error in the customers generation.");
             return;
         }
 
         String csvFilePath = "src/main/java/it/unipi/dii/generation/Matches.csv";
-
         String jsonFilePath = "src/main/java/it/unipi/dii/generation/MatchesJSON.json";
+
         try {
-            System.out.println("Start the matchesPage generation.");
+            System.out.println("Start the Matches generation.");
             // Read CSV file.
             CSVReader csvReader = new CSVReader(new FileReader(csvFilePath));
             String[] headers = csvReader.readNext();
@@ -187,7 +187,8 @@ public class Main {
             jsonWriter.close();
 
         } catch (IOException | CsvValidationException e) {
-            //e.printStackTrace();
+            System.out.println("Error in the matches generation.");
+            return;
         }
 
         jsonParser = new JSONParser();
@@ -242,10 +243,11 @@ public class Main {
 
             writeToJsonFile(matches , "src/main/java/it/unipi/dii/generation/matches.json");
             deleteFile("src/main/java/it/unipi/dii/generation/MatchesJSON.json"); // Delete the MatchesJSON file.
-            System.out.println("matches generation ended. [ " + matches.size() + " ]");
+            System.out.println("Matches generation ended. [ " + matches.size() + " ]");
 
         } catch (IOException | ParseException e) {
-            //e.printStackTrace();
+            System.out.println("Error in the matches generation.");
+            return;
         }
 
         System.out.println("Start the Slips generation.");
@@ -286,7 +288,7 @@ public class Main {
                 choosen_match = (int) generateRandomNaturalNumber(0, matches.size() - 1);
                 rifDate = matches.get(choosen_match).getMatchDate();
                 while (differenceDays(subDate, rifDate) < 0) {
-                    choosen_match += (int) ((matches.size() - 1) * 0.1);
+                    choosen_match = choosen_match + (int) ((matches.size() - 1) * 0.1);
                     if (choosen_match >= matches.size()) {
                         how_many_bets = 0;
                         break;
@@ -433,7 +435,7 @@ public class Main {
 
         writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
 
-        System.out.println("Slips insertion ended. [ " + slips.size() + " ]");
+        System.out.println("Slips insertion ended.");
 
     }
 }

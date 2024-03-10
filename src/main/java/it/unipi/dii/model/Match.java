@@ -338,9 +338,6 @@ public class Match {
      *      <li>"Under5/5" - The match will end with a maximum of 5 goals.</li>
      *  </ul>
      */
-    /**
-     * creates all multipliers for the match randomly
-     */
     public void randomizeMultipliers() {
         double temp = 0;
         this.setMultiplier(0, "1", generateMultiplier(3));
@@ -357,31 +354,31 @@ public class Match {
         this.setMultiplier(10, "NG", generateMultiplier(2));
 
         temp = 0;
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(11, "Over0/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(12, "Over1/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(13, "Over2/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(14, "Over3/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(15, "Over4/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(16, "Over5/5", temp);
 
         temp = 0;
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(22, "Under5/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(21, "Under4/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(20, "Under3/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(19, "Under2/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(18, "Under1/5", temp);
-        temp += generateMultiplier(2);
+        temp = temp +  generateMultiplier(2);
         this.setMultiplier(17, "Under0/5", temp);
     }
 

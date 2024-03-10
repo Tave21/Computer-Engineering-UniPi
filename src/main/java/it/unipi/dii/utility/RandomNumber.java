@@ -3,6 +3,7 @@ package it.unipi.dii.utility;
 import java.util.Random;
 
 import static java.lang.Math.floor;
+import static java.lang.Math.pow;
 
 public class RandomNumber {
     /**
@@ -39,7 +40,7 @@ public class RandomNumber {
      * @return The truncate number.
      */
 
-    public static double truncateNumber(Double num, int how_much) {
+    public static double truncateNumber2(Double num, int how_much) {
         if(how_much <= 0){
             return Math.floor(num);
         }
@@ -63,6 +64,23 @@ public class RandomNumber {
         }
 
         return Double.parseDouble(res.toString());
+    }
+
+    public static double truncateNumber(Double num, int how_much) {
+        if(how_much == 0){
+            return floor(num);
+        }else if( how_much == 1){
+            return Math.floor(num * 10) / 10;
+        }else if(how_much == 2){
+            return Math.floor(num * 100) / 100;
+        }else if (how_much == 3){
+            return Math.floor(num * 1000) / 1000;
+        }else if(how_much > 3){
+            final int pow10 = (int) pow(10, how_much);
+            return Math.floor(num * pow10) / pow10;
+        } else{
+            return num;
+        }
     }
 
 

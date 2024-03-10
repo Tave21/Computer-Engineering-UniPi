@@ -56,7 +56,7 @@ public class pollOption {
      * @param howMuch How many vvote to add.
      */
     public void multipleVoteOption(int howMuch){
-        this.optionVotes += howMuch;
+        this.optionVotes = this.optionVotes + howMuch;
     }
     /**
      * Remove a vote of this option.
@@ -70,6 +70,6 @@ public class pollOption {
      * @param howMuch How many vote to subtract.
      */
     public void multipleUnvoteOption(int howMuch){
-        this.optionVotes -= howMuch;
+        this.optionVotes = this.optionVotes - howMuch;
     }
 }

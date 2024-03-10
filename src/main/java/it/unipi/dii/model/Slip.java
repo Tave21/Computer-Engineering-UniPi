@@ -174,7 +174,7 @@ public class Slip {
     public double computeTotalMultiplicator() {
         double total = 1;
         for (Bet bet : betsList) {
-            total *= bet.getChosenMultiplierValue();
+            total = total * bet.getChosenMultiplierValue();
         }
         return total;
     }

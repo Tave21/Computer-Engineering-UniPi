@@ -39,7 +39,8 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
     }
 
     /**
-     * @return The biggest value of pollID in the database.
+     *
+     * @return The biggest value of pollID from MongoDB.
      */
 
     private Integer getLastID() {

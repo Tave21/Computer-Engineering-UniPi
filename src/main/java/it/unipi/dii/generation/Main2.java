@@ -7,17 +7,14 @@ import java.util.List;
 import static it.unipi.dii.utility.DateTimes.*;
 import static it.unipi.dii.utility.MongoUtility.*;
 
-
 public class Main2 {
     public static void main(String[] args) {
         deactivateMongoDBNotifications();
-        // Get new matches update.
+
         MatchMongoDBDAO ms = new MatchMongoDBDAO();
-        ms.openConnection();
+        ms.openConnection(); // Get new matches update.
 
-        // DA ESEGUIRE DOPO AVER CARICATO IL FILE JSON
-
-        System.out.println("Before the update: " + ms.getLastID());
+        System.out.println("Before the matches update: " + ms.getLastID());
         try {
             ms.updateMatches();
         } catch (IOException ex) {
@@ -107,12 +104,9 @@ public class Main2 {
             throw new RuntimeException(ex);
         }
 
-        System.out.println("After the update: " + ms.getLastID());
+        System.out.println("After the matches update: " + ms.getLastID());
 
-        System.out.println("Generation of the DataSet ended");
-
-        System.out.println("Start the generation of the indexes");
-
+        System.out.println("Start the generation of the indexes.");
 
         // Slips indexes.
         createIndex(ms.mongoDB , "slips" , "confirmationDate" , -1);
@@ -139,7 +133,7 @@ public class Main2 {
         indexOrder = new Integer[]{1, 1, 1};
         createCompoundIndex(ms.mongoDB , "customers" , indexFields, indexOrder);
 
-        System.out.println("Generation of the indexes ended");
+        System.out.println("Generation of the indexes ended.");
 
         ms.closeConnection();
     }

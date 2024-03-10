@@ -45,9 +45,9 @@ public class randomGeneration {
     public static String generatePhoneNumber(String prefix) {
         // Generate a random 9-digit number.
         String phoneNumber = "";
-        phoneNumber += generateRandomNaturalNumber(1 , 9);
+        phoneNumber = phoneNumber + generateRandomNaturalNumber(1 , 9);
         for(int i = 1; i <= 9; i++) {
-            phoneNumber += generateRandomNaturalNumber(0 , 9);
+            phoneNumber = phoneNumber + generateRandomNaturalNumber(0 , 9);
         }
         return prefix + " " + phoneNumber;
     }

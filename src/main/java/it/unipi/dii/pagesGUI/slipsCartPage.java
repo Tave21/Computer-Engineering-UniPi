@@ -352,7 +352,7 @@ public class slipsCartPage {
         double val=1;
         for (int i = 0; i < multiplier.length; i++) {
             String[] mul = multiplier[i].split("\\s{3}");
-            val *= Double.parseDouble(mul[1]);
+            val = val * Double.parseDouble(mul[1]);
         }
 
         payButton.setUserData(val);

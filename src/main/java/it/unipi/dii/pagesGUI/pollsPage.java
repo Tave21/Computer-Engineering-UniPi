@@ -167,7 +167,7 @@ public class pollsPage {
 
             RadioButtons.add(radioOption1);
 
-            sum += pollOption.getOptionVotes();
+            sum = sum + pollOption.getOptionVotes();
 
         }
 
