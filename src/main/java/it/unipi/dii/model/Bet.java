@@ -57,7 +57,6 @@ public class Bet {
         return Objects.hash(matchID, teamHome, teamAway, chosenMultiplierName, chosenMultiplierValue, competition_id);
     }
 
-
     @JsonProperty("matchID")
     public Integer getMatchID() {
         return matchID;
@@ -128,7 +127,7 @@ public class Bet {
 
 
     /**
-     * create a string with all atributes of the bet
+     * create a string with all attributes of the bet
      * @return a string in a JSON format
      */
     @Override

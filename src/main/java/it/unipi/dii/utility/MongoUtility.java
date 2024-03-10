@@ -3,18 +3,15 @@ package it.unipi.dii.utility;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import com.mongodb.MongoWriteException;
 import com.mongodb.client.*;
 import com.mongodb.client.result.InsertManyResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.unipi.dii.utility.JsonToDocument.convertJsonToDocument;
 
 public class MongoUtility {
 

@@ -53,7 +53,7 @@ public class pollOption {
 
     /**
      * Add howMuch votes to the option.
-     * @param howMuch How many vvote to add.
+     * @param howMuch How many vote to add.
      */
     public void multipleVoteOption(int howMuch){
         this.optionVotes = this.optionVotes + howMuch;

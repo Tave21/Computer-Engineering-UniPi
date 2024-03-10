@@ -31,7 +31,7 @@ public class RandomNumber {
      */
     public static double generateExponentialDistributedNumber(double mean) {
         Random random = new Random();
-        return -mean * Math.log(1 - random.nextDouble()); // Applica la trasformazione inversa per la distribuzione esponenziale
+        return -mean * Math.log(1 - random.nextDouble());
     }
 
     /**

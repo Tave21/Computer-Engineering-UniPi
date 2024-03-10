@@ -383,7 +383,7 @@ public class Match {
     }
 
     /**
-     * create a string with all atributes of the Matches
+     * create a string with all attributes of the Matches
      * @return a string in a JSON format
      */
     @Override
@@ -401,11 +401,7 @@ public class Match {
                 ", numberOfMultipliers=" + numberOfMultipliers +
                 '}';
     }
-    /**
-     * Check if a match is equals to another one
-     * @param obj is a match
-     * @return true if the two matches are equal, otherwise false
-     */
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

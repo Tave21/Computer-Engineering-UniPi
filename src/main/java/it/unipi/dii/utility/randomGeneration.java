@@ -2,7 +2,6 @@ package it.unipi.dii.utility;
 import it.unipi.dii.model.pollOption;
 
 import static it.unipi.dii.utility.RandomNumber.*;
-import static java.lang.Math.floor;
 
 public class randomGeneration {
     /**
@@ -44,8 +43,7 @@ public class randomGeneration {
      */
     public static String generatePhoneNumber(String prefix) {
         // Generate a random 9-digit number.
-        String phoneNumber = "";
-        phoneNumber = phoneNumber + generateRandomNaturalNumber(1 , 9);
+        String phoneNumber = "" + generateRandomNaturalNumber(1 , 9);
         for(int i = 1; i <= 9; i++) {
             phoneNumber = phoneNumber + generateRandomNaturalNumber(0 , 9);
         }

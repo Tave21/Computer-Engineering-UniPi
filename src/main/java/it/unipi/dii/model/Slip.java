@@ -223,7 +223,6 @@ public class Slip {
         for (int i = 0; i < this.betsList.size(); i++) {
             dateToCheckCreation = Instant.parse(this.betsList.get(i).getMatchDate());
             if (!dateToCheckConfirmation.isBefore(dateToCheckCreation)) {
-
                 return false;
             }
         }

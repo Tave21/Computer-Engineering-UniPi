@@ -3,7 +3,6 @@ package it.unipi.dii.utility;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
 
 public class Security {
     /**
@@ -32,7 +31,7 @@ public class Security {
      * This function check if the input digest is equal to a input SHA256 digest.
      * @param inputString The password to test.
      * @param digest The digest to test.
-     * @return true if input string's digest is equal to the input digest.
+     * @return True if input string's digest is equal to the input digest.
      */
     public static boolean CheckHash(String inputString, String digest){
        // return Objects.equals(calculateSHA256(inputString), digest);
