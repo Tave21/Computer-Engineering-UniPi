@@ -28,9 +28,7 @@ public class pollsPage {
     private final List<pollProgressBar> progressList = new ArrayList<>();
 
     public StackPane getContent(boolean registered, boolean active) {
-
         StackPane stackPane = new StackPane();
-
         Region topSpacer = new Region();
         topSpacer.setPrefHeight(20);
 
@@ -51,6 +49,7 @@ public class pollsPage {
         pollsContent.setSpacing(20);
 
         if(!active) {
+            // MongoDB management.
             PollMongoDBDAO pMongo = new PollMongoDBDAO();
             pMongo.openConnection();
 
@@ -76,7 +75,7 @@ public class pollsPage {
             pMongo.closeConnection();
             pollsContent.getChildren().addAll(bottomSpacer);
         }else{
-            // Redis management
+            // Redis management.
             PollRedisDAO pRedis = new PollRedisDAO();
             List<Poll> polllist = pRedis.getAllPollFromRedis();
             // Check date of poll.
@@ -87,20 +86,26 @@ public class pollsPage {
                 Instant activationDate = Instant.parse(polllist.get(i).getActivationDate());
                 Instant activationDatePlusOneDay = activationDate.plus(Duration.ofDays(1));
 
-                if (now.isBefore(activationDate)){ //remove poll if it is not active yet
+                if (now.isBefore(activationDate)){
+                    // We have to remove the poll if it is not active.
                     polllist.remove(i);
-                    //we remove an element of the list, the next element will replace it, so
-                    //we have to decrement the current index, otherwise we'll skip an element
+                    // We remove an element of the list, the next element
+                    // will replace it, so we have to decrement the current index,
+                    // otherwise we'll skip an element.
                     i--;
                 }
-                if(activationDatePlusOneDay.isBefore(now)){ //remove poll if it is expired, one day after activation
+                if(activationDatePlusOneDay.isBefore(now)){
+                    // We have to remove poll if it is expired,
+                    // A poll is expired one day after its activation.
                     PollRedisDAO pRedis2 = new PollRedisDAO();
                     pRedis2.addPollToMongoDB(polllist.get(i)); // Send the poll to MongoDB.
                     // Remove the poll from redis if it is elapsed.
                     pRedis2.removePollfromRedis(id);
                     polllist.remove(i);
-                    // We remove an element of the list, the next element will replace it, so
-                    // we have to decrement the current index, otherwise we'll skip an element.
+                    // We remove an element of the list,
+                    // the next element will replace it, so
+                    // we have to decrement the current index,
+                    // otherwise we'll skip an element.
                     i--;
                 }
             }
@@ -109,7 +114,6 @@ public class pollsPage {
             for (Poll p : polllist) {
                 String votedCaption;
                 if(registered){
-                    System.out.println("Username: " + Session.getCustomerInfo());
                     votedCaption = Session.getCustomerInfo().OptionPresent(p.getPollID());
                 }else{
                     votedCaption = null;

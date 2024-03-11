@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
 import static it.unipi.dii.userCookie.usernameCookie.getVotedList;
@@ -153,13 +154,13 @@ public class loginPage {
 
             if(cs.authenticateCustomer(username , password) != null){
                 // If the login has been successful.
-                Session.setUsername(username);
-                Session.setCustomerInfo(getVotedList(username));
-
                 if(getVotedList(username) == null){
-                    // Create the user cookie if it doesn't exist.
+                    // Create the user cookie file if it doesn't exist.
                     customerInfo customer = new customerInfo(username, new ArrayList<>());
                     createUserCookie(customer);
+                    Session.setCustomerInfo(customer);
+                }else{
+                    Session.setCustomerInfo(Objects.requireNonNull(getVotedList(username)));
                 }
 
                 errorLabel.setText("");
