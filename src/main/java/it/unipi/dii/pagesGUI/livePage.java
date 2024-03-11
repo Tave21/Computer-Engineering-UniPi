@@ -26,13 +26,11 @@ import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class livePage {
-    private Stage dialog;
-
+    private final Stage dialog = new Stage();;
     public Stage getDialog() {
         return this.dialog;
     }
     public StackPane getContent(boolean registered) {
-        this.dialog = new Stage();
         // This is the main container of Live Football Results page.
         StackPane stackPane = new StackPane();
 

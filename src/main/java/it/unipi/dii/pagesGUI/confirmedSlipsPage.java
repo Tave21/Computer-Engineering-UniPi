@@ -57,7 +57,7 @@ public class confirmedSlipsPage {
     }
 
     protected VBox createSlipsColumn() {
-        //column creation for the slips
+        // Now we do the column creation for the slips.
         VBox column = new VBox();
         column.setAlignment(Pos.TOP_CENTER);
 
@@ -76,7 +76,7 @@ public class confirmedSlipsPage {
         for (Document document : docs) {
             slips.add(convertJsonToObject(convertDocumentToJson(document), Slip.class));
 
-            //set the win value for each bet inside a slip
+            // Set the win value for each bet inside a slip.
             List<Document> betsList = document.getList("betsList", Document.class);
 
             int x = 0;
@@ -100,10 +100,7 @@ public class confirmedSlipsPage {
                 matchArray[i] = slip.findBetsList().get(i).getTeamHome() + "-" + slip.findBetsList().get(i).getTeamAway();
                 String correct_multiplier = String.format("%.1f", slip.findBetsList().get(i).getChosenMultiplierValue());
                 multiplierArray[i] = slip.findBetsList().get(i).getChosenMultiplierName() + "   " + correct_multiplier;
-                //System.out.println("prima del for è : "+ slip.findBetsList().get(i).getWin());
                 winBet[i] = slip.findBetsList().get(i).getWin();
-                //System.out.println(slip.findBetsList().get(i).getWin());
-                //System.out.println("nel for è : "+ winBet[i]);
             }
             String creationDate = slip.getCreationDate();
             double Betamount = slip.getBetAmount();
@@ -128,7 +125,7 @@ public class confirmedSlipsPage {
     }
 
     protected VBox createSlip(String[] match, String[] multiplier, int[] winBet, String creationDate, double amount, double total, String state) {
-        //single slip creation
+        // In this function we do a single slip creation.
         VBox slip = new VBox();
         slip.getStyleClass().addAll("form", "form-container-slips");
         slip.setAlignment(Pos.CENTER);
@@ -138,18 +135,16 @@ public class confirmedSlipsPage {
 
             Label matchLabel = new Label(match[i]);
             Label multiplierLabel = new Label(multiplier[i]);
-            //System.out.println("win bet = "+ winBet[i]);
             if(winBet[i] == 1){
-                //if the user won that bet, the label is green
+                // If the user won that bet, the label is green
                 matchLabel.getStyleClass().add("input-label");
                 multiplierLabel.getStyleClass().add("input-label");
             }else if(winBet[i] == -1){
-                //the match has not been played yet
-                //System.out.println("match not played yet");
+                // The match has not been played yet.
                 matchLabel.getStyleClass().add("progress");
                 multiplierLabel.getStyleClass().add("progress");
             }else{
-                //otherwise red label
+                // Otherwise we set the red label.
                 matchLabel.getStyleClass().add("error");
                 multiplierLabel.getStyleClass().add("error");
             }

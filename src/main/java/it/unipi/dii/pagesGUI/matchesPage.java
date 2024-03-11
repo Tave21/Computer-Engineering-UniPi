@@ -80,7 +80,6 @@ public class matchesPage {
         MatchMongoDBDAO md = new MatchMongoDBDAO();
         md.openConnection();
 
-        System.out.println("Sono in Matches Page");
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("matchDate",
                                 new Document("$gt", getCurrentDate().minusDays(DAY_LOOK_UP).toString()))),
@@ -127,7 +126,8 @@ public class matchesPage {
 
         return gridPane;
     }
-    // We create an instance of Live, and we use the functions in common with the other class.
+    // We create an instance of Live, and we use the
+    // functions in common with the other class.
     private VBox createColumn(boolean registered, String matchday, String league, String team1, String team2, String score1, String score2, String minutes, List<Multiplier> multipliers) {
         livePage liveInstance = new livePage();
         return liveInstance.createColumn(registered, matchday, league, team1, team2, score1, score2, minutes, multipliers);
