@@ -39,37 +39,6 @@ public class RandomNumber {
      * @param how_much How many numbers after the comma you need to cut.
      * @return The truncate number.
      */
-
-    public static double truncateNumber2(Double num, int how_much) {
-        if(how_much <= 0){
-            return Math.floor(num);
-        }
-
-        StringBuilder res = new StringBuilder();
-        String input = num.toString();
-
-        boolean afterComma = false;
-        int count = 0;
-
-        for (char character : input.toCharArray()) {
-            if (afterComma && count < how_much) {
-                res.append(character);
-                count++;
-            } else if (character == '.') {
-                afterComma = true;
-                res.append(character);
-            } else if (!afterComma) {
-                res.append(character);
-            }
-        }
-
-        return Double.parseDouble(res.toString());
-    }
-    /**
-     * @param num The number to truncate.
-     * @param how_much How many numbers after the comma you need to cut.
-     * @return The truncate number.
-     */
     public static double truncateNumber(Double num, int how_much) {
         if(how_much == 0){
             return floor(num);

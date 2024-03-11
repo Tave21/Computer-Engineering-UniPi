@@ -62,9 +62,9 @@ public class loginPage {
 
         loginContent.getChildren().addAll(createLoginForm(usernameField, passwordField, loginButton, signupLink));
 
-        //remove focus from the inputBox clicking anywhere
+        // Remove the focus from the inputBox clicking anywhere.
         loginContent.setOnMouseClicked(e -> loginContent.requestFocus());
-        //remove focus from inputBox
+        // Remove the focus from the inputBox.
         Platform.runLater(loginContent::requestFocus);
         return loginContent;
     }
