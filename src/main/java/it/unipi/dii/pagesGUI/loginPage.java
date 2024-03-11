@@ -41,11 +41,11 @@ public class loginPage {
         spacer.setPrefHeight(47);
         loginContent.getChildren().add(spacer);
 
-        // Components for the login form
+        // Components for the login form.
         TextField usernameField = new TextField();
         usernameField.setMaxWidth(200);
 
-        //input fields for password and username
+        // Get the value from the input fields (password and username).
         PasswordField passwordField = new PasswordField();
         passwordField.setMaxWidth(200);
 
@@ -86,7 +86,6 @@ public class loginPage {
         double maxWidth = 250;
         VBox usernameBox = createInputBox("Username", usernameField, maxWidth);
         VBox passwordBox = createInputBox("Password", passwordField, maxWidth);
-
 
         VBox.setMargin(signupLink, new Insets(0, 140, 0, 0));
 
@@ -155,10 +154,19 @@ public class loginPage {
             if(cs.authenticateCustomer(username , password) != null){
                 // If the login has been successful.
                 if(getVotedList(username) == null){
+                    // The user cookie does not exist in this machine.
+
+                    // GET THE COOKIE FROM REDIS
+
                     // Create the user cookie file if it doesn't exist.
                     customerInfo customer = new customerInfo(username, new ArrayList<>());
                     createUserCookie(customer);
                     Session.setCustomerInfo(customer);
+
+                    if(false){
+                        // IF REDIS DOES NOT CONTAIN ANY COOKIE, THEN WE INSERT IT.
+                    }
+
                 }else{
                     Session.setCustomerInfo(Objects.requireNonNull(getVotedList(username)));
                 }

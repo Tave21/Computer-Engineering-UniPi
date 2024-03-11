@@ -101,7 +101,7 @@ public class registerPage{
         registerContent.setOnMouseClicked(e -> registerContent.requestFocus());
 
         // remove focus from inputBox
-        Platform.runLater(() -> registerContent.requestFocus());
+        Platform.runLater(registerContent::requestFocus);
 
         return new VBox(scrollPane);
     }
@@ -303,6 +303,7 @@ public class registerPage{
         }
 
         if(countErrors == 0){
+            // There aren't any error in the registration form.
             Customer cs = new Customer();
             cs.setName(name);
             if(femaleCheckBox){
@@ -319,22 +320,24 @@ public class registerPage{
             cs.setCityOfResidence(city);
             cs.setProvince(province);
             cs.setUsername(username);
-            cs.setPassword(calculateSHA256(password));
+            cs.setPassword(calculateSHA256(password)); // Compute the hash of the password.
 
-            Session.setUsername(username);
             CustomerMongoDBDAO cDB = new CustomerMongoDBDAO();
             cDB.openConnection();
-            boolean b = cDB.registerCustomer(cs);
+            final boolean b = cDB.registerCustomer(cs); // Insert the customer in MongoDB.
             cDB.closeConnection();
 
             if(b){
                 customerInfo customer = new customerInfo(username, new ArrayList<>());
-                createUserCookie(customer);
+                createUserCookie(customer); // Create a new cookie.
                 Session.setCustomerInfo(customer);
+
+                // INSERT THE COOKIE IN REDIS
+
                 additionalLabels.get(9).setText(" ");
                 openRegister();
             } else {
-                additionalLabels.get(9).setText("Username already exists.");
+                additionalLabels.get(9).setText("This username already exists!");
             }
         }
     }
