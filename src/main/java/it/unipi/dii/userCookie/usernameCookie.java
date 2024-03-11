@@ -19,9 +19,9 @@ public class usernameCookie {
      * Create a cookie in a separate file.
      * @param customer Info of the customer.
      */
-    public static void createUserCookie(CustomerInfo customer) {
+    public static void createUserCookie(customerInfo customer) {
         String fileName = PATH + PATH_PREFIX + customer.getUsername();
-        List<CustomerInfo> clist = new ArrayList<>();
+        List<customerInfo> clist = new ArrayList<>();
         clist.add(customer);
         writeToJsonFile(clist, fileName);
     }
@@ -31,11 +31,11 @@ public class usernameCookie {
      * @return The info of the customer.
      */
 
-    public static CustomerInfo getVotedList(String username) {
+    public static customerInfo getVotedList(String username) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File jsonFile = new File(PATH + PATH_PREFIX + username);
-            CustomerInfo[] customerInfos = objectMapper.readValue(jsonFile, CustomerInfo[].class);
+            customerInfo[] customerInfos = objectMapper.readValue(jsonFile, customerInfo[].class);
             return customerInfos[0];
         } catch (IOException e) {
             return null;

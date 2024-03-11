@@ -4,7 +4,7 @@ import it.unipi.dii.BeansBetGUI;
 import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
 import it.unipi.dii.model.Customer;
-import it.unipi.dii.userCookie.CustomerInfo;
+import it.unipi.dii.userCookie.customerInfo;
 import it.unipi.dii.userCookie.customerVotedPollVoice;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -328,7 +328,7 @@ public class registerPage{
             cDB.closeConnection();
 
             if(b){
-                CustomerInfo customer = new CustomerInfo(username, new ArrayList<>());
+                customerInfo customer = new customerInfo(username, new ArrayList<>());
                 List<customerVotedPollVoice> voices = new ArrayList<>();
                 createUserCookie(customer);
                 Session.setCustomerInfo(customer);

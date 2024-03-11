@@ -51,7 +51,7 @@ public class matchesPage {
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);
-        box.setMargin(titleLabel, new Insets(20, 0, 20, 0));
+        VBox.setMargin(titleLabel, new Insets(20, 0, 20, 0));
         box.getChildren().addAll(topSpacer, titleLabel, scrollPane);
         return new StackPane(box);
     }
@@ -71,15 +71,16 @@ public class matchesPage {
             gridPane.add(columnTitle, i, 0);
 
             //add negative margin to create space below the title, otherwise the title overlaps
-            gridPane.setMargin(columnTitle, new Insets(-5, 0, 0, 0));
+            GridPane.setMargin(columnTitle, new Insets(-5, 0, 0, 0));
 
-            gridPane.setValignment(columnTitle, VPos.TOP);
-            gridPane.setHalignment(columnTitle, HPos.CENTER);
+            GridPane.setValignment(columnTitle, VPos.TOP);
+            GridPane.setHalignment(columnTitle, HPos.CENTER);
         }
 
         MatchMongoDBDAO md = new MatchMongoDBDAO();
         md.openConnection();
 
+        System.out.println("Sono in Matches Page");
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("matchDate",
                                 new Document("$gt", getCurrentDate().minusDays(DAY_LOOK_UP).toString()))),
@@ -90,7 +91,7 @@ public class matchesPage {
 
         AggregateIterable<Document> docs = md.mongoDB.getCollection("matches").aggregate(pipeline);
 
-        // Row indexes.
+        // Set the row indexes.
         int it = 0;
         int es = 0;
         int ge = 0;
@@ -102,7 +103,9 @@ public class matchesPage {
 
             assert m != null;
 
-            m.cleanGoals(); // Is some cases, the goals are null, and this function take it to 0.
+            m.cleanGoals();
+            // In some cases, the goals are null and JavaFX has problem with that.
+            // So this function set them to 0 instead.
 
             if(Objects.equals(m.getCompetition_id(), "IT1")){
                 gridPane.add(createColumn(registered, m.getMatchDate(), "Serie A", m.getTeam_home(), m.getTeam_away(), m.getHome_goals().toString(), m.getAway_goals().toString(), m.getStatus(), m.getMultipliers()), 1, it);

@@ -5,7 +5,7 @@ import it.unipi.dii.HomeAdmin;
 import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.AdminMongoDBDAO;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
-import it.unipi.dii.userCookie.CustomerInfo;
+import it.unipi.dii.userCookie.customerInfo;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -158,7 +158,7 @@ public class loginPage {
 
                 if(getVotedList(username) == null){
                     // Create the user cookie if it doesn't exist.
-                    CustomerInfo customer = new CustomerInfo(username, new ArrayList<>());
+                    customerInfo customer = new customerInfo(username, new ArrayList<>());
                     createUserCookie(customer);
                 }
 

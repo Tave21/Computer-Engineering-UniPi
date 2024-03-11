@@ -26,7 +26,6 @@ import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class livePage {
-
     private Stage dialog;
 
     public Stage getDialog() {
@@ -313,7 +312,6 @@ public class livePage {
             vBox.setAlignment(Pos.CENTER);
         }
 
-
         HBox buttonsRow = new HBox(10,
                 VList.get(0),
                 VList.get(1),
@@ -334,10 +332,10 @@ public class livePage {
             button.setDisable(true);
         }
 
-        dialog.initModality(Modality.APPLICATION_MODAL);//set modal mode to block interaction with the main window
+        dialog.initModality(Modality.APPLICATION_MODAL);// Set modal mode to block interaction with the main window.
 
-        button.setPrefWidth(100); //button width
-        button.setPrefHeight(35); //button height
+        button.setPrefWidth(100); // Set the button width.
+        button.setPrefHeight(35); // Set the button height.
 
         button.setOnAction(event -> {
 

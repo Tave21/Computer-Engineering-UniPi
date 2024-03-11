@@ -2,20 +2,21 @@ package it.unipi.dii.userCookie;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CustomerInfo {
+public class customerInfo {
     private String username;
     private List<customerVotedPollVoice> voices;
 
-    public CustomerInfo(String username, List<customerVotedPollVoice> voices) {
+    public customerInfo(String username, List<customerVotedPollVoice> voices) {
         this.username = username;
         this.voices = voices;
     }
 
-    public CustomerInfo(){
-
+    public customerInfo(){
+        this.voices = new ArrayList<>();
     }
 
     @JsonProperty("username")
@@ -88,7 +89,7 @@ public class CustomerInfo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CustomerInfo that = (CustomerInfo) o;
+        customerInfo that = (customerInfo) o;
         return Objects.equals(username, that.username) &&
                 Objects.equals(voices, that.voices);
     }
