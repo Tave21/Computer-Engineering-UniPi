@@ -82,7 +82,7 @@ public class statsPage {
         averageMatchesForSlip.setMaxWidth(300);
 
         System.out.println(topTeams.toString());
-        VBox topThreeTeams = createStatElement("Top betted teams by users", topTeams);
+        VBox topThreeTeams = createStatElement("Top bet teams by users", topTeams);
         topThreeTeams.setMaxWidth(300);
 
         VBox content = new VBox();

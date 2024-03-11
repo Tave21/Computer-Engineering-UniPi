@@ -26,7 +26,8 @@ import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class livePage {
-    private final Stage dialog = new Stage();;
+    private final Stage dialog = new Stage();
+
     public Stage getDialog() {
         return this.dialog;
     }
@@ -242,8 +243,6 @@ public class livePage {
             VBox.setVgrow(bottomSpacer, Priority.ALWAYS);
             form.getChildren().add(bottomSpacer);
         }
-
-
         return form;
     }
 
@@ -373,7 +372,6 @@ public class livePage {
         return button;
     }
     protected HBox createRow(Label label1, Label label2, boolean lastRow){
-
         Region spacingRegion = new Region();
         HBox.setHgrow(spacingRegion, Priority.ALWAYS);
         HBox.setMargin(spacingRegion, new Insets(0, 0, 0, 55));

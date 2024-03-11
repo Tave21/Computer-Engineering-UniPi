@@ -16,13 +16,14 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class slipsCartPage {
-    private Label valueLabel = new Label();
+    private final Label valueLabel = new Label();
     private VBox creditColumn;
     private VBox slipsCartColumn;
-    private List<totalValueLabel> totalValueLabelList = new ArrayList<>();
+    private final List<totalValueLabel> totalValueLabelList = new ArrayList<>();
     private Double userCredit;
 
     public StackPane getContent(){
+        this.creditColumn = new VBox();
 
         StackPane stackPane = new StackPane();
 
@@ -38,8 +39,8 @@ public class slipsCartPage {
         slipsCartColumn = createSlipsColumn("Slips");
         slipsCartColumn.setMaxWidth(700);
         CustomerMongoDBDAO customerMongoDBDAO = new CustomerMongoDBDAO();
-        customerMongoDBDAO.openStrictConnection(); //open with strict
-        userCredit = customerMongoDBDAO.getCreditOfCustomer(Session.getUsername()); //take credit of specific user
+        customerMongoDBDAO.openStrictConnection(); // Open with strict.
+        userCredit = customerMongoDBDAO.getCreditOfCustomer(Session.getUsername()); // Take credit of specific user
         customerMongoDBDAO.closeConnection();
         creditColumn = createCreditColumn("Credit");
 
@@ -169,13 +170,13 @@ public class slipsCartPage {
         column.getChildren().add(columnTitleLabel);
 
         SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
-        List<Slip> list = new ArrayList<>();
+        List<Slip> list;
         try {
             list = slipRedisDAO.getListFromUser(Session.getUsername());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if(list.size() == 0){
+        if(list.isEmpty()){
             Label emptyCartLabel = new Label("The are not slips in the cart");
             emptyCartLabel.getStyleClass().add("input-label");
             column.getChildren().add(emptyCartLabel);
@@ -222,7 +223,6 @@ public class slipsCartPage {
             matchRow.getChildren().addAll(matchLabel, spacingRegion, multiplierLabel, deleteButton);
             //action when we click on a delete button of a single match
             deleteButton.setOnAction(event -> {
-                int rowIndex = slip.getChildren().indexOf(matchRow);
                 slip.getChildren().remove(matchRow);
 
                 String[] values = matchLabel.getText().split("-");
@@ -251,7 +251,7 @@ public class slipsCartPage {
                     slipRedisDAO.delete_Slip(Session.getUsername(), id);
                     try {
                         //if the cart is empty tell it to the user
-                        if(slipRedisDAO.getListFromUser(Session.getUsername()).size() == 0){
+                        if(slipRedisDAO.getListFromUser(Session.getUsername()).isEmpty()){
                             Label emptyCartLabel = new Label("The are not slips in the cart");
                             emptyCartLabel.getStyleClass().add("input-label");
                             ((VBox) slip.getParent()).getChildren().add(emptyCartLabel);
@@ -350,8 +350,8 @@ public class slipsCartPage {
         payButton.getStyleClass().add("right-buttons");
 
         double val=1;
-        for (int i = 0; i < multiplier.length; i++) {
-            String[] mul = multiplier[i].split("\\s{3}");
+        for (String s : multiplier) {
+            String[] mul = s.split("\\s{3}");
             val = val * Double.parseDouble(mul[1]);
         }
 
@@ -362,7 +362,7 @@ public class slipsCartPage {
 
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("right-buttons");
-        //at the beginnning, the total amount is visualized in the cart
+        //at the beginning, the total amount is visualized in the cart
         int betAmount = Integer.parseInt(amountField.getText());
         updateTotalValueLabel(totalValueLabelList.get(index).getTotalLabel(), betAmount, retrievedValue);
         HBox.setMargin(amountRow, new Insets(5, 5, 5, 5));
@@ -507,7 +507,7 @@ public class slipsCartPage {
 
             try {
                 // If the cart is empty tell it to the user.
-                if(slipRedisDAO.getListFromUser(Session.getUsername()).size() == 0){
+                if(slipRedisDAO.getListFromUser(Session.getUsername()).isEmpty()){
                     Label emptyCartLabel = new Label("The are not slips in the cart");
                     emptyCartLabel.getStyleClass().add("input-label");
                     ((VBox)parentVBox.getParent()).getChildren().add(emptyCartLabel);

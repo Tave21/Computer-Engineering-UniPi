@@ -1,21 +1,22 @@
 package it.unipi.dii.pagesGUI;
-
+import it.unipi.dii.userCookie.customerInfo;
 public class Session {
     private static String username;
-    private static it.unipi.dii.userCookie.customerInfo customerInfo;
+    private static customerInfo customerInfo;
 
     public static String getUsername() {
-        return username;
+        return Session.username;
     }
 
     public static void setUsername(String username) {
         Session.username = username;
     }
 
-    public static void setCustomerInfo(it.unipi.dii.userCookie.customerInfo customerInfo) {
+    public static void setCustomerInfo(customerInfo customerInfo) {
         Session.customerInfo = customerInfo;
     }
-    public static it.unipi.dii.userCookie.customerInfo getCustomerInfo() {
-        return customerInfo;
+    public static customerInfo getCustomerInfo() {
+
+        return Session.customerInfo;
     }
 }
