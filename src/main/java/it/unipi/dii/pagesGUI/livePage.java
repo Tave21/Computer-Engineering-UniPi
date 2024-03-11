@@ -27,42 +27,43 @@ import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class livePage {
 
-    private Stage dialog = new Stage();
+    private Stage dialog;
 
     public Stage getDialog() {
-        return dialog;
+        return this.dialog;
     }
     public StackPane getContent(boolean registered) {
-        //main container of Live Football Results page
+        this.dialog = new Stage();
+        // This is the main container of Live Football Results page.
         StackPane stackPane = new StackPane();
 
-        //add white space as a node before the title
+        // Add white space as a node before the title.
         Region topSpacer = new Region();
-        topSpacer.setPrefHeight(20); // Desired height
+        topSpacer.setPrefHeight(20); // Set the desired height.
 
-        //add an empty space as a node
+        // Add an empty space as a node.
         Region bottomSpacer = new Region();
         bottomSpacer.setPrefHeight(50);
 
-        //add title
+        // Add the page title.
         Label titleLabel = new Label("Live Football Results");
         titleLabel.getStyleClass().add("live-title");
 
-        //add everything to the content
+        // Add everything to the content of the page.
         VBox liveContent = new VBox();
         liveContent.setMaxWidth(300);
         liveContent.setAlignment(Pos.CENTER);
         liveContent.setSpacing(20);
         liveContent.getChildren().addAll(createColumns(registered), bottomSpacer);
 
-        //add page content to a StackPane
+        // Add page content to a StackPane.
         stackPane.getChildren().addAll(liveContent);
-        //add the StackPane to a ScrollPane
+        // Add the StackPane to a ScrollPane.
         ScrollPane scrollPane = new ScrollPane(stackPane);
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("matches_scroll");
 
-        //set center alignment for ScrollPane
+        // Set center alignment for ScrollPane.
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
         VBox box = new VBox();
         box.setAlignment(Pos.CENTER);
@@ -75,7 +76,7 @@ public class livePage {
     private GridPane createColumns(boolean registered) {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(20); //Horizontal gap between columns.
+        gridPane.setHgap(20); // Set the horizontal gap between columns.
 
         String[] leagues = {"Premier League", "Serie A", "Bundesliga", "La Liga", "Ligue 1"};
 
@@ -87,7 +88,7 @@ public class livePage {
 
             gridPane.getColumnConstraints().add(column);
             gridPane.add(columnTitle, i, 0);
-            //add margin to create space below the title, negative, otherwise title overlaps
+            // Add margin to create space below the title, negative, otherwise title overlaps
             GridPane.setMargin(columnTitle, new Insets(-5, 0, 0, 0));
 
             GridPane.setValignment(columnTitle, VPos.TOP);
@@ -146,10 +147,10 @@ public class livePage {
         column.setAlignment(Pos.CENTER);
         column.setSpacing(20);
 
-        //void column to have space between the forms
+        // Add a void column to have space between the forms.
         Label titleLabel = new Label("");
 
-        //add matches results
+        // Add matches results
         VBox contentBox = new VBox();
         contentBox.getChildren().addAll(
                 titleLabel,
@@ -160,7 +161,7 @@ public class livePage {
     }
 
     public VBox createMatchResult(boolean registered, String matchday, String league, String team1, String team2, String score1, String score2, String minutes, List<Multiplier> Multipliers) {
-        //single row for the match result
+        // Single row for the match result.
         VBox form = new VBox();
         form.getStyleClass().addAll("form", "form-container-slips");
 
@@ -168,18 +169,18 @@ public class livePage {
         form.setSpacing(5);
 
         Label leagueLabel = new Label(league);
-        //we assign the color based on the league
+        // We assign the color based on the league.
         leagueLabel=colorLeagueLabel(leagueLabel);
 
-        //check if the content is the live page or the matches one, in the first case, length is 3, but
-        //in case we want to add the extratime, it will be 5
+        // Check if the content is the live page or the matches one, in the first case, length is 3, but
+        // In case we want to add the extra time, it will be 5 of them.
         String correctDate = matchday.replace("T", " ");
         correctDate = correctDate.replace("Z", "");
         correctDate =  correctDate.substring(0,  correctDate.length() - 3);
         if(minutes.length() > 5){
 
             Label matchdayLabel = new Label(correctDate);
-            //the matchday label has the style of the relative league
+            // The matchday label has the style of the relative league.
             matchdayLabel.getStyleClass().addAll(leagueLabel.getStyleClass());
             leagueLabel.setText(matchdayLabel.getText());
 
@@ -202,7 +203,8 @@ public class livePage {
         score2Label.getStyleClass().addAll("input-label");
 
 
-        //if the match has already been played, we don't add buttons, otherwise, we add buttons
+        // Ff the match has already been played, we don't add buttons,
+        // otherwise, we add buttons.
         if(minutes.contains("FINISHED") || !registered){
 
             if(minutes.contains("TIMED")) {
@@ -238,7 +240,7 @@ public class livePage {
             HBox buttonsRow = createButtonsRow(Multipliers, team1, team2, matchday, in_play);
 
             form.getChildren().addAll(row1, row2, row3, buttonsRow);
-            //region in order to have a blank space under the buttons
+            // Region in order to have a blank space under the buttons.
             Region bottomSpacer = new Region();
             VBox.setVgrow(bottomSpacer, Priority.ALWAYS);
             form.getChildren().add(bottomSpacer);
@@ -347,25 +349,25 @@ public class livePage {
             dialog.close();
 
             if (!dialog.isShowing()) {
-                //create a new dialog window
-                dialog.setTitle("Choose Slip"); //dialog window title
+                // Now we create a new dialog window.
+                dialog.setTitle("Choose Slip"); // Set the dialog window title.
 
-                //view the slips
+                // View the slips.
                 addToSlipPage pageToShow = new addToSlipPage(this);
                 StackPane pageContent = pageToShow.getContent(concat);
-                //new layout for the dialog window and add the content
+                // New layout for the dialog window and add the content.
                 BorderPane dialogLayout = new BorderPane();
                 dialogLayout.setCenter(pageContent);
 
-                //dialog window dimensions
+                // Set the dialog window dimensions.
                 dialog.setWidth(600);
                 dialog.setHeight(400);
 
                 Scene dialogScene = new Scene(dialogLayout);
-                dialogScene.getStylesheets().add(getClass().getResource("/window_style.css").toExternalForm());
+                dialogScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/window_style.css")).toExternalForm());
                 dialog.setScene(dialogScene);
 
-                //show dialog window
+                // Show the dialog window.
                 if (!dialog.isShowing()) {
                     dialog.show();
                 }

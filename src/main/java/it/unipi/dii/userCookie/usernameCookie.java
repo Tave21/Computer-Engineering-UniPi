@@ -12,7 +12,7 @@ import java.util.Objects;
 import static it.unipi.dii.utility.WriteJsonToFile.writeToJsonFile;
 
 public class usernameCookie {
-    private static final String PATH = "src/main/java/it/unipi/dii/userCookie/";
+    private static final String PATH = "src/main/java/it/unipi/dii/userCookie/cookies/";
     private static final String PATH_PREFIX = "info_";
 
     /**

@@ -6,7 +6,6 @@ import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.AdminMongoDBDAO;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
 import it.unipi.dii.userCookie.CustomerInfo;
-import it.unipi.dii.userCookie.customerVotedPollVoice;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -24,7 +23,7 @@ import static it.unipi.dii.userCookie.usernameCookie.getVotedList;
 public class loginPage {
     private BeansBetGUI beansBetGUI;
     private Label errorLabel;
-    private List<Label> additionalLabels = new ArrayList<>();
+    private List<Label> additionalLabels;
     public loginPage(BeansBetGUI beansBetGUI) {
         this.beansBetGUI = beansBetGUI;
         this.errorLabel = new Label("");
@@ -35,9 +34,8 @@ public class loginPage {
         return buttonHeader.createHeader(header, 1);
     }
     public VBox getContent() {
-
+        this.additionalLabels = new ArrayList<>();
         VBox loginContent = new VBox();
-
         Region spacer = new Region();
         spacer.setPrefHeight(47);
         loginContent.getChildren().add(spacer);
@@ -67,7 +65,7 @@ public class loginPage {
         //remove focus from the inputBox clicking anywhere
         loginContent.setOnMouseClicked(e -> loginContent.requestFocus());
         //remove focus from inputBox
-        Platform.runLater(() -> loginContent.requestFocus());
+        Platform.runLater(loginContent::requestFocus);
         return loginContent;
     }
     private VBox createLoginForm(TextField usernameField, PasswordField passwordField, javafx.scene.control.Button loginButton, javafx.scene.control.Hyperlink signupLink) {
@@ -154,14 +152,13 @@ public class loginPage {
             cs.openConnection();
 
             if(cs.authenticateCustomer(username , password) != null){
-                //login success
+                // If the login has been successful.
                 Session.setUsername(username);
                 Session.setCustomerInfo(getVotedList(username));
 
                 if(getVotedList(username) == null){
-                    //create the user cookie if it doesn't exist
+                    // Create the user cookie if it doesn't exist.
                     CustomerInfo customer = new CustomerInfo(username, new ArrayList<>());
-                    List<customerVotedPollVoice> voices = new ArrayList<>();
                     createUserCookie(customer);
                 }
 
