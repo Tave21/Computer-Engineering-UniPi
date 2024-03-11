@@ -25,7 +25,7 @@ import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class pollsPage {
-    private List<pollProgressBar> progressList = new ArrayList<>();
+    private final List<pollProgressBar> progressList = new ArrayList<>();
 
     public StackPane getContent(boolean registered, boolean active) {
 
@@ -77,21 +77,16 @@ public class pollsPage {
             pollsContent.getChildren().addAll(bottomSpacer);
         }else{
             // Redis management
-
             PollRedisDAO pRedis = new PollRedisDAO();
             List<Poll> polllist = pRedis.getAllPollFromRedis();
-            //check date of poll
+            // Check date of poll.
             for (int i = 0; i < polllist.size(); i++) {
                 int id = polllist.get(i).getPollID();
-                //String caption = polllist.get(i).getPollName();
-                //System.out.println("id = "+ id);
+
                 Instant now = getCurrentInstant();
                 Instant activationDate = Instant.parse(polllist.get(i).getActivationDate());
                 Instant activationDatePlusOneDay = activationDate.plus(Duration.ofDays(1));
-                //System.out.println("question: "+ caption);
-                //System.out.println("now: "+ now);
-                //System.out.println("activation date: "+ activationDate);
-                //System.out.println("activation date plus one: "+ activationDatePlusOneDay);
+
                 if (now.isBefore(activationDate)){ //remove poll if it is not active yet
                     polllist.remove(i);
                     //we remove an element of the list, the next element will replace it, so
@@ -99,7 +94,6 @@ public class pollsPage {
                     i--;
                 }
                 if(activationDatePlusOneDay.isBefore(now)){ //remove poll if it is expired, one day after activation
-                    //System.out.println("expired");
                     PollRedisDAO pRedis2 = new PollRedisDAO();
                     pRedis2.addPollToMongoDB(polllist.get(i)); // Send the poll to MongoDB.
                     // Remove the poll from redis if it is elapsed.
@@ -115,6 +109,7 @@ public class pollsPage {
             for (Poll p : polllist) {
                 String votedCaption;
                 if(registered){
+                    System.out.println("Username: " + Session.getUsername());
                     votedCaption = Session.getCustomerInfo().OptionPresent(p.getPollID());
                 }else{
                     votedCaption = null;
@@ -209,7 +204,11 @@ public class pollsPage {
         }
         return form;
     }
-    // Method to create an HBox containing a ProgressBar and a Label for an option
+
+    /**
+     *  Method to create an HBox containing a ProgressBar and a Label for an option.
+     */
+
     private HBox createOptionBox(int pollID , String optionCaption , RadioButton option, double value) {
         ProgressBar progressBar = new ProgressBar();
         progressBar.getStyleClass().add("progress-bar");
@@ -283,10 +282,9 @@ public class pollsPage {
 
                 double percentage = Math.round(currentCaptionProgressBar.getProgress() * 100);
                 // Get index from progressList.
-                int i = 0;
-                for (i = 0; i < this.progressList.size(); i++) {
-                    if (Objects.equals(this.progressList.get(i).getPollCaption(), caption)) {
-                        this.progressList.get(i).getPercentageLabel().setText(String.format("%.0f%%", percentage));
+                for (it.unipi.dii.pagesGUI.pollProgressBar pollProgressBar : this.progressList) {
+                    if (Objects.equals(pollProgressBar.getPollCaption(), caption)) {
+                        pollProgressBar.getPercentageLabel().setText(String.format("%.0f%%", percentage));
                         break;
                     }
                 }
@@ -294,11 +292,9 @@ public class pollsPage {
                 // The suer has not voted in this poll yet (Ex-Novo).
             } else {
 
-                //System.out.println("non è la prima volta che voto");
                 // The user already voted in this poll.
                 if (!oldVotedCaption.equals(caption)) {
                     // The voted option has changed.
-                    //System.out.println("ho votato una roba diversa da prima");
 
                     //oldCaptionProgressBar = getCaptionProgressBar(oldVotedCaption);
                     double oldValue = 0 ;
@@ -312,16 +308,13 @@ public class pollsPage {
                     }
 
                     pRedis.updatePollOptionVotes(pollID, new pollOption(oldVotedCaption), false);
-                    //System.out.println("old Value prima di decrementare: " + oldValue);
                     oldValue--;
                     p.getOptions().get(index).setOptionVotes((int)oldValue);
-                    //System.out.println("numero totale di voti: " + sum);
+
                     oldCaptionProgressBar.setProgress(oldValue / sum);
 
                     double percentage = Math.round(oldCaptionProgressBar.getProgress() * 100);
-                    //percentage = Math.round(percentage);
-                    //System.out.println("percentage: " + percentage);
-                    //int i = 0;
+
                     oldValue = 0;
                     index = 0;
                     for (int k = 0; k < p.getOptions().size();k++){
@@ -335,14 +328,13 @@ public class pollsPage {
                     p.getOptions().get(index).setOptionVotes((int)oldValue);
                     currentCaptionProgressBar.setProgress(oldValue / sum);
                     double percentage2 = Math.round(currentCaptionProgressBar.getProgress() * 100);
-                    //System.out.println("percentage2: " + percentage2);
-                    //percentage2 = Math.round(percentage2);
-                    for (int i = 0; i < this.progressList.size(); i++) {
-                        if (Objects.equals(this.progressList.get(i).getPollCaption(), oldVotedCaption)) {
-                            this.progressList.get(i).getPercentageLabel().setText(String.format("%.0f%%", percentage));
+
+                    for (it.unipi.dii.pagesGUI.pollProgressBar pollProgressBar : this.progressList) {
+                        if (Objects.equals(pollProgressBar.getPollCaption(), oldVotedCaption)) {
+                            pollProgressBar.getPercentageLabel().setText(String.format("%.0f%%", percentage));
                         }
-                        if (Objects.equals(this.progressList.get(i).getPollCaption(), caption)) {
-                            this.progressList.get(i).getPercentageLabel().setText(String.format("%.0f%%", percentage2));
+                        if (Objects.equals(pollProgressBar.getPollCaption(), caption)) {
+                            pollProgressBar.getPercentageLabel().setText(String.format("%.0f%%", percentage2));
                         }
                     }
 
@@ -357,31 +349,26 @@ public class pollsPage {
             Session.getCustomerInfo().AddOption(new customerVotedPollVoice(pollID,caption));
             createUserCookie(Session.getCustomerInfo());
 
-            //System.out.println("numero di opzioni"+ p.getOptions().size());
+
             for (int i = 0; i < p.getOptions().size(); i++) {
                 if (Objects.equals(p.getOptions().get(i).getOptionCaption(), caption)) {
-                    //System.out.println("opzione votata è già aggiornata");
                     continue;
                 }
                 if (oldVotedCaption != null) {
                     if (Objects.equals(p.getOptions().get(i).getOptionCaption(), oldVotedCaption)) {
-                        //System.out.println("opzione votata prima è già aggiornata");
                         continue;
                     }
                 }
 
                 // The other options.
                 ProgressBar OtherCaptionProgressBar = getCaptionProgressBar(p.getOptions().get(i).getOptionCaption());
-                //double oldValue = (OtherCaptionProgressBar.getProgress() * sum);
-                //System.out.println("nuovo valore progress bar non votate "+ oldValue/sum);
+                assert OtherCaptionProgressBar != null;
                 OtherCaptionProgressBar.setProgress(p.getOptions().get(i).getOptionVotes() / sum);
 
                 double percentage2 = Math.round(OtherCaptionProgressBar.getProgress() * 100);
-                //percentage2 = Math.round(percentage2);
-                this.getCaptionLabel(p.getOptions().get(i).getOptionCaption()).setText(String.format("%.0f%%", percentage2));
+                Objects.requireNonNull(this.getCaptionLabel(p.getOptions().get(i).getOptionCaption())).setText(String.format("%.0f%%", percentage2));
             }
         }
-            // Update the poll in Redis.
 
     }
 
