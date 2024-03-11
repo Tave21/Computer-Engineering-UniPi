@@ -44,7 +44,7 @@ public class customerInfo {
     /**
      * Insert a new option when a user votes in a poll
      * @param voice is an object that contains the pollID and the caption voted by the user
-     * @return 2 if the user has already voted the option of the poll, 1 if has already voted
+     * @return 2 if the user has already voted the option of the poll, 1 if it has already voted
      * another option of that poll, 0 if it has never voted in that poll before.
      */
     public int AddOption(customerVotedPollVoice voice){
@@ -74,7 +74,7 @@ public class customerInfo {
     /**
      * Check if a user has already voted for that poll
      * @param pollID the id of the poll
-     * @return the caption vaoted by the user if has already voted for that poll
+     * @return the caption voted by the user if it has already voted for that poll
      * otherwise returns null
      */
     public String OptionPresent(int pollID){

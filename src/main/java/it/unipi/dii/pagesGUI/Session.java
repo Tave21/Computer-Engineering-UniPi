@@ -5,7 +5,7 @@ public class Session {
     private static customerInfo customerInfo;
 
     public static String getUsername() {
-        return Session.username;
+        return username;
     }
 
     public static void setUsername(String username) {
@@ -16,7 +16,6 @@ public class Session {
         Session.customerInfo = customerInfo;
     }
     public static customerInfo getCustomerInfo() {
-
-        return Session.customerInfo;
+        return customerInfo;
     }
 }

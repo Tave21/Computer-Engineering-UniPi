@@ -105,8 +105,8 @@ public class pollsPage {
                     // Remove the poll from redis if it is elapsed.
                     pRedis2.removePollfromRedis(id);
                     polllist.remove(i);
-                    //we remove an element of the list, the next element will replace it, so
-                    //we have to decrement the current index, otherwise we'll skip an element
+                    // We remove an element of the list, the next element will replace it, so
+                    // we have to decrement the current index, otherwise we'll skip an element.
                     i--;
                 }
             }
@@ -115,11 +115,7 @@ public class pollsPage {
             for (Poll p : polllist) {
                 String votedCaption;
                 if(registered){
-                    try {
-                        votedCaption = Session.getCustomerInfo().OptionPresent(p.getPollID());
-                    }catch(NullPointerException e){
-                        votedCaption = null;
-                    }
+                    votedCaption = Session.getCustomerInfo().OptionPresent(p.getPollID());
                 }else{
                     votedCaption = null;
                 }
@@ -236,13 +232,16 @@ public class pollsPage {
         return hbox;
     }
 
-    //method to update the ProgressBar and Label based on user selection
+    /**
+     *  Method to update the ProgressBar and Label based on user selection.
+     */
+
     private void updateOptionBox(HBox hbox, RadioButton option, double sum, String caption,int pollID) {
 
         if (option.isSelected()) {
 
             Poll p = new Poll();
-            //we get the poll at which the user has voted, from redis
+            // We get from Redis the poll at which the user has voted.
             PollRedisDAO pRedis = new PollRedisDAO();
             List<Poll> pollist = pRedis.getAllPollFromRedis();
             for (Poll poll : pollist) {
@@ -251,15 +250,10 @@ public class pollsPage {
                     break;
                 }
             }
-            //we get the number of votes on that poll
+            // We get the number of votes on that poll.
             sum = p.getNumberOfVotes();
-            //System.out.println("number of votes: "+ sum);
-
             // Creation of the object Poll.
-            //System.out.println("voted caption: "+ caption);
             String oldVotedCaption = Session.getCustomerInfo().OptionPresent(pollID);
-            //System.out.println("old voted caption: "+ oldVotedCaption);
-
             ProgressBar oldCaptionProgressBar = getCaptionProgressBar(oldVotedCaption);
             ProgressBar currentCaptionProgressBar = getCaptionProgressBar(caption);
 
@@ -268,7 +262,7 @@ public class pollsPage {
             }
 
             if (oldCaptionProgressBar == null) {
-                //take the old value of the progress bar
+                // Take the old value of the progress bar
                 double oldValue= 0;
                 int index = 0;
                 for (int i = 0; i < p.getOptions().size();i++){
@@ -280,19 +274,15 @@ public class pollsPage {
                     }
                 }
 
-                //System.out.println("prima volta che si vota, vecchio valore: " + oldValue);
                 pRedis.updatePollOptionVotes(pollID, new pollOption(caption), true);
                 sum++;
                 oldValue++;
                 p.setNumberOfVotes(p.getNumberOfVotes()+1);
                 p.getOptions().get(index).setOptionVotes((int)oldValue);
-                //System.out.println("prima volta che si vota, nuovo valore: " + oldValue);
                 currentCaptionProgressBar.setProgress(oldValue / sum);
 
                 double percentage = Math.round(currentCaptionProgressBar.getProgress() * 100);
-                //percentage = Math.round(percentage);
-                //System.out.println("prima volta che si vota, percebtuale: " + percentage);
-                //get index from progressList
+                // Get index from progressList.
                 int i = 0;
                 for (i = 0; i < this.progressList.size(); i++) {
                     if (Objects.equals(this.progressList.get(i).getPollCaption(), caption)) {
