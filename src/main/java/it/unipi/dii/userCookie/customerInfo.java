@@ -100,9 +100,9 @@ public class customerInfo {
 
     @Override
     public String toString() {
-        return "CustomerInfo{" +
-                "username='" + username + '\'' +
-                ", voices=" + voices +
+        return "{"+
+                "username:'" + username + '\'' +
+                ", voices:" + voices +
                 '}';
     }
 }

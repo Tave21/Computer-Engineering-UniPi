@@ -331,9 +331,6 @@ public class registerPage{
                 customerInfo customer = new customerInfo(username, new ArrayList<>());
                 createUserCookie(customer); // Create a new cookie.
                 Session.setCustomerInfo(customer);
-
-                // INSERT THE COOKIE IN REDIS
-
                 additionalLabels.get(9).setText(" ");
                 openRegister();
             } else {

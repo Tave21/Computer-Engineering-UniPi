@@ -129,6 +129,18 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
 
 
     //redis
+    public void refreshTTL(String username) {
+        throw new
+                UnsupportedOperationException("Not supported in MongoDB implementation");
+    }
+    public void createPollCookieOfUser(String username, String cookie) {
+        throw new
+                UnsupportedOperationException("Not supported in MongoDB implementation");
+    }
+    public String getPollCookieOfUser(String username) {
+        throw new
+                UnsupportedOperationException("Not supported in MongoDB implementation");
+    }
     public void addPollToRedis(Poll poll) {
         throw new
                 UnsupportedOperationException("Not supported in MongoDB implementation");

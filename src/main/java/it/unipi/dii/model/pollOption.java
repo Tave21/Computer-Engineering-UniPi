@@ -1,4 +1,5 @@
 package it.unipi.dii.model;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
@@ -6,26 +7,31 @@ import java.util.Objects;
 public class pollOption {
     String optionCaption; // The text caption of the option.
     int optionVotes; // How many votes this option has.
-    public pollOption(){
+
+    public pollOption() {
         optionVotes = 0;
     }
-    public pollOption(String caption){
+
+    public pollOption(String caption) {
         this.optionCaption = caption;
         this.optionVotes = 0;
     }
+
     @JsonProperty("optionCaption")
-    public String getOptionCaption(){
+    public String getOptionCaption() {
         return this.optionCaption;
     }
-    public void setOptionCaption(String caption){
+
+    public void setOptionCaption(String caption) {
         this.optionCaption = caption;
     }
 
     @JsonProperty("optionVotes")
-    public int getOptionVotes(){
+    public int getOptionVotes() {
         return this.optionVotes;
     }
-    public void setOptionVotes(Integer vote){
+
+    public void setOptionVotes(Integer vote) {
         this.optionVotes = vote;
     }
 
@@ -47,29 +53,37 @@ public class pollOption {
      * Add a vote to this option.
      */
 
-    public void voteOption(){
+    public void voteOption() {
         this.optionVotes++;
     }
 
     /**
      * Add howMuch votes to the option.
+     *
      * @param howMuch How many vote to add.
      */
-    public void multipleVoteOption(int howMuch){
+    public void multipleVoteOption(int howMuch) {
         this.optionVotes = this.optionVotes + howMuch;
     }
+
     /**
      * Remove a vote of this option.
      */
-    public void unvoteOption(){
+    public void unvoteOption() {
         this.optionVotes--;
     }
 
     /**
      * Subtract howMuch votes to the option.
+     *
      * @param howMuch How many vote to subtract.
      */
-    public void multipleUnvoteOption(int howMuch){
+    public void multipleUnvoteOption(int howMuch) {
         this.optionVotes = this.optionVotes - howMuch;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + "optionCaption='" + optionCaption + '\'' + ", optionVotes=" + optionVotes + '}';
     }
 }

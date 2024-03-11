@@ -30,11 +30,13 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
     //         BeansBet:poll:3:activationDate= "2022-01-01"
     //         BeansBet:poll:3:optionNumber= 3
     //         BeansBet:poll:3:numberOfVotes= 100
+    //         BeansBet:pollcookie:username= "..."
     //esempio --> BeansBet:3:options= ["Ronaldo","Messi","Halland"]
 
     public static final String APP_NS = "BeansBet";
     private static final String NS = "admin";
     public static final int EXPIRATION_IN_SEC = 86400;
+    public static final int EXPIRATION_IN_SEC_COOKIE = 129600;
 
     public String pollIDKeysNS() {
         return APP_NS + NS + ":" ;
@@ -136,9 +138,24 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
         }
     }
 
+    public String getPollCookieOfUser(String username) {
+        try (Jedis jedis = getConnection()) {
+            return jedis.get(APP_NS  + ":pollcookie:" + username);
+        }
+    }
+    public void createPollCookieOfUser(String username, String cookie) {
+        try (Jedis jedis = getConnection()) {
+            jedis.set(APP_NS  + ":pollcookie:" + username, cookie);
+            jedis.expire(APP_NS  + ":pollcookie:" + username, EXPIRATION_IN_SEC_COOKIE);
+        }
+    }
 
-
-
+    public void refreshTTL(String username) {
+        //it retrieves all the IDs associated with the username
+        Jedis jedis = getConnection();
+        String ids = APP_NS + ":pollcookie:" + username;
+        jedis.expire(ids, EXPIRATION_IN_SEC_COOKIE);
+    }
 
     public static String writeToJsonFileOptions(List<pollOption> optionList) {
         try {
@@ -192,6 +209,7 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
             if (!optionList.isEmpty()) {
                 optionList.remove(option);
                 jedis.set(optionsKeysNS(pollID), writeToJsonFileOptions(optionList));
+                jedis.expire(optionsKeysNS(pollID), EXPIRATION_IN_SEC);
             } else {
                 jedis.del(pollIDRealKeysNS(pollID));
             }
@@ -205,6 +223,7 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
         Jedis jedis = getConnection();
         String key = pollNameKeysNS(pollID);
         jedis.set(key , newPollName);
+        jedis.expire(key, EXPIRATION_IN_SEC);
         jedis.close();
     }
 
@@ -212,6 +231,7 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
         Jedis jedis = getConnection();
         String key = pollTypeKeysNS(pollID);
         jedis.set(key , newPollType);
+        jedis.expire(key, EXPIRATION_IN_SEC);
         jedis.close();
     }
 
@@ -219,6 +239,7 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
         Jedis jedis = getConnection();
         String key = activationDateKeysNS(pollID);
         jedis.set(key , newActivationDate);
+        jedis.expire(key, EXPIRATION_IN_SEC);
         jedis.close();
     }
     public void updatePollOptionVotes (Integer pollID, pollOption option, boolean inc) {
@@ -236,6 +257,7 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
                     }
                 }
                 jedis.set(optionsKeysNS(pollID), writeToJsonFileOptions(optionList));
+                jedis.expire(optionsKeysNS(pollID), EXPIRATION_IN_SEC);
             } else {
                 jedis.del(pollIDRealKeysNS(pollID));
             }

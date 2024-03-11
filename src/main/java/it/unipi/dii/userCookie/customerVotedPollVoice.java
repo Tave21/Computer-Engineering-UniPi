@@ -30,4 +30,9 @@ public class customerVotedPollVoice {
     public void setVotedOptionCaption(String value) {
         this.votedOptionCaption = value;
     }
+
+    @Override
+    public String toString() {
+        return "{" + "pollID:'" + this.pollID + '\'' + ",votedOptionCaption:'" + this.votedOptionCaption+ "'}";
+    }
 }

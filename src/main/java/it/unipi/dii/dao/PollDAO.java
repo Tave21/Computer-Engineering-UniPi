@@ -22,6 +22,10 @@ public interface PollDAO {
 
 
     //Redis
+    String getPollCookieOfUser(String username);
+
+    void createPollCookieOfUser(String username, String cookie) ;
+    public void refreshTTL(String username) ;
     void addPollToRedis(Poll poll);
 
     void removePollfromRedis(Integer pollID);

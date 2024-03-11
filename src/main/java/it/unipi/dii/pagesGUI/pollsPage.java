@@ -344,6 +344,8 @@ public class pollsPage {
 
             Session.getCustomerInfo().AddOption(new customerVotedPollVoice(pollID,caption));
             createUserCookie(Session.getCustomerInfo());
+            PollRedisDAO pRedis2 = new PollRedisDAO();
+            pRedis2.createPollCookieOfUser(Session.getCustomerInfo().getUsername(), Session.getCustomerInfo().toString());
 
             for (int i = 0; i < p.getOptions().size(); i++) {
                 if (Objects.equals(p.getOptions().get(i).getOptionCaption(), caption)) {

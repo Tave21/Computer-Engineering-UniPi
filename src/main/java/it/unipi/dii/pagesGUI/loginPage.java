@@ -5,7 +5,9 @@ import it.unipi.dii.HomeAdmin;
 import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.AdminMongoDBDAO;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
+import it.unipi.dii.dao.redis.PollRedisDAO;
 import it.unipi.dii.userCookie.customerInfo;
+import it.unipi.dii.utility.JsonToObjectConverter;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -20,6 +22,7 @@ import java.util.Objects;
 
 import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
 import static it.unipi.dii.userCookie.usernameCookie.getVotedList;
+import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class loginPage {
     private BeansBetGUI beansBetGUI;
@@ -153,22 +156,22 @@ public class loginPage {
 
             if(cs.authenticateCustomer(username , password) != null){
                 // If the login has been successful.
-                if(getVotedList(username) == null){
-                    // The user cookie does not exist in this machine.
-
-                    // GET THE COOKIE FROM REDIS
-
+                PollRedisDAO pollRedisDAO = new PollRedisDAO();
+                String key = pollRedisDAO.getPollCookieOfUser(username);
+                System.out.println(key);
+                if (  key != null){
+                    // If the user has already voted in some polls, we get the cookie from Redis.
+                    customerInfo customer = convertJsonToObject(key, customerInfo.class);
+                    assert customer != null;
+                    createUserCookie(customer);
+                    Session.setCustomerInfo(customer);
+                } else {
                     // Create the user cookie file if it doesn't exist.
                     customerInfo customer = new customerInfo(username, new ArrayList<>());
                     createUserCookie(customer);
                     Session.setCustomerInfo(customer);
+                    pollRedisDAO.createPollCookieOfUser(username, customer.toString());
 
-                    if(false){
-                        // IF REDIS DOES NOT CONTAIN ANY COOKIE, THEN WE INSERT IT.
-                    }
-
-                }else{
-                    Session.setCustomerInfo(Objects.requireNonNull(getVotedList(username)));
                 }
 
                 errorLabel.setText("");
