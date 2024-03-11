@@ -202,12 +202,14 @@ public class loginPage {
 
         }
     }
+
+    /**
+     * This function open the registration page.
+     */
     private void openRegister() {
-        //open registration page
+        // The user is not registered, so we open the registration page.
         registerPage registerPage = new registerPage(beansBetGUI);
-
         beansBetGUI.getRoot().setTop(registerPage.getHeader());
-
         beansBetGUI.getRoot().setCenter(registerPage.getContent());
     }
 }

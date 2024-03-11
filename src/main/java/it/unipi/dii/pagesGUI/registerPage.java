@@ -329,7 +329,6 @@ public class registerPage{
 
             if(b){
                 customerInfo customer = new customerInfo(username, new ArrayList<>());
-                List<customerVotedPollVoice> voices = new ArrayList<>();
                 createUserCookie(customer);
                 Session.setCustomerInfo(customer);
                 additionalLabels.get(9).setText(" ");

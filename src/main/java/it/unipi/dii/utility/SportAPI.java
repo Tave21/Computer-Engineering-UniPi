@@ -28,15 +28,15 @@ public class SportAPI {
      * @return The list of matches updates of the 5 european competitions (Italy, Germany, France, UK and Spain).
      */
     public static List<Match> getNewMatchesUpdates() {
-        List<Match> a = getleague("SA");
+        List<Match> a = getLeague("SA");
         List<Match> ret = new ArrayList<>(a);
-        a = getleague("PL");
+        a = getLeague("PL");
         ret.addAll(a);
-        a = getleague("PD");
+        a = getLeague("PD");
         ret.addAll(a);
-        a = getleague("FL1");
+        a = getLeague("FL1");
         ret.addAll(a);
-        a = getleague("BL1");
+        a = getLeague("BL1");
         ret.addAll(a);
         return ret;
     }
@@ -48,7 +48,7 @@ public class SportAPI {
      * @return The list of matches updates of the 5 european competitions (Italy, Germany, France, UK and Spain).
      */
 
-    public static List<Match> getleague(String leagueName) {
+    public static List<Match> getLeague(String leagueName) {
         LocalDate dateFrom = getCurrentDate().minusDays(1);
         LocalDate dateTo = dateFrom.plusDays(15);
         return getApiContent("https://api.football-data.org/v4/competitions/" + leagueName + "/matches/?dateFrom=" + dateFrom + "&dateTo=" + dateTo, leagueName);

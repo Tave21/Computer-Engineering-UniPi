@@ -28,8 +28,8 @@ public class addToSlipPage {
     }
 
     public  StackPane getContent(String concat) {
-
-        /*//TEST FOR LIVE MATCH ADDED TO A SLIP CONSISTENCY
+        /*
+        //TEST FOR LIVE MATCH ADDED TO A SLIP CONSISTENCY
         List<Match> ml = new ArrayList<>();
         MatchMongoDBDAO c = new MatchMongoDBDAO();
         c.openConnection();
@@ -108,7 +108,7 @@ public class addToSlipPage {
         return new StackPane(scrollPane);
     }
 
-    protected VBox createNewSlip(String concatt) {
+    protected VBox createNewSlip(String concat) {
         //creation of a column for the slips
         VBox newSlip = new VBox();
         newSlip.getStyleClass().addAll("form", "form-container");
@@ -122,7 +122,7 @@ public class addToSlipPage {
         addButton.getStyleClass().add("right-buttons");
 
         Region spacingRegion = new Region();
-        HBox.setHgrow(spacingRegion, Priority.ALWAYS);  // seconda label a destra
+        HBox.setHgrow(spacingRegion, Priority.ALWAYS);  // The second label to the right.
         HBox.setMargin(spacingRegion, new Insets(0, 0, 0, 55));
 
         Region bottomSpacer = new Region();
@@ -144,7 +144,7 @@ public class addToSlipPage {
                 slip.setCreationDate(getCurrentInstantString());
                 slip.setUsername(Session.getUsername());
                 slip.setBetAmount(2);
-                String[] values = concatt.split("_");
+                String[] values = concat.split("_");
 
                 //access to single values
                 String value1 = values[0]; // "1X"
@@ -257,7 +257,7 @@ public class addToSlipPage {
             HBox.setHgrow(spacingRegion, Priority.ALWAYS);  // seconda label a destra
             HBox.setMargin(spacingRegion, new Insets(0, 0, 0, 55));
 
-            //create an horizontal line for each match-multiplier
+            //create a horizontal line for each match-multiplier
             HBox matchRow = new HBox(matchLabel, spacingRegion, multiplierLabel);
             matchRow.setAlignment(Pos.CENTER);
             matchRow.setSpacing(10);

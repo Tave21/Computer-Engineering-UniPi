@@ -159,7 +159,7 @@ public class navBar {
                             }
                         }
                     }
-                    isFirstLabel = false;   //we are not in the first lable anymore
+                    isFirstLabel = false;   //we are not in the first label anymore.
                 }
             }
         }
@@ -198,35 +198,37 @@ public class navBar {
         return isGreen;
     }
 
-    //handle the navigation between all the labels in the menu
+    // Handle the navigation between all the labels in the menu
     private void handleNavigation(Label selectedLabel, String section, int type) {
 
         boolean isFirstLabel = true;
 
         for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()) {
             if (node instanceof Label currentLabel) {
-                //the current label in the for loop
-                //we recognize the first label (home)
+                // The current label in the for loop
+                // we recognize the first label (home)
                 if (isFirstLabel) {
-                    //if the selected label by the user is not the first (home), the home logo must be white
+                    // If the selected label by the user is not the first (home),
+                    // the home logo must be white.
                     if (!currentLabel.equals(selectedLabel)) {
                         assignImageToLabel(currentLabel, "/image/home.png");
                     } else {
-                        //if the selected label by the user is the first (home), the home logo must be green
+                        // If the selected label by the user is the first (home),
+                        // the home logo must be green.
                         assignImageToLabel(currentLabel, "/image/home1.png");
                     }
-                    isFirstLabel = false;   //we are not in the first lable anymore
+                    isFirstLabel = false; // We are not in the first label anymore.
                 }
             }
         }
         for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()) {
             if (node instanceof Label) {
-                //necessary, otherwise, the label is still green
+                // Necessary, otherwise, the label is still green
                 ((Label) node).getStyleClass().remove("selected-label");
                 node.getStyleClass().add("menu-label");
             }
         }
-        //we add the class selected-label,to the selected one by the user
+        // We add the class selected-label,to the selected one by the user.
         selectedLabel.getStyleClass().add("selected-label");
 
         navigate(section, type);
@@ -262,7 +264,8 @@ public class navBar {
             HBox originalHeader = createHeader(header, 0);
             VBox homeContent = beansBetGUI.createHomeContent();
 
-            //set the navigation bar and content in the BorderPane of BeansBetGUI
+            // Set the navigation bar and content
+            // in the BorderPane of BeansBetGUI.
             beansBetGUI.getRoot().setTop(originalHeader);
             beansBetGUI.getRoot().setCenter(homeContent);
         } else if (type == 2) {
@@ -328,7 +331,6 @@ public class navBar {
 
             rightButtons.getChildren().add(logoutButton);
         } else if (type == 0) {
-            //box globale di entrambi i bottoni
             Button loginButton = createButton("LOG IN");
             loginButton.setOnMouseClicked(event -> handleLogin());
             Button registerButton = createButton("REGISTER");
@@ -361,7 +363,7 @@ public class navBar {
         loginPage loginPage = new loginPage(beansBetGUI);
 
         HBox loginBar = loginPage.getHeader();
-        //get login page content
+        // Get the login page content.
         VBox loginContent = loginPage.getContent();
 
         beansBetGUI.getRoot().setTop(loginBar);
