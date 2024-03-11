@@ -109,7 +109,7 @@ public class pollsPage {
             for (Poll p : polllist) {
                 String votedCaption;
                 if(registered){
-                    System.out.println("Username: " + Session.getUsername());
+                    System.out.println("Username: " + Session.getCustomerInfo());
                     votedCaption = Session.getCustomerInfo().OptionPresent(p.getPollID());
                 }else{
                     votedCaption = null;
@@ -261,7 +261,7 @@ public class pollsPage {
             }
 
             if (oldCaptionProgressBar == null) {
-                // Take the old value of the progress bar
+                // Take the old value of the progress bar.
                 double oldValue= 0;
                 int index = 0;
                 for (int i = 0; i < p.getOptions().size();i++){
@@ -272,7 +272,6 @@ public class pollsPage {
                         break;
                     }
                 }
-
                 pRedis.updatePollOptionVotes(pollID, new pollOption(caption), true);
                 sum++;
                 oldValue++;
@@ -289,14 +288,10 @@ public class pollsPage {
                     }
                 }
 
-                // The suer has not voted in this poll yet (Ex-Novo).
             } else {
-
                 // The user already voted in this poll.
                 if (!oldVotedCaption.equals(caption)) {
                     // The voted option has changed.
-
-                    //oldCaptionProgressBar = getCaptionProgressBar(oldVotedCaption);
                     double oldValue = 0 ;
                     int index = 0;
                     for (int i = 0; i < p.getOptions().size();i++){
@@ -337,18 +332,14 @@ public class pollsPage {
                             pollProgressBar.getPercentageLabel().setText(String.format("%.0f%%", percentage2));
                         }
                     }
-
                     pRedis.updatePollOptionVotes(pollID, new pollOption(caption), true);
-
                 } else {
-                    
                     return;
                 }
             }
 
             Session.getCustomerInfo().AddOption(new customerVotedPollVoice(pollID,caption));
             createUserCookie(Session.getCustomerInfo());
-
 
             for (int i = 0; i < p.getOptions().size(); i++) {
                 if (Objects.equals(p.getOptions().get(i).getOptionCaption(), caption)) {
