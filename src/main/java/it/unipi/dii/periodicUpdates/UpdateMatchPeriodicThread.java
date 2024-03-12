@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 public class UpdateMatchPeriodicThread extends TimerTask {
     /**
-     * Program that launches the update of the matches.
+     * Script that launches the periodic update of the matches in MongoDB.
      */
     @Override
     public void run() {

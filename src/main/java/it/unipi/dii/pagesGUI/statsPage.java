@@ -116,8 +116,8 @@ public class statsPage {
         switch (title) {
             case "Most appreciated teams":
             case "Most appreciated  players":
-            case "Top betted teams by users":
-                //they use the same code
+            case "Top bet teams by users":
+                // They use the same code.
                 form.getChildren().add(titleLabel);
                 for (int i = 0; i < array.size(); i++) {
                     HBox regionBox = createTeamBox(array.get(i), i);
@@ -202,7 +202,7 @@ public class statsPage {
         return regionBox;
     }
     private Label colorLeagueLabel(Label label) {
-        livePage liveInstance = new livePage(); //create instance of Live
+        livePage liveInstance = new livePage(); // Create an instance of Live.
         return liveInstance.colorLeagueLabel(label);
     }
 }

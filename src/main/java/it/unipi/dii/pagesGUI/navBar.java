@@ -230,7 +230,6 @@ public class navBar {
         }
         // We add the class selected-label,to the selected one by the user.
         selectedLabel.getStyleClass().add("selected-label");
-
         navigate(section, type);
     }
 
@@ -238,8 +237,7 @@ public class navBar {
         if (type == 0) {
             switch (section) {
                 case "":
-                    VBox homeContent = beansBetGUI.createHomeContent();
-                    beansBetGUI.getRoot().setCenter(homeContent);
+                    beansBetGUI.getRoot().setCenter(beansBetGUI.createHomeContent());
                     break;
                 case "Live":
                     livePage livePage = new livePage();
@@ -259,7 +257,6 @@ public class navBar {
                     break;
             }
         } else if (type == 1) {
-
             HBox header = new HBox();
             HBox originalHeader = createHeader(header, 0);
             VBox homeContent = beansBetGUI.createHomeContent();
@@ -271,8 +268,7 @@ public class navBar {
         } else if (type == 2) {
             switch (section) {
                 case "":
-                    VBox homeContent = beansBetGUI.createHomeContent();
-                    beansBetGUI.getRoot().setCenter(homeContent);
+                    beansBetGUI.getRoot().setCenter(beansBetGUI.createHomeContent());
                     break;
                 case "Live":
                     livePage livePage = new livePage();
@@ -302,8 +298,7 @@ public class navBar {
         } else if (type == 3) {
             switch (section) {
                 case "":
-                    VBox homeContent = beansBetGUI.createHomeContent();
-                    beansBetGUI.getRoot().setCenter(homeContent);
+                    beansBetGUI.getRoot().setCenter(beansBetGUI.createHomeContent());
                     break;
                 case "Add Element":
                     addElement addPage = new addElement();
@@ -349,37 +344,28 @@ public class navBar {
     }
 
     private void handleLogout() {
-
         HBox header = new HBox();
         HBox originalHeader = createHeader(header, 0);
         VBox homeContent = beansBetGUI.createHomeContent();
-
         beansBetGUI.getRoot().setTop(originalHeader);
         beansBetGUI.getRoot().setCenter(homeContent);
     }
 
     private void handleLogin() {
-
         loginPage loginPage = new loginPage(beansBetGUI);
-
         HBox loginBar = loginPage.getHeader();
         // Get the login page content.
         VBox loginContent = loginPage.getContent();
-
         beansBetGUI.getRoot().setTop(loginBar);
-
         beansBetGUI.getRoot().setCenter(loginContent);
     }
 
     private void handleRegister() {
-
         registerPage registerPage = new registerPage(beansBetGUI);
         HBox registerBar = registerPage.getHeader();
-
-        //get login page register content
+        // Get thr login page register content.
         VBox registerContent = registerPage.getContent();
         beansBetGUI.getRoot().setTop(registerBar);
-
         beansBetGUI.getRoot().setCenter(registerContent);
     }
 }

@@ -39,7 +39,6 @@ public class registerPage{
         navBar buttonHeader = new navBar(beansBetGUI);
         HBox header = new HBox();
         header = buttonHeader.createHeader(header, 1);
-
         return header;
     }
     public VBox getContent() {
@@ -80,7 +79,7 @@ public class registerPage{
         TextField usernameField = new TextField();
         usernameField.setMaxWidth(200);
 
-        //input fields for password and username
+        // Get the value of the input fields for password and username.
         PasswordField passwordField = new PasswordField();
         passwordField.setMaxWidth(200);
 
@@ -97,10 +96,10 @@ public class registerPage{
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("matches_scroll");
 
-        //remove focus from inputBox clicking anywhere
+        // Remove focus from inputBox clicking anywhere.
         registerContent.setOnMouseClicked(e -> registerContent.requestFocus());
 
-        // remove focus from inputBox
+        // Remove focus from inputBox.
         Platform.runLater(registerContent::requestFocus);
 
         return new VBox(scrollPane);
@@ -111,13 +110,13 @@ public class registerPage{
         checkBox.getStyleClass().add("checkbox");
         checkBox.setGraphic(new Region());
 
-        //disables the entire clickable area of the text part of the CheckBox
+        // Disables the entire clickable area of the text part of the CheckBox.
         checkBox.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
             if (e.getTarget() instanceof Text || e.getTarget() == checkBox || e.getTarget() == checkBox.getGraphic()) {
                 e.consume();
             }
         });
-        //handle single selection manually
+        // Handle the single selection manually.
         checkBox.setOnAction(event -> {
             if (checkBox.isSelected()) {
                 if (checkBox.getText().equals("Female")) {
@@ -199,7 +198,8 @@ public class registerPage{
         VBox.setMargin(label, new Insets(0, 140, 0, 0));
 
         inputBox.setMaxWidth(maxWidth);
-        //if the inputVBox is null, is the case of other input, if it is not null is the checkbox
+        // If the inputVBox value is null, is the case of other input.
+        // If the inputVBox value is not null is the checkbox.
 
         if(inputField != null) {
             inputField.setMaxWidth(maxWidth);
@@ -329,7 +329,7 @@ public class registerPage{
 
             if(b){
                 customerInfo customer = new customerInfo(username, new ArrayList<>());
-                createUserCookie(customer); // Create a new cookie.
+                // createUserCookie(customer); // Create a cookie file.
                 Session.setCustomerInfo(customer);
                 additionalLabels.get(9).setText(" ");
                 openRegister();

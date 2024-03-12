@@ -183,11 +183,10 @@ public class pollsPage {
             HBoxes.add(createOptionBox(pollID , options.get(i).getOptionCaption() , RadioButtons.get(i), Perc.get(i)));
         }
 
-        // If is the case of registered user, the user can vote.
         if(registered && active) {
             double total = sum;
-
-            //add listener to update the ProgressBar when an option is selected
+            // If is the case of registered user, the user can vote.
+            // Add a listener to update the ProgressBar when an option of a Poll is selected.
             optionGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
                 for(int i = 0 ; i < options.size() ; i++) {
                     String caption = RadioButtons.get(i).getText();
@@ -240,9 +239,7 @@ public class pollsPage {
      */
 
     private void updateOptionBox(HBox hbox, RadioButton option, double sum, String caption,int pollID) {
-
         if (option.isSelected()) {
-
             Poll p = new Poll();
             // We get from Redis the poll at which the user has voted.
             PollRedisDAO pRedis = new PollRedisDAO();
@@ -311,8 +308,7 @@ public class pollsPage {
                     p.getOptions().get(index).setOptionVotes((int)oldValue);
 
                     oldCaptionProgressBar.setProgress(oldValue / sum);
-
-                    double percentage = Math.round(oldCaptionProgressBar.getProgress() * 100);
+                    final double percentage = Math.round(oldCaptionProgressBar.getProgress() * 100);
 
                     oldValue = 0;
                     index = 0;
@@ -343,7 +339,7 @@ public class pollsPage {
             }
 
             Session.getCustomerInfo().AddOption(new customerVotedPollVoice(pollID,caption));
-            createUserCookie(Session.getCustomerInfo());
+            // createUserCookie(Session.getCustomerInfo());
             PollRedisDAO pRedis2 = new PollRedisDAO();
             pRedis2.createPollCookieOfUser(Session.getCustomerInfo().getUsername(), Session.getCustomerInfo().toString());
 

@@ -357,12 +357,11 @@ public class slipsCartPage {
 
         payButton.setUserData(val);
         double retrievedValue = (double) payButton.getUserData();
-        //we set the betAmount
         totalValueLabelList.get(index).setMultiplierProduct(retrievedValue);
 
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("right-buttons");
-        //at the beginning, the total amount is visualized in the cart
+        // At the beginning, the total amount is visualized in the cart.
         int betAmount = Integer.parseInt(amountField.getText());
         updateTotalValueLabel(totalValueLabelList.get(index).getTotalLabel(), betAmount, retrievedValue);
         HBox.setMargin(amountRow, new Insets(5, 5, 5, 5));
@@ -371,16 +370,14 @@ public class slipsCartPage {
 
         amountField.textProperty().addListener((observable, oldValue, newValue) -> {
             String regex = "^(2[0-9]?|[3-9][0-9]?|1[0-9]{1,2}|200)$";
-            boolean isMatch = amountField.getText().matches(regex);
             int field;
-            if(isMatch){
+            if(amountField.getText().matches(regex)){
                 field = Integer.parseInt(amountField.getText());
             }else{
                 field = 0;
             }
             int index1 = getPositionById(totalValueLabelList, id);
             double retrievedValue1 = totalValueLabelList.get(index1).getMultiplierProduct();
-            //System.out.println("prodotto ricavato quando cambia l'amount: "+ totalValueLabelList.get(index1).getMultiplierProduct());
             updateTotalValueLabel(totalValueLabelList.get(index1).getTotalLabel(), field, retrievedValue1);
         });
 
@@ -402,36 +399,32 @@ public class slipsCartPage {
         return amountColumn;
     }
     private void handlePayButtonClick(TextField amountField, Button payButton,  Label errorLabel, Integer id) {
-        //we get the new index of the correct label
+        // We get the new index of the correct label.
         int index = getPositionById(totalValueLabelList, id);
         Label totalValueLabel = totalValueLabelList.get(index).getTotalLabel();
         double retrievedValue = totalValueLabelList.get(index).getMultiplierProduct();
         String amountText = amountField.getText();
         Double amount = 0.0;
-        /*
-        if amount is not empty convert in Double otherwise enter inside the if
-        it creates an error if we convert the amount if the user doesn't insert a value in the field
-        regular expression to limit a value between 2 and 200
-        */
 
-        String regex = "^(2[0-9]?|[3-9][0-9]?|1[0-9]{1,2}|200)$";
+        // Regular expression to limit the betAmount value between 2 and 200 euros.
+        final String regex = "^(2[0-9]?|[3-9][0-9]?|1[0-9]{1,2}|200)$";
+
         boolean isMatch = amountText.matches(regex);
-        if (!amountText.isEmpty() && isMatch) {
-            amount = Double.parseDouble(amountText);
+        if (!amountText.isEmpty() && isMatch) { // If the amount is not empty.
+            amount = Double.parseDouble(amountText); // Convert in a Double object.
         }
 
-        System.out.println("amount = "+ amount+ " userCredit = "+ userCredit);
         if (!isMatch) {
-            errorLabel.setText("Enter a number between 2 and 200");
+            errorLabel.setText("Enter a number between 2 and 200:");
             errorLabel.getStyleClass().add("error");
         }else if(amount > userCredit) {
-            errorLabel.setText("Insufficient Credit");
+            errorLabel.setText("Insufficient Credit!");
             errorLabel.getStyleClass().add("error");
 
         }else {
             errorLabel.setText("");
             updateTotalValueLabel(totalValueLabel, Integer.parseInt(amountText), retrievedValue);
-            // remove slips from column "Slips' Cart"
+            // Remove the slips from column "Slips' Cart".
             Node currentParent = payButton.getParent();
             Node currentParent1 = payButton.getParent();
             while (currentParent != null && !(currentParent instanceof VBox)) {
@@ -446,33 +439,30 @@ public class slipsCartPage {
                 ((VBox) parentVBox.getParent()).getChildren().remove(parentVBox);
 
                 if ( l == 2) {
-                    Label emptyCartLabel = new Label("The are not slips in the cart");
+                    Label emptyCartLabel = new Label("The are any slips in the cart!");
                     emptyCartLabel.getStyleClass().add("input-label");
                     parentVBox1.getChildren().add(emptyCartLabel);
                 }
 
             }
-            userCredit = userCredit - amount;
+            userCredit = userCredit - amount; // Compute the new user's credit.
             valueLabel.setText(Double.toString(userCredit));
 
             SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
 
             CustomerMongoDBDAO customerMongoDBDAO= new CustomerMongoDBDAO();
             customerMongoDBDAO.openStrictConnection();
-            boolean t = customerMongoDBDAO.pay(Session.getUsername(), amount); //remove credit from user
-            if(t){
-                boolean v = slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount );
-                if(!v){
+            if(customerMongoDBDAO.pay(Session.getUsername(), amount)){
+                // Make the payment operation in MongoDB.
+                if(!slipRedisDAO.sendConfirmedSlipToMongo(Session.getUsername(),id,amount )){
                     errorLabel.setText("Error processing the payment, please refresh the page and try again");
                     errorLabel.getStyleClass().add("error");
                 }
             }
             customerMongoDBDAO.closeConnection();
 
-            //remove the total label from the list
-            int index1 = getPositionById(totalValueLabelList, id);
-            totalValueLabelList.remove(index1);
-
+            // Remove the total label from the list.
+            totalValueLabelList.remove(getPositionById(totalValueLabelList, id));
         }
     }
 
@@ -480,7 +470,7 @@ public class slipsCartPage {
         String amountText = amountField.getText();
 
         if (amountText.isEmpty()  || amountText.equals("0") || amountText.equals("1")) {
-            errorLabel.setText("Enter a number between 2 and 500");
+            errorLabel.setText("Enter a number between 2 and 500.");
             errorLabel.getStyleClass().add("error");
         } else {
             errorLabel.setText("");
@@ -493,7 +483,7 @@ public class slipsCartPage {
         }
     }
     private void handleDeleteButtonClick(Button deleteButton, Integer id) {
-        // remove slips from column "Slips' Cart"
+        // Remove the slips from column "Slips' Cart".
         Node currentParent = deleteButton.getParent();
         while (currentParent != null && !(currentParent instanceof VBox)) {
             currentParent = currentParent.getParent().getParent();
@@ -501,7 +491,7 @@ public class slipsCartPage {
 
         if (currentParent != null) {
             VBox parentVBox = (VBox) currentParent;
-            //remove the slip from redis
+            // Remove the slip from Redis.
             SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
             slipRedisDAO.delete_Slip(Session.getUsername(), id);
 
@@ -520,8 +510,7 @@ public class slipsCartPage {
             ((VBox)parentVBox.getParent()).getChildren().remove( parentVBox);
         }
         // Remove the total label from the list.
-        int index = getPositionById(totalValueLabelList, id);
-        totalValueLabelList.remove(index);
+        totalValueLabelList.remove(getPositionById(totalValueLabelList, id));
     }
     private void updateTotalValueLabel(Label totalValueLabel, int newValue, double multipliers) {
         Double calculatedValue = newValue * (multipliers);

@@ -18,10 +18,8 @@ import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
-import static it.unipi.dii.userCookie.usernameCookie.getVotedList;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
 
 public class loginPage {
@@ -157,18 +155,18 @@ public class loginPage {
             if(cs.authenticateCustomer(username , password) != null){
                 // If the login has been successful.
                 PollRedisDAO pollRedisDAO = new PollRedisDAO();
-                String key = pollRedisDAO.getPollCookieOfUser(username);
+                String key = pollRedisDAO.getPollCookieOfUser(username); // Get the user cookie from Redis.
                 System.out.println(key);
-                if (  key != null){
-                    // If the user has already voted in some polls, we get the cookie from Redis.
+                if (key != null){
+                    // The user already has a cookie in Redis.
                     customerInfo customer = convertJsonToObject(key, customerInfo.class);
                     assert customer != null;
-                    createUserCookie(customer);
+                    //createUserCookie(customer); // Create a cookie file.
                     Session.setCustomerInfo(customer);
                 } else {
-                    // Create the user cookie file if it doesn't exist.
+                    // The user does not have a cookie in Redis.
                     customerInfo customer = new customerInfo(username, new ArrayList<>());
-                    createUserCookie(customer);
+                    //createUserCookie(customer); // Create a cookie file.
                     Session.setCustomerInfo(customer);
                     pollRedisDAO.createPollCookieOfUser(username, customer.toString());
 
