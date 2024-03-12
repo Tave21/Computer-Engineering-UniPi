@@ -8,6 +8,7 @@ public class generationMainIndexes {
         deactivateMongoDBNotifications();
 
         MatchMongoDBDAO ms = new MatchMongoDBDAO();
+        ms.openConnection();
 
         System.out.println("Start the generation of the indexes.");
 
