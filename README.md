@@ -28,3 +28,7 @@ BeansBet is a betting application that enables users to place bets on their favo
 4. **Periodic Updates**
     - In "periodicUpdates" folder the java file `periodicUpdates` executes two threads: the first every minute sends request to the API for updating matches status and for adding not yet inserted match, the second every 5 hours checks if there are some expired polls (so when current time is greater than ActivationDate + 1 day ), they will be deleted in Redis and added to MongoDB in polls collection.
 
+5. **Admin**
+   - If you want to test Admin functionalities there is a default admin: username "save@gmail.com", password "save". Admins can only be added manually to the database for security issues.
+
+
