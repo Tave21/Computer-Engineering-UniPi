@@ -169,7 +169,6 @@ public class loginPage {
                     //createUserCookie(customer); // Create a cookie file.
                     Session.setCustomerInfo(customer);
                     pollRedisDAO.createPollCookieOfUser(username, customer.toString());
-
                 }
 
                 errorLabel.setText("");

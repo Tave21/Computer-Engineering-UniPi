@@ -11,13 +11,16 @@ public class periodicUpdates {
         launchPeriodicUpdate(); // launch of the update function.
     }
 
-    /**
-     * Create a thread that call the update matches function every 60 seconds.
-     */
     private static void launchPeriodicUpdate(){
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        UpdateMatchPeriodicThread updateTask = new UpdateMatchPeriodicThread();
-        executorService.scheduleAtFixedRate(updateTask, 0, 1, TimeUnit.MINUTES);
+
+        // Every minute, the system checks if there are any matches updates.
+        UpdateMatchPeriodicThread updateMatchTask = new UpdateMatchPeriodicThread();
+        executorService.scheduleAtFixedRate(updateMatchTask, 0, 1, TimeUnit.MINUTES);
+
+        // Every 5 hours, the system checks if some poll has to be deleted from Redis.
+        UpdatePollPeriodicThread updatePollTask = new UpdatePollPeriodicThread();
+        executorService.scheduleAtFixedRate(updatePollTask, 0, 1, TimeUnit.HOURS);
     }
 }
 

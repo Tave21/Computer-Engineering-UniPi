@@ -11,10 +11,12 @@ public class UpdateMatchPeriodicThread extends TimerTask {
     @Override
     public void run() {
         MatchMongoDBDAO ml = new MatchMongoDBDAO();
+
         try {
-            ml.updateMatches();
+           ml.updateMatches();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 }

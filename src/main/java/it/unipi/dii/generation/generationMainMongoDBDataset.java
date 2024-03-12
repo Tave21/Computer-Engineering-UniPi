@@ -28,7 +28,7 @@ import static it.unipi.dii.utility.WriteJsonToFile.deleteFile;
 import static it.unipi.dii.utility.WriteJsonToFile.writeToJsonFile;
 import static it.unipi.dii.utility.randomGeneration.*;
 
-public class Main {
+public class generationMainMongoDBDataset {
     public static final String[] italianProvinces = {
             "Agrigento", "Alessandria", "Ancona", "Aosta", "Arezzo", "Ascoli Piceno", "Asti", "Avellino", "Bari",
             "Barletta-Andria-Trani", "Belluno", "Benevento", "Bergamo", "Biella", "Bologna", "Bolzano", "Brescia",
@@ -46,7 +46,7 @@ public class Main {
     };
 
     public static final String[] livingQuarters = {
-            "Via", "Piazza", "Via appendice", "Locale", "Rione"
+            "Via", "Piazza", "Via appendice", "Locale", "Rione" , "Monte"
     };
 
     public static final String[] eMails = {
@@ -436,7 +436,6 @@ public class Main {
         writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
 
         System.out.println("Slips insertion ended.");
-
     }
 }
 

@@ -110,10 +110,13 @@ public class SportAPI {
 
                 JSONObject match = matches.getJSONObject(i);
 
-                // 2023-12-26T15:21:05Z
                 Instant lastUpdated = stringToTimestamp(match.getString("lastUpdated"));
 
-                if (lastUpdated != null && !Objects.equals(lastUpdated.toString(), "null")) {
+                if (
+                        lastUpdated != null &&
+                                !Objects.equals(lastUpdated.toString(), "null") &&
+                                !Objects.equals(lastUpdated.toString(), "NULL")
+                ) {
                     // lastUpdated.compareTo(getCurrentInstant().minusSeconds(65)) > 0
                     if (true) {
                         // If the update is "new enough".

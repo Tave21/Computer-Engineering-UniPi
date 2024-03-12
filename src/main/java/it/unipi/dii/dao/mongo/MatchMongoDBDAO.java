@@ -1,4 +1,5 @@
 package it.unipi.dii.dao.mongo;
+
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -24,6 +25,7 @@ import static it.unipi.dii.utility.SportAPI.getNewMatchesUpdates;
 public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     /**
      * Insert a new match in the database.
+     *
      * @param match The match to add
      */
     @Override
@@ -37,6 +39,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
     /**
      * Delete matches from the database depending on the query.
+     *
      * @param query Query for select the matches to delete.
      */
 
@@ -48,7 +51,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
     /**
      * @param newMatch The new match to add.
-     * @param mode If true, the match is inserted even if the match is not into the database, otherwise the replacement is done only if a related match is in the database.
+     * @param mode     If true, the match is inserted even if the match is not into the database, otherwise the replacement is done only if a related match is in the database.
      * @return The id of the replaced match.
      */
 
@@ -61,14 +64,13 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
             Integer id = getID(newMatch);
             if (id >= 0) {
                 newMatch.setMatchID(id);
-                match_coll.replaceOne(getAndCondition(newMatch , "date"), ObjectToDocumentConverter(newMatch));
+                match_coll.replaceOne(getAndCondition(newMatch, "date"), ObjectToDocumentConverter(newMatch));
             }
             return id;
         }
     }
 
     /**
-     *
      * @return The biggest value of MatchID from MongoDB.
      */
 
@@ -86,7 +88,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
         AggregateIterable<Document> result = this.mongoDB.getCollection("matches").aggregate(pipeline);
         try {
             return Objects.requireNonNull(result.first()).getInteger("matchID");
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             return -1;
         }
     }
@@ -98,7 +100,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     @Override
     public Integer getID(Match match) {
         if (match.getMatchID() == null || match.getMatchID() == -1) {
-            List<Match> ml = getMatches(getAndCondition(match , "date"), new Document("_id", 0));
+            List<Match> ml = getMatches(getAndCondition(match, "date"), new Document("_id", 0));
             if (ml.isEmpty()) {
                 return -1;
             } else {
@@ -109,16 +111,16 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
         }
     }
 
-    private Document getAndCondition(Match m , String mode) {
+    private Document getAndCondition(Match m, String mode) {
         List<Document> andConditions = new ArrayList<>();
 
-        Document condition = null;
+        Document condition;
 
-        if(Objects.equals(mode, "competition")){
+        if (Objects.equals(mode, "competition")) {
             condition = new Document("competition_id", new Document("$eq", m.getCompetition_id()));
-        }else if(Objects.equals(mode, "date")){
+        } else if (Objects.equals(mode, "date")) {
             condition = new Document("matchDate", new Document("$eq", m.getMatchDate()));
-        }else{
+        } else {
             return new Document("$eq", m.getCompetition_id());
         }
 
@@ -154,12 +156,12 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     // The match must be canceled from MongoDB.
                     if (matchAlreadyPresent(ml.get(i))) {
                         sDAO.removeAllBetsOfMatch(ml.get(i).getMatchID()); // And we must remove all bets of this match.
-                        removeMatch(getAndCondition(ml.get(i) , "date"));
+                        removeMatch(getAndCondition(ml.get(i), "date"));
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "POSTPONED")) {
                     // The match has been postponed.
-                    List<Match> mlist = getMatches(getAndCondition(ml.get(i) , "competition"), new Document("_id", 0));
-                    if(mlist.isEmpty()){
+                    List<Match> mlist = getMatches(getAndCondition(ml.get(i), "competition"), new Document("_id", 0));
+                    if (mlist.isEmpty()) {
                         continue;
                     }
                     Integer index = nearestMatch(ml.get(i), mlist);
@@ -168,7 +170,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     ml.get(i).setMultipliers(mlist.get(index).getMultipliers());
                     ml.get(i).setStatus("POSTPONED");
                     replaceMatch(ml.get(i), true);
-                    sDAO.updateBetsMatchPostponed(ml.get(i).getMatchID() , ml.get(i).getMatchDate());
+                    sDAO.updateBetsMatchPostponed(ml.get(i).getMatchID(), ml.get(i).getMatchDate());
 
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.
@@ -179,31 +181,34 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                 } else if (Objects.equals(ml.get(i).getStatus(), "IN_PLAY") || Objects.equals(ml.get(i).getStatus(), "PAUSED")) {
                     // Update of the match In MongoDB, because the match is started, but is not finished yet
 
-                    List<Match> mlist = this.getMatches(getAndCondition(ml.get(i) , "date"), new Document("_id", 0));
-                    if(mlist.isEmpty()){
+                    List<Match> mlist = this.getMatches(
+                            getAndCondition(ml.get(i), "date"),
+                            new Document("_id", 0)
+                    );
+
+                    if (mlist.isEmpty()) {
                         continue;
                     }
-
-                    //AggregateIterable<Document> result = match_coll.aggregate(Pipeline);
 
                     for (Match m : mlist) {
                         if (m != null) {
                             String status = m.getStatus();
-                            if(Objects.equals(status, "TIMED")){
+
+                            if (Objects.equals(status, "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
                                 // Make the Redis query.
                                 SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                                 List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
 
                                 // Take in a big slip list all the slip of users in redis
-                                for (String username : usernameList){
+                                for (String username : usernameList) {
                                     List<Slip> slipList = slipRedisDAO.getListFromUser(username);
                                     for (Slip slip : slipList) {
                                         if (slip.getSlipID() != null) {
                                             // Check where match appears in the bet list of the slip.
                                             for (int j = 0; j < slip.findBetsList().size(); j++) {
                                                 if (Objects.equals(slip.findBetsList().get(j).getTeamAway(), ml.get(i).getTeam_away()) && Objects.equals(slip.findBetsList().get(j).getTeamHome(), ml.get(i).getTeam_home())) {
-                                                    if(slip.findBetsList().size()>1){
+                                                    if (slip.findBetsList().size() > 1) {
                                                         slipRedisDAO.deleteBetFromSlip(username, slip.getSlipID(), slip.findBetsList().get(j));
                                                     } else {
                                                         // If it's the last one.
@@ -217,6 +222,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                 }
 
                             }
+
                         }
                     }
                     ml.get(i).setMatchID(mlist.get(0).getMatchID());
@@ -228,7 +234,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
-     * @param m The target match.
+     * @param m  The target match.
      * @param ml The list of matches.
      * @return The index of the match in the list with the nearest matchDate of the target match.
      */
@@ -268,14 +274,13 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
         try {
             Objects.requireNonNull(docs.first()).getInteger("matchID");
             return false;
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             return true;
         }
     }
 
     /**
-     *
-     * @param query Match criteria of the matches.
+     * @param query      Match criteria of the matches.
      * @param projection Attribute to project.
      * @return The list of match that respect the criteria.
      */
@@ -287,14 +292,13 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
         try (MongoCursor<Document> cursor = match_coll.find(query).projection(projection).iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
-                s_list.add(convertJsonToObject(convertDocumentToJson(document) , Match.class));
+                s_list.add(convertJsonToObject(convertDocumentToJson(document), Match.class));
             }
         }
         return s_list;
     }
 
     /**
-     *
      * @param matchID The target match id.
      * @return The related match object.
      */
