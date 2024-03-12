@@ -14,6 +14,9 @@ import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
 import static it.unipi.dii.utility.DateTimes.getCurrentInstantString;
 import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 
+
+
+
 public class insert_TIMED_Matches_and_place_slip {
     public static void main(String[] args) {
         deactivateMongoDBNotifications();

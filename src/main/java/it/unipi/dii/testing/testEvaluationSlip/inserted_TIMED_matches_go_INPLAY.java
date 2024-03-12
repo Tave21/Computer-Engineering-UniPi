@@ -9,6 +9,14 @@ import java.util.List;
 
 import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 
+
+//USED TO:
+//- check if status of a slip is correctly updated when a match goes from "TIMED" to "IN_PLAY" and then to "FINISHED".
+//- check if non updating match page and try to place a bet on a in_play match, the gui rejects the bet
+//- check if a bet is added to slip cart and the slip is correctly updated (deleting that bet) when a match goes from "TIMED" to "IN_PLAY" and then to "FINISHED".
+
+//in order to do the last two check you have to add a temporary slip on the match between "test team 5" and "test team 6"
+//BEFORE RUNNING THIS SCRIPT
 public class inserted_TIMED_matches_go_INPLAY {
     public static void main(String[] args) throws IOException {
         deactivateMongoDBNotifications();

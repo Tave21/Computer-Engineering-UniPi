@@ -172,6 +172,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     replaceMatch(ml.get(i), true);
                     sDAO.updateBetsMatchPostponed(ml.get(i).getMatchID(), ml.get(i).getMatchDate());
 
+
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.
                     Integer id = replaceMatch(ml.get(i), false);

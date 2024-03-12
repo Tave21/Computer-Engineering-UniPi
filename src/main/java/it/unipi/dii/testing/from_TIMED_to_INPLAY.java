@@ -10,6 +10,7 @@ import java.util.List;
 import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
 import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 
+//USED TO CHECK IF MATCHES ARE SEEN IN LIVE PAGE
 public class from_TIMED_to_INPLAY {
     public static void main(String[] args) {
         // This script send three updates to Mongo where 3 previously inserted matches go to IN_PLAY.

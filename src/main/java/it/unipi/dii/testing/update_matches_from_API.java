@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 
+//USED TO RETRIEVE NEW MATCHES FROM API
 public class update_matches_from_API {
     public static void main(String[] args) {
         deactivateMongoDBNotifications();
