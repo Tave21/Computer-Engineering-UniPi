@@ -38,6 +38,8 @@ public class transitionsTests {
         int numMatchesNow = ms.getLastID();
         assertEquals(numMatchesNow , numMatchesInit + 1);
 
+        Match eprev = e;
+
         ml.clear();
         e = new Match();
         e.setStatus("CANCELED");
@@ -57,6 +59,13 @@ public class transitionsTests {
 
         numMatchesNow = ms.getLastID();
         assertEquals(numMatchesNow , numMatchesInit);
+
+        ml.clear();
+        ml = ms.getMatches(
+                ms.getAndCondition(eprev , "date"),
+                new Document("_id", 0L)
+        );
+        assertEquals(ml.size() , 0);
         ms.closeConnection();
     }
 
