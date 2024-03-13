@@ -111,7 +111,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
         }
     }
 
-    private Document getAndCondition(Match m, String mode) {
+    public Document getAndCondition(Match m, String mode) {
         List<Document> andConditions = new ArrayList<>();
 
         Document condition;
@@ -154,7 +154,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
                     // The match must be canceled from MongoDB.
-                    if (matchAlreadyPresent(ml.get(i))) {
+                    if (!matchAlreadyPresent(ml.get(i))) {
                         sDAO.removeAllBetsOfMatch(ml.get(i).getMatchID()); // And we must remove all bets of this match.
                         removeMatch(getAndCondition(ml.get(i), "date"));
                     }
@@ -171,7 +171,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     ml.get(i).setStatus("POSTPONED");
                     replaceMatch(ml.get(i), true);
                     sDAO.updateBetsMatchPostponed(ml.get(i).getMatchID(), ml.get(i).getMatchDate());
-
 
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.

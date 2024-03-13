@@ -20,6 +20,7 @@ module it.unipi.dii {
     requires com.google.gson;
     requires com.opencsv;
     requires json.simple;
+    requires junit;
 
     opens it.unipi.dii to javafx.fxml;
     exports it.unipi.dii;
