@@ -43,12 +43,7 @@ public class DateTimes {
      * @return An object Instant.
      */
     public static Instant stringToTimestamp(String dateString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-        try {
-            return Instant.from(formatter.parse(dateString));
-        } catch (Exception e) {
-            return null;
-        }
+        return Instant.parse(dateString);
     }
 
     /**
@@ -72,6 +67,29 @@ public class DateTimes {
     public static long differenceDays(String dateBefore, String dateAfter) {
         return differenceDays(Objects.requireNonNull(stringToDate(dateBefore)), Objects.requireNonNull(stringToDate(dateAfter)));
     }
+
+    /**
+     * @param instantBefore Previous timestamp.
+     * @param instantAfter  After timestamp.
+     * @return The difference in days between the two timestamps, if the result is negative then dateAfter is previous of dateBefore.
+     */
+
+    public static long differenceDays(Instant instantBefore, Instant instantAfter) {
+        long daysBetween = ChronoUnit.DAYS.between(instantBefore, instantAfter);
+        return Math.abs(daysBetween);
+    }
+
+    /**
+     * @param instantBefore Previous timestamp.
+     * @param instantAfter  After timestamp.
+     * @return The difference in seconds between the two timestamps, if the result is negative then dateAfter is previous of dateBefore.
+     */
+
+    public static long differenceSeconds(Instant instantBefore, Instant instantAfter) {
+        long daysBetween = ChronoUnit.SECONDS.between(instantBefore, instantAfter);
+        return Math.abs(daysBetween);
+    }
+
     /**
      * @param timestamp Date to check.
      * @return true if the string is formatted like "2024-02-01T12:00:00Z"

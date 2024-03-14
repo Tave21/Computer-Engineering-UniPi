@@ -3,6 +3,8 @@ package it.unipi.dii.dao.mongo;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import it.unipi.dii.dao.SlipDAO;
 import it.unipi.dii.dao.base.BaseMongoDAO;
 import it.unipi.dii.model.Bet;
@@ -50,7 +52,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      *
      * @return The biggest value of slipID from MongoDB.
      */
-    private int getLastID() {
+    public int getLastID() {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("confirmationDate",
                                 new Document("$gt", getCurrentDate().minusMonths(4).toString()))),
@@ -106,63 +108,12 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     @Override
     public void removeAllBetsOfMatch(Integer matchID) {
         MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
-        Document updateQuery = new Document("betsList.MatchID", matchID);
-        Document update = new Document("$pull", new Document("betsList", new Document("matchID", matchID)));
-        slips_coll.updateMany(updateQuery, update);
-    }
+        slips_coll.updateMany(
+                new Document(),
+                Updates.pull("betsList", Filters.eq("matchID", matchID))
+        );
 
-    /**
-     * Check if the slips in the list have a successful result or not.
-     *
-     * @param slips     List of slip to check.
-     * @param recompute If true, all the bets result are recomputed, put false for a less precise but faster computation.
-     */
-    public void checkSlipWin(List<Slip> slips, boolean recompute) {
-        CustomerMongoDBDAO cs = new CustomerMongoDBDAO();
-        MatchMongoDBDAO mb = new MatchMongoDBDAO();
-
-        cs.openConnection();
-        mb.openConnection();
-        for (Slip slip : slips) {
-            int betListSize = slip.betsList.size();
-            int winSlip = 1;
-            boolean validate = true;
-            double amount = slip.getBetAmount();
-
-            for (int i = 0; i < betListSize; i++) {
-                if (slip.betsList.get(i).getWin() == 1 && !recompute) {
-                    amount = amount * slip.betsList.get(i).getChosenMultiplierValue(); // The bet has a positive result.
-                } else if (slip.betsList.get(i).getWin() == 0 && !recompute) {
-                    amount = 0; // The bet has a negative result.
-                    winSlip = 0; // the slip is lost.
-                } else {
-                    // the result of the slip must be determined.
-                    int b = checkBetWin(slip, slip.betsList.get(i).getMatchID(), false, mb, cs);
-                    if (b == 1) {
-                        amount = amount * slip.betsList.get(i).getChosenMultiplierValue();  // The bet has a positive result.
-                    } else if (b == 0) {
-                        amount = 0; // The bet has a negative result, so the winning amount goes to 0.
-                        winSlip = 0; // So the slip is lost.
-                    } else {
-                        b = -1; // The bet has not a result yet.
-                        validate = false;  // The slip is not valid yet to be evaluated.
-                    }
-                    slip.betsList.get(i).setWin(b);
-                }
-            }
-            if (validate) {
-                // The slip has been evaluated.
-                slip.setWin(winSlip);
-                slip.setAmount(truncateNumber(amount, 2));
-                substituteSlip(slip.getSlipID(), slip); // Update MongoDB.
-                if (winSlip == 1) {
-                    // If the slip has a positive result.
-                    cs.redeem(slip.getUsername(), slip.getAmount()); // The customer receive the money.
-                }
-            }
-        }
-        mb.closeConnection();
-        cs.closeConnection();
+        slips_coll.deleteMany(Filters.size("betsList", 0));
     }
 
     /**
@@ -173,13 +124,9 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      * @param update  If true, the update is written to the database too.
      * @param mb      MatchMongoDBDAO Object.
      * @param cb      CustomerMongoDBDAO Object.
-     * @return An integer that represent the result of the bet: <br>
-     * 1 --> The bet has been won. <br>
-     * 0 --> The bet has been lost. <br>
-     * -1 --> Impossible to evaluate, probably the match related to the bet is not finished yet.
      */
 
-    private int checkBetWin(Slip slip, Integer matchID, boolean update, MatchMongoDBDAO mb, CustomerMongoDBDAO cb) {
+    private void checkBetWin(Slip slip, Integer matchID, boolean update, MatchMongoDBDAO mb, CustomerMongoDBDAO cb) {
         int betListSize = slip.betsList.size();
         for (int i = 0; i < betListSize; i++) {
             if (Objects.equals(matchID, slip.betsList.get(i).getMatchID())) {
@@ -209,10 +156,9 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                         cb.redeem(slip.getUsername(), slip.getAmount());
                     }
                 }
-                return slip.betsList.get(i).getWin();
+                return;
             }
         }
-        return -1;
     }
 
     /**
@@ -256,7 +202,6 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      * @param matchID The postponed match ID.
      */
     public void updateBetsMatchPostponed(Integer matchID, String newDate) {
-
         List<Document> pipeline = Arrays.asList(new Document("$set",
                         new Document("betsList",
                                 new Document("$map",
