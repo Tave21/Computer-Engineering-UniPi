@@ -163,6 +163,32 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                         addMatch(ml.get(i));
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
+                    //This match must be removed from all non-confirmed slips in Redis
+
+                    // Make the Redis query.
+                    SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
+                    List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
+
+                    // Take in a big slip list all the slip of users in redis
+                    for (String username : usernameList) {
+                        List<Slip> slipList = slipRedisDAO.getListFromUser(username);
+                        for (Slip slip : slipList) {
+                            if (slip.getSlipID() != null) {
+                                // Check where match appears in the bet list of the slip.
+                                for (int j = 0; j < slip.findBetsList().size(); j++) {
+                                    if (Objects.equals(slip.findBetsList().get(j).getTeamAway(), ml.get(i).getTeam_away()) && Objects.equals(slip.findBetsList().get(j).getTeamHome(), ml.get(i).getTeam_home())) {
+                                        if (slip.findBetsList().size() > 1) {
+                                            slipRedisDAO.deleteBetFromSlip(username, slip.getSlipID(), slip.findBetsList().get(j));
+                                        } else {
+                                            // If it's the last one.
+                                            slipRedisDAO.delete_Slip(username, slip.getSlipID());
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
                     if (id > -1) {
