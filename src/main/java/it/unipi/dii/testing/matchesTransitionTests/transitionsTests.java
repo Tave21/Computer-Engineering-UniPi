@@ -266,7 +266,7 @@ public class transitionsTests {
         );
         assertEquals(ml.size(), 1);
 
-        assertEquals("POSTPONED", ml.get(0).getStatus());
+        assertEquals("TIMED", ml.get(0).getStatus());
         assertEquals(0, (long) ml.get(0).getHome_goals());
         assertEquals(0, (long) ml.get(0).getAway_goals());
         assertEquals(ml.get(0).getMatchDate(), newInstant);

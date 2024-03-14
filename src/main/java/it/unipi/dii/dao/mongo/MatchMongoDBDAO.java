@@ -75,7 +75,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
     private void updateMatchDate(int matchID, String newDate) {
         Document filter = new Document("matchID", matchID);
-        Document update = new Document("$set", new Document("matchDate", newDate).append("status", "POSTPONED"));
+        Document update = new Document("$set", new Document("matchDate", newDate).append("status", "TIMED"));
         this.mongoDB.getCollection("matches").updateOne(filter, update);
     }
 
@@ -166,8 +166,10 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     //This match must be removed from all non-confirmed slips in Redis
 
                     // Make the Redis query.
+                    /*
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
+
 
                     // Take in a big slip list all the slip of users in redis
                     for (String username : usernameList) {
@@ -189,6 +191,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                             }
                         }
                     }
+                    */
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
                     if (id > -1) {
@@ -204,7 +207,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     }
                     final Integer index = nearestMatch(ml.get(i), mlist);
                     updateMatchDate(mlist.get(index).getMatchID(), ml.get(i).getMatchDate());
-                    sDAO.updateBetsMatchPostponed(ml.get(i).getMatchID(), ml.get(i).getMatchDate());
+                    sDAO.updateBetsMatchPostponed(mlist.get(index).getMatchID(), ml.get(i).getMatchDate());
 
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.
@@ -228,7 +231,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                         if (m != null) {
                             String status = m.getStatus();
 
-
+                        /*
                             if (Objects.equals(status, "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
                                 // Make the Redis query.
@@ -257,6 +260,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                 }
 
                             }
+                            */
 
 
                         }

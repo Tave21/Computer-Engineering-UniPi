@@ -4,6 +4,7 @@ import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import it.unipi.dii.dao.SlipDAO;
 import it.unipi.dii.dao.base.BaseMongoDAO;
@@ -37,7 +38,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             List<Document> documents = new ArrayList<>();
             documents.add(Document.parse(convertObjectToJsonString(slip)));
             boolean x = insertDocuments(this.mongoDB.getCollection("slips"), documents);
-            if(x) {
+            if (x) {
                 return slip.getSlipID();
             } else {
                 return -1;
@@ -49,7 +50,6 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     }
 
     /**
-     *
      * @return The biggest value of slipID from MongoDB.
      */
     public int getLastID() {
@@ -65,7 +65,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
         AggregateIterable<Document> docs = this.mongoDB.getCollection("slips").aggregate(pipeline);
         try {
             return Objects.requireNonNull(docs.first()).getInteger("slipID");
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             return 0;
         }
     }
@@ -141,8 +141,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                     int winSlip = checkIfSlipWin(slip);
                     //System.out.println("DOPo la checkif "+slip.getAmount());
 
-                    if (winSlip == 0 || winSlip == 1 || winSlip == 2){
-                        if(winSlip == 2){
+                    if (winSlip == 0 || winSlip == 1 || winSlip == 2) {
+                        if (winSlip == 2) {
                             winSlip = 0;
                         }
                         slip.setWin(winSlip);
@@ -202,22 +202,14 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      * @param matchID The postponed match ID.
      */
     public void updateBetsMatchPostponed(Integer matchID, String newDate) {
-        List<Document> pipeline = Arrays.asList(new Document("$set",
-                        new Document("betsList",
-                                new Document("$map",
-                                        new Document("input", "$betsList")
-                                                .append("as", "bet")
-                                                .append("in",
-                                                        new Document("$cond",
-                                                                new Document("if",
-                                                                        new Document("$eq", Arrays.asList("$$bet.matchID", matchID)))
-                                                                        .append("then",
-                                                                                new Document("$mergeObjects", Arrays.asList("$$bet",
-                                                                                        new Document("matchDate", newDate))))
-                                                                        .append("else", "$$bet")))))),
-                new Document("$out", "slips"));
-
-        this.mongoDB.getCollection("slips").aggregate(pipeline).toCollection();
+        Document filter = new Document("betsList.matchID", matchID);
+        Document update = new Document("$set", new Document("betsList.$[elem].matchDate", newDate));
+        UpdateOptions options = new UpdateOptions().arrayFilters(
+                Arrays.asList(
+                        new Document("elem.matchID", matchID)
+                )
+        );
+        this.mongoDB.getCollection("slips").updateMany(filter , update , options);
     }
 
     /**
@@ -252,6 +244,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
     /**
      * Query the database and return the wanted slip.
+     *
      * @param slipID The id of the slip to get.
      * @return The object slip.
      */
@@ -298,8 +291,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             }
         }
         slip.setAmount(truncateNumber(amount, 2));
-        if(p == -1){// there is a match that is not ended yet
-            if(!winSlip){ // there is a match that is not ended yet and the slip is lost
+        if (p == -1) {// there is a match that is not ended yet
+            if (!winSlip) { // there is a match that is not ended yet and the slip is lost
                 return 2;
             }
             // there is a match that is not ended yet and the slip is not lost yet
@@ -351,7 +344,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                 UnsupportedOperationException("Not supported in MongoDB implementation");
     }
 
-    public Slip load(String username, Integer slipID , double betAmount) { //gets bets from a specific slip
+    public Slip load(String username, Integer slipID, double betAmount) { //gets bets from a specific slip
 
 
         throw new
