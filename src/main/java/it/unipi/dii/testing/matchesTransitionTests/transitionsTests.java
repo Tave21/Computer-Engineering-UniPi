@@ -4,6 +4,7 @@ import it.unipi.dii.dao.mongo.MatchMongoDBDAO;
 import it.unipi.dii.dao.mongo.SlipMongoDBDAO;
 import it.unipi.dii.model.Bet;
 import it.unipi.dii.model.Match;
+import it.unipi.dii.model.Multiplier;
 import it.unipi.dii.model.Slip;
 import org.bson.Document;
 
@@ -299,6 +300,7 @@ public class transitionsTests {
         e.setHome_goals(0);
         e.setAway_goals(0);
         e.setCompetition_id("IT1");
+        e.getMultipliers().set(0 , new Multiplier("1" , 2));
         ml.add(e);
 
         try {
@@ -309,6 +311,67 @@ public class transitionsTests {
 
         int numMatchesNow = ms.getLastID();
         assertEquals(numMatchesNow, numMatchesInit + 1);
+
+
+        SlipMongoDBDAO sDAO = new SlipMongoDBDAO();
+        sDAO.openConnection();
+
+        final int numSlipInit = sDAO.getLastID();
+
+        Slip s = new Slip();
+        s.setUsername("Alessio_Rossi_00");
+        s.setBetAmount(10);
+        List<Bet> betList = new ArrayList<>();
+        Bet b = new Bet(
+                numMatchesNow,
+                e.pickMultiplierValue(0),
+                e.pickMultiplierName(0),
+                e.getMatchDate()
+        );
+        b.setTeamHome(e.getTeam_home());
+        b.setTeamAway(e.getTeam_away());
+        b.setCompetition_id(e.getCompetition_id());
+        betList.add(b);
+        s.setBetsList(betList);
+        s.setCreationDate(getCurrentInstant().minusSeconds(20).toString());
+        s.setConfirmationDate(getCurrentInstant().minusSeconds(12).toString());
+        sDAO.addSlip(s);
+
+        s = new Slip();
+        s.setUsername("Alessio_Rossi_00");
+        s.setBetAmount(10);
+        betList = new ArrayList<>();
+        b = new Bet(
+                numMatchesNow,
+                e.pickMultiplierValue(1),
+                e.pickMultiplierName(1),
+                e.getMatchDate()
+        );
+        b.setTeamHome(e.getTeam_home());
+        b.setTeamAway(e.getTeam_away());
+        b.setCompetition_id(e.getCompetition_id());
+        betList.add(b);
+        s.setBetsList(betList);
+        s.setCreationDate(getCurrentInstant().minusSeconds(10).toString());
+        s.setConfirmationDate(getCurrentInstant().minusSeconds(2).toString());
+        sDAO.addSlip(s);
+
+        int numSlipNow = sDAO.getLastID();
+        assertEquals(numSlipNow, numSlipInit + 2);
+
+        Slip slipCheck = sDAO.getSlip(numSlipNow - 1);
+        // Checks on the just inserted slip.
+        assertNotNull(slipCheck);
+        assertEquals(-1, (int) slipCheck.getWin());
+        assertEquals(-1, (int) slipCheck.betsList.get(0).getWin());
+        assertEquals(0, (long) slipCheck.getAmount());
+
+        slipCheck = sDAO.getSlip(numSlipNow);
+        // Checks on the just inserted slip.
+        assertNotNull(slipCheck);
+        assertEquals(-1, (int) slipCheck.getWin());
+        assertEquals(-1, (int) slipCheck.betsList.get(0).getWin());
+        assertEquals(0, (long) slipCheck.getAmount());
 
         ml.clear();
         e = new Match();
@@ -327,9 +390,7 @@ public class transitionsTests {
             throw new RuntimeException(ex);
         }
 
-        numMatchesNow = ms.getLastID();
-        assertEquals(numMatchesNow, numMatchesInit + 1);
-
+        assertEquals(numMatchesNow, (int) ms.getLastID());
         e = ms.getMatch(numMatchesNow);
         assertEquals("IN_PLAY", e.getStatus());
         assertEquals(0, (long) e.getHome_goals());
@@ -352,9 +413,7 @@ public class transitionsTests {
             throw new RuntimeException(ex);
         }
 
-        numMatchesNow = ms.getLastID();
-        assertEquals(numMatchesNow, numMatchesInit + 1);
-
+        assertEquals(numMatchesNow, (int) ms.getLastID());
         e = ms.getMatch(numMatchesNow);
         assertEquals("IN_PLAY", e.getStatus());
         assertEquals(1, (long) e.getHome_goals());
@@ -377,9 +436,7 @@ public class transitionsTests {
             throw new RuntimeException(ex);
         }
 
-        numMatchesNow = ms.getLastID();
-        assertEquals(numMatchesNow, numMatchesInit + 1);
-
+        assertEquals(numMatchesNow, (int) ms.getLastID());
         e = ms.getMatch(numMatchesNow);
         assertEquals("PAUSED", e.getStatus());
         assertEquals(1, (long) e.getHome_goals());
@@ -402,9 +459,7 @@ public class transitionsTests {
             throw new RuntimeException(ex);
         }
 
-        numMatchesNow = ms.getLastID();
-        assertEquals(numMatchesNow, numMatchesInit + 1);
-
+        assertEquals(numMatchesNow, (int) ms.getLastID());
         e = ms.getMatch(numMatchesNow);
         assertEquals("IN_PLAY", e.getStatus());
         assertEquals(1, (long) e.getHome_goals());
@@ -427,9 +482,7 @@ public class transitionsTests {
             throw new RuntimeException(ex);
         }
 
-        numMatchesNow = ms.getLastID();
-        assertEquals(numMatchesNow, numMatchesInit + 1);
-
+        assertEquals(numMatchesNow, (int) ms.getLastID());
         e = ms.getMatch(numMatchesNow);
         assertEquals("IN_PLAY", e.getStatus());
         assertEquals(2, (long) e.getHome_goals());
@@ -441,7 +494,7 @@ public class transitionsTests {
         e.setTeam_home("Timed-InPlay Team 1");
         e.setTeam_away("Timed-InPlay Team 2");
         e.setMatchDate(thisInstant);
-        e.setHome_goals(1);
+        e.setHome_goals(2);
         e.setAway_goals(1);
         e.setCompetition_id("IT1");
         ml.add(e);
@@ -452,15 +505,30 @@ public class transitionsTests {
             throw new RuntimeException(ex);
         }
 
-        numMatchesNow = ms.getLastID();
-        assertEquals(numMatchesNow, numMatchesInit + 1);
-
+        assertEquals(numMatchesNow, (int) ms.getLastID());
         e = ms.getMatch(numMatchesNow);
         assertEquals("FINISHED", e.getStatus());
         assertEquals(2, (long) e.getHome_goals());
         assertEquals(1, (long) e.getAway_goals());
 
+        assertEquals(numSlipNow, numSlipInit + 2);
+
+        slipCheck = sDAO.getSlip(numSlipNow-1);
+        // Checks on the just inserted slip.
+        assertNotNull(slipCheck);
+        assertEquals(1, (int) slipCheck.getWin());
+        assertEquals(1, (int) slipCheck.betsList.get(0).getWin());
+        assertEquals(20, (long) slipCheck.getAmount());
+
+        slipCheck = sDAO.getSlip(numSlipNow);
+        // Checks on the just inserted slip.
+        assertNotNull(slipCheck);
+        assertEquals(0, (int) slipCheck.getWin());
+        assertEquals(0, (int) slipCheck.betsList.get(0).getWin());
+        assertEquals(0, (long) slipCheck.getAmount());
+
         ms.closeConnection();
+        sDAO.closeConnection();
     }
 
 }
