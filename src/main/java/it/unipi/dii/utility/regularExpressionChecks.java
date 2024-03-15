@@ -1,4 +1,6 @@
 package it.unipi.dii.utility;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 public class regularExpressionChecks {
@@ -63,6 +65,36 @@ public class regularExpressionChecks {
      */
     public static boolean isNaN(double number){
         return Double.isNaN(number);
+    }
+
+    /**
+     * @param timestamp The timestamp string to check.
+     * @return True if the string is formatted like "YYYY-MM-DDThh:mm:ssZ"
+     */
+    public static boolean checkTimestampFormat(String timestamp) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(timestamp);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * @param date The date string to check.
+     * @return True if the string is formatted like "YYYY-MM-dd"
+     */
+    public static boolean checkDateFormat(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
 }

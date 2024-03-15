@@ -240,7 +240,7 @@ public class generationMainMongoDBDataset {
                     mat.setAway_goals(Integer.valueOf(js_i.get("away_club_goals").toString()));
                     mat.setStatus("FINISHED");
 
-                    //mat.randomizeMultipliers();
+                    mat.initializeAndRandomizeMultipliers();
                     matches.add(mat);
                 }
             }

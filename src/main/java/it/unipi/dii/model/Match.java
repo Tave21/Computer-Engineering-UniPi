@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static it.unipi.dii.utility.randomGeneration.generateMultiplier;
+import static it.unipi.dii.utility.regularExpressionChecks.checkTimestampFormat;
 import static it.unipi.dii.utility.regularExpressionChecks.isNaN;
 
 public class Match {
@@ -19,13 +20,9 @@ public class Match {
     private Integer away_goals;
     private String status;
     public List<Multiplier> multipliers = new ArrayList<>();
-    private final Integer numberOfMultipliers = 23;
+    private final static int NUMBER_OF_MULTIPLIERS = 23;
 
     public Match() {
-        if(multipliers.isEmpty()) {
-            this.initializeMultipliers();
-            this.randomizeMultipliers();
-        }
     }
 
     public Match(Integer matchID, String competition_id, String team_home, String team_away, String matchDate,
@@ -37,11 +34,6 @@ public class Match {
         this.matchDate = matchDate;
         this.home_goals = home_goals;
         this.away_goals = away_goals;
-        this.cleanGoals();
-        if(multipliers.isEmpty()) {
-            this.initializeMultipliers();
-            this.randomizeMultipliers();
-        }
     }
 
     @JsonProperty("matchID")
@@ -183,7 +175,7 @@ public class Match {
                 }
                 break;
             case "X":
-                if (this.home_goals == this.away_goals) {
+                if (Objects.equals(this.home_goals, this.away_goals)) {
                     res = true;
                 }
                 break;
@@ -310,10 +302,9 @@ public class Match {
      */
 
     private void initializeMultipliers() {
-        if(this.multipliers.isEmpty()) {
-            for (int i = 0; i < this.numberOfMultipliers; i++) {
-                this.multipliers.add(new Multiplier("-", 0));
-            }
+        this.multipliers.clear(); // Reset the multipliers list.
+        for (int i = 0; i < NUMBER_OF_MULTIPLIERS; i++) {
+            this.multipliers.add(new Multiplier("-", 0));
         }
     }
 
@@ -346,7 +337,7 @@ public class Match {
      *      <li>"Under5/5" - The match will end with a maximum of 5 goals.</li>
      *  </ul>
      */
-    public void randomizeMultipliers() {
+    private void randomizeMultipliers() {
         if(!this.multipliers.isEmpty() && Objects.equals(this.multipliers.get(0).getName(), "-")) {
             this.setMultiplier(0, "1", generateMultiplier(3));
             this.setMultiplier(1, "2", generateMultiplier(3));
@@ -392,6 +383,49 @@ public class Match {
     }
 
     /**
+     * Initialize and randmomize the multipliers.
+     */
+    public void initializeAndRandomizeMultipliers(){
+        this.initializeMultipliers();
+        this.randomizeMultipliers();
+    }
+
+    /**
+     *
+     * @return True if the match can be inserted in MongoDB.
+     */
+    public boolean checkMatchValidity(){
+        if(
+                        !checkTimestampFormat(this.matchDate) ||
+                        this.team_home != null ||
+                        this.team_away != null ||
+                        !this.allMultipliersValid()
+        ){
+            return false;
+        }
+        return true;
+
+    }
+
+    /**
+     *
+     * @return True if the multipliers list is valid.
+     */
+    private boolean allMultipliersValid(){
+        if(this.multipliers.size() != NUMBER_OF_MULTIPLIERS){
+            return false;
+        }
+
+        for(int i = 0 ; i < NUMBER_OF_MULTIPLIERS ; i++){
+            if(!this.multipliers.get(i).validMultiplier()){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    /**
      * create a string with all attributes of the Matches
      * @return a string in a JSON format
      */
@@ -407,7 +441,6 @@ public class Match {
                 ", away_goals=" + away_goals +
                 ", status='" + status + '\'' +
                 ", multipliers=" + multipliers +
-                ", numberOfMultipliers=" + numberOfMultipliers +
                 '}';
     }
 
@@ -426,8 +459,7 @@ public class Match {
                 Objects.equals(home_goals, match.home_goals) &&
                 Objects.equals(away_goals, match.away_goals) &&
                 Objects.equals(status, match.status) &&
-                Objects.equals(multipliers, match.multipliers) &&
-                Objects.equals(numberOfMultipliers, match.numberOfMultipliers);
+                Objects.equals(multipliers, match.multipliers);
     }
     /**
      * create a hash for the match
@@ -435,6 +467,6 @@ public class Match {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(matchID, competition_id, team_home, team_away, matchDate, home_goals, away_goals, status, multipliers, numberOfMultipliers);
+        return Objects.hash(matchID, competition_id, team_home, team_away, matchDate, home_goals, away_goals, status, multipliers);
     }
 }

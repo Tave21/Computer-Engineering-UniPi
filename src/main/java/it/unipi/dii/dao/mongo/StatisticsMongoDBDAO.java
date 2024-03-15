@@ -53,7 +53,7 @@ public class StatisticsMongoDBDAO extends BaseMongoDAO implements StatisticsDAO 
         AggregateIterable<Document> docAway = slips_coll.aggregate(PipelineAway);
 
         List<String> doc = new ArrayList<>();
-        int c = 0;
+        int counter = 0;
 
         for (Document document : docHome) {
             long howManyValue = document.getLong("howMany");
@@ -66,9 +66,9 @@ public class StatisticsMongoDBDAO extends BaseMongoDAO implements StatisticsDAO 
             }
             document.put("howMany", howManyValue);
             doc.add(document.getString("_id"));
-            c++;
+            counter++;
 
-            if (c == howManyShow) {
+            if (counter == howManyShow) {
                 break;
             }
         }
@@ -79,8 +79,8 @@ public class StatisticsMongoDBDAO extends BaseMongoDAO implements StatisticsDAO 
     public double showFinancialResults(String dateFrom, String dateTo) {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("confirmationDate",
-                                new Document("$gt", "2018-01-01")
-                                        .append("$lt", "2023-01-01"))),
+                                new Document("$gt", dateFrom)
+                                        .append("$lt", dateTo))),
                 new Document("$project",
                         new Document("_id", 0L)
                                 .append("difference",

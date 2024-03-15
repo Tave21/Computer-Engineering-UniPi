@@ -27,16 +27,18 @@ import static it.unipi.dii.utility.SportAPI.getNewMatchesUpdates;
 public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     /**
      * Insert a new match in the database.
-     *
      * @param match The match to add
      */
     @Override
     public void addMatch(Match match) {
-        match.setMatchID(this.getLastID() + 1);
-        MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
-        List<Document> documents = new ArrayList<>();
-        documents.add(Document.parse(convertObjectToJsonString(match)));
-        insertDocuments(match_coll, documents);
+        if(match.checkMatchValidity()) {
+            match.cleanGoals(); // Cleaning some input fields.
+            match.setMatchID(this.getLastID() + 1);
+            MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
+            List<Document> documents = new ArrayList<>();
+            documents.add(Document.parse(convertObjectToJsonString(match)));
+            insertDocuments(match_coll, documents);
+        }
     }
 
     /**

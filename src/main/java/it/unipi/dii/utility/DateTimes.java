@@ -15,8 +15,7 @@ public class DateTimes {
      * @return True if the person have more than 18 years.
      */
     public static boolean isAdult(LocalDate birthDate) {
-        Period difference = Period.between(birthDate, LocalDate.now());
-        return difference.getYears() >= 18;
+        return differenceDays(birthDate.toString() , getCurrentDateString()) >= 18;
     }
 
     /**
@@ -75,8 +74,7 @@ public class DateTimes {
      */
 
     public static long differenceDays(Instant instantBefore, Instant instantAfter) {
-        long daysBetween = ChronoUnit.DAYS.between(instantBefore, instantAfter);
-        return Math.abs(daysBetween);
+        return Math.abs(ChronoUnit.DAYS.between(instantBefore, instantAfter));
     }
 
     /**
@@ -86,24 +84,10 @@ public class DateTimes {
      */
 
     public static long differenceSeconds(Instant instantBefore, Instant instantAfter) {
-        long daysBetween = ChronoUnit.SECONDS.between(instantBefore, instantAfter);
-        return Math.abs(daysBetween);
+        return Math.abs(ChronoUnit.SECONDS.between(instantBefore, instantAfter));
     }
 
-    /**
-     * @param timestamp Date to check.
-     * @return true if the string is formatted like "2024-02-01T12:00:00Z"
-     */
-    public static boolean checkTimestampFormat(String timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(timestamp);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
+
 
     /**
      * Adds the hours, minutes and second part.

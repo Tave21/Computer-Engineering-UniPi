@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.checkTimestampFormat;
 import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
+import static it.unipi.dii.utility.regularExpressionChecks.checkTimestampFormat;
 
 public class Slip {
     private final int MIN_BETAMOUNT = 2; // Minimum amount of credit required to place a bet.

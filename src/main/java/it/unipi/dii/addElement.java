@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static it.unipi.dii.utility.DateTimes.checkTimestampFormat;
+import static it.unipi.dii.utility.regularExpressionChecks.checkTimestampFormat;
 
 public class addElement {
     private List<Label> additionalLabels;
