@@ -63,7 +63,6 @@ public class pollsPage {
             pollsContent.getChildren().addAll(topSpacer, titleLabel);
 
             for (Document document : docs) {
-                System.out.println(convertDocumentToJson(document));
                 Poll p = convertJsonToObject(convertDocumentToJson(document), Poll.class);
                 if (p != null) {
                     choice = createResult(registered, active, p.getPollName(), p.getOptions(),p.getPollID(), null);

@@ -8,6 +8,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
 import it.unipi.dii.dao.mongo.PollMongoDBDAO;
 import it.unipi.dii.model.*;
+import org.bson.Document;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import static it.unipi.dii.utility.DateTimes.*;
 import static it.unipi.dii.utility.MongoUtility.*;
+import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
 import static it.unipi.dii.utility.PasswordGenerator.generateRandomPassword;
 import static it.unipi.dii.utility.RandomNumber.*;
 import static it.unipi.dii.utility.Security.calculateSHA256;
@@ -60,12 +62,14 @@ public class generationMainMongoDBDataset {
         cl.openConnection();
 
         // Drop the collections.
+        dropCollection(cl.mongoDB, "admins");
         dropCollection(cl.mongoDB, "customers");
         dropCollection(cl.mongoDB, "slips");
         dropCollection(cl.mongoDB, "matches");
         dropCollection(cl.mongoDB, "polls");
 
         // Create again the collection
+        createCollection(cl.mongoDB, "admins");
         createCollection(cl.mongoDB, "customers");
         createCollection(cl.mongoDB, "slips");
         createCollection(cl.mongoDB, "matches");
@@ -236,7 +240,7 @@ public class generationMainMongoDBDataset {
                     mat.setAway_goals(Integer.valueOf(js_i.get("away_club_goals").toString()));
                     mat.setStatus("FINISHED");
 
-                    mat.randomizeMultipliers();
+                    //mat.randomizeMultipliers();
                     matches.add(mat);
                 }
             }
@@ -436,6 +440,39 @@ public class generationMainMongoDBDataset {
         writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
 
         System.out.println("Slips insertion ended.");
+
+        Customer c = new Customer();
+        c.setName("user");
+        c.setSurname("user");
+        c.setGender("M");
+        c.setCredit(generateSumOfMoney(2000)); // Generate the credit of the user with an exponential distribution.
+        c.setEmail("user@gamil.com");
+        c.setCellNumber(generatePhoneNumber("+39")); // Generate the phone number.
+        c.setPassword(calculateSHA256("user")); // Compute the hash of the password.
+        c.setUsername("user"); // Generate the username.
+        c.setBirthDate("1999-01-01");
+        c.setRegistrationDate(getCurrentInstantString());
+        c.setAddress("Via Onerous 2");
+        c.setCityOfResidence("Pisa");
+        c.setProvince("Pisa");
+
+        Admin a = new Admin();
+        a.setName("Saverio");
+        a.setSurname("Mosti");
+        a.setEmail("save@gmail.com");
+        a.setTitle("CEO");
+        a.setHiredDate("2012-01-01");
+        a.setCellNumber(generatePhoneNumber("+39"));
+        a.setPassword(calculateSHA256("save"));
+
+        CustomerMongoDBDAO cs = new CustomerMongoDBDAO();
+        cs.openConnection();
+        cs.registerCustomer(c);
+        List<Document> documents = new ArrayList<>();
+        documents.add(Document.parse(convertObjectToJsonString(a)));
+        insertDocuments(cs.mongoDB.getCollection("admins"), documents);
+
+        cs.closeConnection();
     }
 }
 

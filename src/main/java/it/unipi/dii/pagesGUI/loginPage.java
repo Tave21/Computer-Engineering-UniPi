@@ -156,7 +156,6 @@ public class loginPage {
                 // If the login has been successful.
                 PollRedisDAO pollRedisDAO = new PollRedisDAO();
                 String key = pollRedisDAO.getPollCookieOfUser(username); // Get the user cookie from Redis.
-                System.out.println(key);
                 if (key != null){
                     // The user already has a cookie in Redis.
                     customerInfo customer = convertJsonToObject(key, customerInfo.class);

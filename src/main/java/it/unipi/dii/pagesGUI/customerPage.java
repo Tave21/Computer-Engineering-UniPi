@@ -135,17 +135,7 @@ public class customerPage {
             if (!surname.isEmpty()) {
                 regExps.add(new Document("surname", new Document("$regex", Pattern.compile("^" + surname + "(?i)"))));
             }
-            /*
-            Arrays.asList(new Document("username",
-                                            new Document("$regex", "^a")
-                                                    .append("$options", "i")),
-                                    new Document("name",
-                                            new Document("$regex", "^a")
-                                                    .append("$options", "i")),
-                                    new Document("surname",
-                                            new Document("$regex", "^a")
-                                                    .append("$options", "i")))
-             */
+
             List<Document> pipeline = Arrays.asList(new Document("$match",
                             new Document("$or",regExps )),
                     new Document("$project",
@@ -155,7 +145,6 @@ public class customerPage {
                                     .append("username", 1L)),
                     new Document("$limit", 20L));
 
-            System.out.println(pipeline.toString());
 
             AggregateIterable<Document> docs = cs.mongoDB.getCollection("customers").aggregate(pipeline);
             for (Document document : docs) {

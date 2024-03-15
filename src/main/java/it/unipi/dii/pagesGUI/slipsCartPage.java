@@ -226,12 +226,10 @@ public class slipsCartPage {
                 slip.getChildren().remove(matchRow);
 
                 String[] values = matchLabel.getText().split("-");
-                System.out.println(matchLabel);
                 String teamHome = values[0];
                 String teamAway = values[1];
 
                 String[] val = multiplierLabel.getText().split("   ");
-                System.out.println(multiplierLabel);
                 String nameMult= val[0];
                 String valMult= val[1];
                 SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
@@ -259,34 +257,27 @@ public class slipsCartPage {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    //remove slip from the cart
+                    // Remove slip from the cart.
                     ((VBox) slip.getParent()).getChildren().remove(slip);
 
-                    //remove the total label from the list
+                    // Remove the total label from the list.
                     int index = getPositionById(totalValueLabelList, id);
                     totalValueLabelList.remove(index);
 
 
                 }else {
                     slipRedisDAO.refreshTTL(Session.getUsername(), Integer.toString(id));
-                    //inside the else otherwise give the out of bound index
+                    // Inside the else otherwise give the out of bound index
                     int index = getPositionById(totalValueLabelList, id);
                     Label totalValueLabel = totalValueLabelList.get(index).getTotalLabel();
                     double removedMultiplier = Double.parseDouble(valMult);
                     String oldTotal = totalValueLabel.getText().replace(",", ".");
                     double oldTotalAmount = Double.parseDouble(oldTotal);
-
-                    //totalValueLabel.setText(String.valueOf(oldTotalValue/removedMultiplier));
                     double oldTotalValue = totalValueLabelList.get(index).getMultiplierProduct();
-                    //double multipliers = oldTotalValue / removedMultiplier;
-                    //totalValueLabelList.get(index).setMultiplierProduct(multipliers);
                     double newValue1 = (oldTotalAmount / oldTotalValue);
                     double multipliers = oldTotalValue / removedMultiplier;
                     totalValueLabelList.get(index).setMultiplierProduct(multipliers);
-                    //System.out.println("multiplier aggiornato" +  totalValueLabelList.get(index).getMultiplierProduct());
-                    //System.out.println("betAmount: " +  newValue1);
                     int newValue = (int) Math.round(newValue1);
-                    //System.out.println("betAmount round: " +  newValue);
                     updateTotalValueLabel(totalValueLabelList.get(index).getTotalLabel(), newValue, multipliers);
                 }
             });

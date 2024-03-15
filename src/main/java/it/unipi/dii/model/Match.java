@@ -22,7 +22,10 @@ public class Match {
     private final Integer numberOfMultipliers = 23;
 
     public Match() {
-        this.initializeMultipliers();
+        if(multipliers.isEmpty()) {
+            this.initializeMultipliers();
+            this.randomizeMultipliers();
+        }
     }
 
     public Match(Integer matchID, String competition_id, String team_home, String team_away, String matchDate,
@@ -34,8 +37,11 @@ public class Match {
         this.matchDate = matchDate;
         this.home_goals = home_goals;
         this.away_goals = away_goals;
-        this.initializeMultipliers();
         this.cleanGoals();
+        if(multipliers.isEmpty()) {
+            this.initializeMultipliers();
+            this.randomizeMultipliers();
+        }
     }
 
     @JsonProperty("matchID")
@@ -177,7 +183,7 @@ public class Match {
                 }
                 break;
             case "X":
-                if (Objects.equals(this.home_goals, this.away_goals)) {
+                if (this.home_goals == this.away_goals) {
                     res = true;
                 }
                 break;
@@ -304,8 +310,10 @@ public class Match {
      */
 
     private void initializeMultipliers() {
-        for (int i = 0; i < this.numberOfMultipliers; i++) {
-            this.multipliers.add(new Multiplier("-", 0));
+        if(this.multipliers.isEmpty()) {
+            for (int i = 0; i < this.numberOfMultipliers; i++) {
+                this.multipliers.add(new Multiplier("-", 0));
+            }
         }
     }
 
@@ -339,47 +347,49 @@ public class Match {
      *  </ul>
      */
     public void randomizeMultipliers() {
-        double temp = 0;
-        this.setMultiplier(0, "1", generateMultiplier(3));
-        this.setMultiplier(1, "2", generateMultiplier(3));
-        this.setMultiplier(2, "X", generateMultiplier(3));
-        this.setMultiplier(3, "1X", generateMultiplier(2));
-        this.setMultiplier(4, "X2", generateMultiplier(2));
-        this.setMultiplier(5, "12", generateMultiplier(2));
+        if(!this.multipliers.isEmpty() && Objects.equals(this.multipliers.get(0).getName(), "-")) {
+            double temp = 0;
+            this.setMultiplier(0, "1", generateMultiplier(3));
+            this.setMultiplier(1, "2", generateMultiplier(3));
+            this.setMultiplier(2, "X", generateMultiplier(3));
+            this.setMultiplier(3, "1X", generateMultiplier(2));
+            this.setMultiplier(4, "X2", generateMultiplier(2));
+            this.setMultiplier(5, "12", generateMultiplier(2));
 
-        this.setMultiplier(6, "1G", generateMultiplier(2));
-        this.setMultiplier(7, "2G", generateMultiplier(3));
-        this.setMultiplier(8, "GG", generateMultiplier(2));
-        this.setMultiplier(9, "XG", generateMultiplier(3));
-        this.setMultiplier(10, "NG", generateMultiplier(2));
+            this.setMultiplier(6, "1G", generateMultiplier(2));
+            this.setMultiplier(7, "2G", generateMultiplier(3));
+            this.setMultiplier(8, "GG", generateMultiplier(2));
+            this.setMultiplier(9, "XG", generateMultiplier(3));
+            this.setMultiplier(10, "NG", generateMultiplier(2));
 
-        temp = 0;
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(11, "Over0/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(12, "Over1/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(13, "Over2/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(14, "Over3/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(15, "Over4/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(16, "Over5/5", temp);
+            temp = 0;
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(11, "Over0/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(12, "Over1/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(13, "Over2/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(14, "Over3/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(15, "Over4/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(16, "Over5/5", temp);
 
-        temp = 0;
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(22, "Under5/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(21, "Under4/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(20, "Under3/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(19, "Under2/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(18, "Under1/5", temp);
-        temp = temp +  generateMultiplier(2);
-        this.setMultiplier(17, "Under0/5", temp);
+            temp = 0;
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(22, "Under5/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(21, "Under4/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(20, "Under3/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(19, "Under2/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(18, "Under1/5", temp);
+            temp = temp + generateMultiplier(2);
+            this.setMultiplier(17, "Under0/5", temp);
+        }
     }
 
     /**

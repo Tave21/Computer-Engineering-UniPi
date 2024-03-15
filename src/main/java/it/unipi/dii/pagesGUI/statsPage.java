@@ -81,7 +81,6 @@ public class statsPage {
         VBox averageMatchesForSlip = createStatElement("Average number of matches per championship", averageMatches);
         averageMatchesForSlip.setMaxWidth(300);
 
-        System.out.println(topTeams.toString());
         VBox topThreeTeams = createStatElement("Top bet teams by users", topTeams);
         topThreeTeams.setMaxWidth(300);
 

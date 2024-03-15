@@ -1,7 +1,7 @@
 package it.unipi.dii;
 
 
-import static it.unipi.dii.testing.matchesTransitionTests.transitionsTests.*;
+import static it.unipi.dii.testing.transitionsTests.*;
 import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 
 public class Main {
@@ -10,7 +10,9 @@ public class Main {
         testTIMEDtoCANCELED();
         testTIMEDtoINPLAYtoPAUSEDtoINPLAYtoFINISHED();
         testTIMEDtoPOSTPONED();
+        testCustomers();
+        testPolls();
 
-        System.out.println("OK!");
+        System.out.println("OK! All test succeeded, BeansBet works perfectly!");
     }
 }

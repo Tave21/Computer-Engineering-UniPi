@@ -319,14 +319,12 @@ public class addElement {
         String regex1 = "^[a-zA-Z0-9]+$";
         if(Pattern.matches(regex1, option1)){
             additionalLabels.get(3).setText("");
-            System.out.println("entra team1");
         }else{
             additionalLabels.get(3).setText("Please enter a correct option");
             countErrors++;
         }
         if(Pattern.matches(regex1, option2)){
             additionalLabels.get(4).setText("");
-            System.out.println("entra team2");
         }else{
             additionalLabels.get(4).setText("Please enter a correct option");
             countErrors++;

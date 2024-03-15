@@ -77,8 +77,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
     @Override
     public void removeSlip(Document query) {
-        MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
-        deleteDocuments(slips_coll, query);
+        deleteDocuments(this.mongoDB.getCollection("slips"), query);
     }
 
     @Override
@@ -94,25 +93,27 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
     @Override
     public void removeBet(String slipID, Integer matchID) {
-        MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
         Document updateQuery = new Document("SlipID", slipID).append("betsList.MatchID", matchID);
         Document update = new Document("$pull", new Document("betsList", new Document("MatchID", matchID)));
-        slips_coll.updateMany(updateQuery, update);
+        this.mongoDB.getCollection("slips").updateMany(updateQuery, update);
     }
 
     /**
      * Remove all the bets in the database related to the target match.
-     *
+     * This function make two write queries,
+     *  the first is the update one, the second is used to delete all the slips with no bets.
      * @param matchID ID of the target match.
      */
     @Override
     public void removeAllBetsOfMatch(Integer matchID) {
         MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
+        // Update the slips with a bet on the target match.
         slips_coll.updateMany(
                 new Document(),
                 Updates.pull("betsList", Filters.eq("matchID", matchID))
         );
 
+        // Delete all the slips with no bets.
         slips_coll.deleteMany(Filters.size("betsList", 0));
     }
 
@@ -137,10 +138,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                                 )
                 );
                 if (update) {
-                    //System.out.println("Prima della checkif "+slip.getAmount());
                     int winSlip = checkIfSlipWin(slip);
-                    //System.out.println("DOPo la checkif "+slip.getAmount());
-
                     if (winSlip == 0 || winSlip == 1 || winSlip == 2) {
                         if (winSlip == 2) {
                             winSlip = 0;
@@ -150,7 +148,6 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                     } else {
                         slip.setWin(winSlip);
                     }
-                    //System.out.println(slip);
                     substituteSlip(slip.getSlipID(), slip);
                     if (winSlip == 1) {
                         cb.redeem(slip.getUsername(), slip.getAmount());
@@ -169,9 +166,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
 
     private void substituteSlip(Integer slipID, Slip slip) {
-        MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
         Document query = new Document("slipID", new Document("$eq", slipID));
-        slips_coll.replaceOne(query, convertJsonToDocument(convertObjectToJsonString(slip)));
+        this.mongoDB.getCollection("slips").replaceOne(query, convertJsonToDocument(convertObjectToJsonString(slip)));
     }
 
     /**
@@ -222,9 +218,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
     @Override
     public List<Slip> getSlips(Document query, Document projection) {
-        MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
         List<Slip> s_list = new ArrayList<>();
-        try (MongoCursor<Document> cursor = slips_coll.find(query).projection(projection).iterator()) {
+        try (MongoCursor<Document> cursor = this.mongoDB.getCollection("slips").find(query).projection(projection).iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
                 Slip s = convertJsonToObject(document.toJson(), Slip.class);

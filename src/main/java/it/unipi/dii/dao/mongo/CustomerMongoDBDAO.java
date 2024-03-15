@@ -35,10 +35,8 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
         } else {
             user.setCredit(0);
             List<Document> documents = new ArrayList<>();
-            Document doc = Document.parse(convertObjectToJsonString(user));
-            documents.add(doc);
-            MongoCollection<Document> user_coll = this.mongoDB.getCollection("customers");
-            insertDocuments(user_coll, documents);
+            documents.add(Document.parse(convertObjectToJsonString(user)));
+            insertDocuments(this.mongoDB.getCollection("customers"), documents);
             return true;
         }
     }
@@ -117,7 +115,6 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
     @Override
     public void removeCustomer(String username) {
         Document query = new Document("username", new Document("$eq", username));
-        System.out.println(query.toString());
         removeCustomer(query);
     }
 

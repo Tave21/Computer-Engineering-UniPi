@@ -60,8 +60,11 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     private Integer replaceMatch(Match newMatch, boolean mode) {
         MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
         if (mode) {
-            match_coll.deleteOne(new Document("matchID", new Document("$eq", newMatch.getMatchID())));
-            match_coll.insertOne(ObjectToDocumentConverter(newMatch));
+            match_coll.replaceOne(
+                    new Document("matchID",
+                            new Document("$eq", newMatch.getMatchID())),
+                    ObjectToDocumentConverter(newMatch)
+            );
             return newMatch.getMatchID();
         } else {
             Integer id = getID(newMatch);
@@ -76,6 +79,16 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     private void updateMatchDate(int matchID, String newDate) {
         Document filter = new Document("matchID", matchID);
         Document update = new Document("$set", new Document("matchDate", newDate).append("status", "TIMED"));
+        this.mongoDB.getCollection("matches").updateOne(filter, update);
+    }
+
+    private void updateMatchStatusAndResult(int matchID, String status ,  int home_goals , int away_goals) {
+        Document filter = new Document("matchID", matchID);
+        Document update = new Document("$set",
+                new Document("status", status)
+                        .append("home_goals", home_goals)
+                        .append("away_goals", away_goals)
+        );
         this.mongoDB.getCollection("matches").updateOne(filter, update);
     }
 
@@ -159,7 +172,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     // The match must be inserted in MongoDB.
                     if (matchAlreadyPresent(ml.get(i)) == -1) {
                         // If the match is not already present in the database.
-                        ml.get(i).randomizeMultipliers();
                         addMatch(ml.get(i));
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
@@ -169,7 +181,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     /*
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
-
 
                     // Take in a big slip list all the slip of users in redis
                     for (String username : usernameList) {
@@ -192,6 +203,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                         }
                     }
                     */
+
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
                     if (id > -1) {
@@ -201,7 +213,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "POSTPONED")) {
                     // The match has been postponed.
-                    List<Match> mlist = getMatches(getAndCondition(ml.get(i), "competition").append("status" , "TIMED"), new Document("_id", 0));
+                    List<Match> mlist = getMatches(getAndCondition(ml.get(i), "competition").append("status", "TIMED"), new Document("_id", 0));
                     if (mlist.isEmpty()) {
                         continue;
                     }
@@ -211,7 +223,8 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.
-                    Integer id = replaceMatch(ml.get(i), false);
+                    final Integer id = getID(ml.get(i));
+                    updateMatchStatusAndResult(id , "FINISHED" , ml.get(i).getHome_goals() , ml.get(i).getAway_goals());
                     if (id >= 0) {
                         sDAO.checkSlipsWhenMatchEnds(id);
                     }
@@ -229,10 +242,8 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
                     for (Match m : mlist) {
                         if (m != null) {
-                            String status = m.getStatus();
-
-                        /*
-                            if (Objects.equals(status, "TIMED")) {
+                            /*
+                            if (Objects.equals(m.getStatus(), "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
                                 // Make the Redis query.
                                 SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
@@ -261,12 +272,11 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
                             }
                             */
-
-
                         }
                     }
-                    ml.get(i).setMatchID(mlist.get(0).getMatchID());
-                    replaceMatch(ml.get(i), false);
+
+                    final Integer id = getID(ml.get(i));
+                    updateMatchStatusAndResult(id , ml.get(i).getStatus() , ml.get(i).getHome_goals() , ml.get(i).getAway_goals());
                 }
             }
             sDAO.closeConnection();
@@ -285,15 +295,15 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
         assert dateMatch != null;
         assert dateIter != null;
 
-        long minDays = differenceSeconds(dateMatch , dateIter) , days;
+        long minDays = differenceSeconds(dateMatch, dateIter), days;
         int minIndex = 0;
         for (int i = 1; i < ml.size(); i++) {
-            if(!Objects.equals(ml.get(i).getStatus(), "TIMED")){
+            if (!Objects.equals(ml.get(i).getStatus(), "TIMED")) {
                 continue;
             }
 
             days = differenceSeconds(
-                    dateMatch ,
+                    dateMatch,
                     stringToTimestamp(ml.get(i).getMatchDate())
             );
 

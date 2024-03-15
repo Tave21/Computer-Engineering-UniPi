@@ -339,7 +339,6 @@ public class registerPage{
         }
     }
     private void openRegister() {
-        System.out.println("Open Register Page");
         HomeRegistered registered = new HomeRegistered(beansBetGUI);
 
         HBox registeredBar = registered.getHeader();

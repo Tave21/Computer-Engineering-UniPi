@@ -43,7 +43,7 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
      * @return The biggest value of pollID from MongoDB.
      */
 
-    private Integer getLastID() {
+    public Integer getLastID() {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("activationDate",
                                 new Document("$gt", getCurrentDate().minusYears(2).toString()))),
@@ -125,6 +125,7 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
         
         return s_list;
     }
+
 
 
 
