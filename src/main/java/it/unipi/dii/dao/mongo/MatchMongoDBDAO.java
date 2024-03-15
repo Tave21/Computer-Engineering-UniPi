@@ -178,7 +178,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     //This match must be removed from all non-confirmed slips in Redis
 
                     // Make the Redis query.
-                    /*
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
 
@@ -202,7 +201,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                             }
                         }
                     }
-                    */
+
 
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
@@ -242,7 +241,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
                     for (Match m : mlist) {
                         if (m != null) {
-                            /*
                             if (Objects.equals(m.getStatus(), "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
                                 // Make the Redis query.
@@ -271,7 +269,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                 }
 
                             }
-                            */
+
                         }
                     }
 
@@ -284,7 +282,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
-     * @param m  The target match.
+     * @param m  The target match object.
      * @param ml The list of matches.
      * @return The index of the match in the list with the nearest matchDate of the target match.
      */

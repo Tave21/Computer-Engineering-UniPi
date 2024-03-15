@@ -348,7 +348,6 @@ public class Match {
      */
     public void randomizeMultipliers() {
         if(!this.multipliers.isEmpty() && Objects.equals(this.multipliers.get(0).getName(), "-")) {
-            double temp = 0;
             this.setMultiplier(0, "1", generateMultiplier(3));
             this.setMultiplier(1, "2", generateMultiplier(3));
             this.setMultiplier(2, "X", generateMultiplier(3));
@@ -362,7 +361,7 @@ public class Match {
             this.setMultiplier(9, "XG", generateMultiplier(3));
             this.setMultiplier(10, "NG", generateMultiplier(2));
 
-            temp = 0;
+            double temp = 0;
             temp = temp + generateMultiplier(2);
             this.setMultiplier(11, "Over0/5", temp);
             temp = temp + generateMultiplier(2);
