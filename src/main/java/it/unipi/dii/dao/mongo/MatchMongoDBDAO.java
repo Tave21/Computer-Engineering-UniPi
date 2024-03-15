@@ -3,7 +3,6 @@ package it.unipi.dii.dao.mongo;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.result.UpdateResult;
 import it.unipi.dii.dao.MatchDAO;
 import it.unipi.dii.dao.base.BaseMongoDAO;
 import it.unipi.dii.dao.redis.SlipRedisDAO;
@@ -18,7 +17,6 @@ import java.util.*;
 import static it.unipi.dii.utility.DateTimes.*;
 import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
 import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
-import static it.unipi.dii.utility.ObjectToDocument.*;
 import static it.unipi.dii.utility.MongoUtility.insertDocuments;
 import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
 import static it.unipi.dii.utility.SportAPI.getNewMatchesUpdates;
@@ -51,31 +49,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     public void removeMatch(Document query) {
         MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
         match_coll.findOneAndDelete(query);
-    }
-
-    /**
-     * @param newMatch The new match to add.
-     * @param mode     If true, the match is inserted even if the match is not into the database, otherwise the replacement is done only if a related match is in the database.
-     * @return The id of the replaced match.
-     */
-
-    private Integer replaceMatch(Match newMatch, boolean mode) {
-        MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
-        if (mode) {
-            match_coll.replaceOne(
-                    new Document("matchID",
-                            new Document("$eq", newMatch.getMatchID())),
-                    ObjectToDocumentConverter(newMatch)
-            );
-            return newMatch.getMatchID();
-        } else {
-            Integer id = getID(newMatch);
-            if (id >= 0) {
-                newMatch.setMatchID(id);
-                match_coll.replaceOne(getAndCondition(newMatch, "date"), ObjectToDocumentConverter(newMatch));
-            }
-            return id;
-        }
     }
 
     private void updateMatchDate(int matchID, String newDate) {
@@ -178,7 +151,6 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
                     //This match must be removed from all non-confirmed slips in Redis
-
                     // Make the Redis query.
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
@@ -197,13 +169,11 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                             // If it's the last one.
                                             slipRedisDAO.delete_Slip(username, slip.getSlipID());
                                         }
-
                                     }
                                 }
                             }
                         }
                     }
-
 
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
@@ -243,6 +213,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
                     for (Match m : mlist) {
                         if (m != null) {
+
                             if (Objects.equals(m.getStatus(), "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
                                 // Make the Redis query.
@@ -263,20 +234,20 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                                         // If it's the last one.
                                                         slipRedisDAO.delete_Slip(username, slip.getSlipID());
                                                     }
-
                                                 }
                                             }
                                         }
                                     }
                                 }
-
                             }
-
                         }
                     }
-
-                    final Integer id = getID(ml.get(i));
-                    updateMatchStatusAndResult(id , ml.get(i).getStatus() , ml.get(i).getHome_goals() , ml.get(i).getAway_goals());
+                    updateMatchStatusAndResult(
+                            getID(ml.get(i)) ,
+                            ml.get(i).getStatus() ,
+                            ml.get(i).getHome_goals() ,
+                            ml.get(i).getAway_goals()
+                    );
                 }
             }
             sDAO.closeConnection();

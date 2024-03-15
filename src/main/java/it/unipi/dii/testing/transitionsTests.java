@@ -34,6 +34,7 @@ public class transitionsTests {
         e.setHome_goals(0);
         e.setAway_goals(0);
         e.setCompetition_id("IT1");
+        e.initializeAndRandomizeMultipliers();
         ml.add(e);
         Match eprev1 = e;
 
@@ -46,6 +47,7 @@ public class transitionsTests {
         e.setHome_goals(0);
         e.setAway_goals(0);
         e.setCompetition_id("IT1");
+        e.initializeAndRandomizeMultipliers();
         ml.add(e);
         Match eprev2 = e;
 
@@ -195,6 +197,7 @@ public class transitionsTests {
         e.setHome_goals(0);
         e.setAway_goals(0);
         e.setCompetition_id("IT1");
+        e.initializeAndRandomizeMultipliers();
         ml.add(e);
         final Match eprev = e;
 
@@ -302,10 +305,9 @@ public class transitionsTests {
         e1.setHome_goals(0); // 1 - 0
         e1.setAway_goals(0);
         e1.setCompetition_id("IT1");
+        e1.initializeAndRandomizeMultipliers();
         e1.setMultiplier(0 , "1" , 2);
         ml.add(e1);
-
-        Match eref = e1;
 
         Match e2 = new Match();
         e2.setStatus("TIMED");
@@ -315,6 +317,7 @@ public class transitionsTests {
         e2.setHome_goals(0); // 1 - 1
         e2.setAway_goals(0);
         e2.setCompetition_id("IT1");
+        e2.initializeAndRandomizeMultipliers();
         e2.setMultiplier(2 , "X" , 2);
         ml.add(e2);
 
@@ -325,6 +328,7 @@ public class transitionsTests {
         e3.setMatchDate(thisInstant);
         e3.setHome_goals(0); // will not finish.
         e3.setAway_goals(0);
+        e3.initializeAndRandomizeMultipliers();
         e3.setCompetition_id("IT1");
         ml.add(e3);
 

@@ -20,7 +20,6 @@ import static it.unipi.dii.utility.DateTimes.*;
 
 public class SportAPI {
     public static final String API_KEY = "d78f2f22b4324475b801e9fe8534eba7"; // Key to access to the services of the API.
-
     public SportAPI() {
     }
 
@@ -107,9 +106,7 @@ public class SportAPI {
             List<Match> ret = new ArrayList<>();
 
             for (int i = 0; i < matches.length(); i++) {
-
                 JSONObject match = matches.getJSONObject(i);
-
                 Instant lastUpdated = stringToTimestamp(match.getString("lastUpdated"));
 
                 if (
@@ -123,7 +120,6 @@ public class SportAPI {
                         JSONObject score = match.getJSONObject("score");
                         JSONObject fullTime = score.optJSONObject("fullTime"); // final result.
                         Match m = new Match();
-                        m.setMatchID(-1);
                         m.setMatchDate(match.getString("utcDate"));
                         m.setTeam_home(match.getJSONObject("homeTeam").getString("name"));
                         m.setTeam_away(match.getJSONObject("awayTeam").getString("name"));
@@ -141,6 +137,10 @@ public class SportAPI {
                         }
 
                         m.setStatus(match.getString("status"));
+
+                        if(Objects.equals(m.getStatus(), "TIMED")){
+                            m.initializeAndRandomizeMultipliers();
+                        }
 
                         switch (leagueName) {
                             case "SA":
@@ -165,8 +165,6 @@ public class SportAPI {
 
                         if (!Objects.equals(m.getCompetition_id(), "null")) {
                             ret.add(m);
-                            // ISODate('1852-01-15T11:25:00Z'),
-                            // "2018-10-28T23:58:18Z"
                         }
 
                     }

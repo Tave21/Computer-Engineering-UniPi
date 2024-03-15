@@ -72,7 +72,6 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
     /**
      * Remove all the slips from MongoDB that match the criteria.
-     *
      * @param query the match criteria.
      */
     @Override

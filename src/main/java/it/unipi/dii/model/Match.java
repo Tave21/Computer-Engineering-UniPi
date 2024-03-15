@@ -85,9 +85,11 @@ public class Match {
     public List<Multiplier> getMultipliers() {
         return this.multipliers;
     }
+
     public void setMultipliers(List<Multiplier> multipliers) {
         this.multipliers = multipliers;
     }
+
     public double pickMultiplierValue(int index) {
         return this.multipliers.get(index).getValue();
     }
@@ -288,10 +290,10 @@ public class Match {
      * If away_goals or home_goals are set to NULL, this function set them to 0.
      */
     public void cleanGoals() {
-        if (this.home_goals == null || isNaN((double)this.home_goals)) {
+        if (this.home_goals == null || isNaN((double) this.home_goals)) {
             this.home_goals = 0;
         }
-        if (this.away_goals == null || isNaN((double)this.away_goals)) {
+        if (this.away_goals == null || isNaN((double) this.away_goals)) {
             this.away_goals = 0;
         }
     }
@@ -311,34 +313,34 @@ public class Match {
     /**
      * Set the multipliers name to the canonical ones and randomize their values:
      * The list of the supported multipliers:
-     *  <ul>
-     *     <li>"1" - Home team wins.</li>
-     *      <li>"2" - Away team wins.</li>
-     *      <li>"X" - Draw.</li>
-     *     <li>"1X" - Home team wins or draw.</li>
-     *      <li>"X2" - Away team wins or draw.</li>
-     *      <li>"12" - No draw.</li>
-     *      <li>"1G" - Home team wins but both teams score.</li>
-     *      <li>"2G" - Away team wins but both teams score.</li>
-     *      <li>"XG" - Draw but both teams score.</li>
-     *      <li>"GG" - Both teams score.</li>
-     *     <li>"NG" - No one scores.</li>
-     *     <li>"Over0/5" - The match will end with at least 1 goal.</li>
-     *      <li>"Over1/5" - The match will end with at least 2 goals.</li>
-     *      <li>"Over2/5" - The match will end with at least 3 goals.</li>
-     *      <li>"Over3/5" - The match will end with at least 4 goals.</li>
-     *      <li>"Over4/5" - The match will end with at least 5 goals.</li>
-     *      <li>"Over5/5" - The match will end with at least 6 goals.</li>
-     *      <li>"Under0/5" - The match will end with a maximum of 0 goals.</li>
-     *      <li>"Under1/5" - The match will end with a maximum of 1 goal.</li>
-     *      <li>"Under2/5" - The match will end with a maximum of 2 goals.</li>
-     *      <li>"Under3/5" - The match will end with a maximum of 3 goals.</li>
-     *      <li>"Under4/5" - The match will end with a maximum of 4 goals.</li>
-     *      <li>"Under5/5" - The match will end with a maximum of 5 goals.</li>
-     *  </ul>
+     * <ul>
+     *    <li>"1" - Home team wins.</li>
+     *     <li>"2" - Away team wins.</li>
+     *     <li>"X" - Draw.</li>
+     *    <li>"1X" - Home team wins or draw.</li>
+     *     <li>"X2" - Away team wins or draw.</li>
+     *     <li>"12" - No draw.</li>
+     *     <li>"1G" - Home team wins but both teams score.</li>
+     *     <li>"2G" - Away team wins but both teams score.</li>
+     *     <li>"XG" - Draw but both teams score.</li>
+     *     <li>"GG" - Both teams score.</li>
+     *    <li>"NG" - No one scores.</li>
+     *    <li>"Over0/5" - The match will end with at least 1 goal.</li>
+     *     <li>"Over1/5" - The match will end with at least 2 goals.</li>
+     *     <li>"Over2/5" - The match will end with at least 3 goals.</li>
+     *     <li>"Over3/5" - The match will end with at least 4 goals.</li>
+     *     <li>"Over4/5" - The match will end with at least 5 goals.</li>
+     *     <li>"Over5/5" - The match will end with at least 6 goals.</li>
+     *     <li>"Under0/5" - The match will end with a maximum of 0 goals.</li>
+     *     <li>"Under1/5" - The match will end with a maximum of 1 goal.</li>
+     *     <li>"Under2/5" - The match will end with a maximum of 2 goals.</li>
+     *     <li>"Under3/5" - The match will end with a maximum of 3 goals.</li>
+     *     <li>"Under4/5" - The match will end with a maximum of 4 goals.</li>
+     *     <li>"Under5/5" - The match will end with a maximum of 5 goals.</li>
+     * </ul>
      */
     private void randomizeMultipliers() {
-        if(!this.multipliers.isEmpty() && Objects.equals(this.multipliers.get(0).getName(), "-")) {
+        if (!this.multipliers.isEmpty() && Objects.equals(this.multipliers.get(0).getName(), "-")) {
             this.setMultiplier(0, "1", generateMultiplier(3));
             this.setMultiplier(1, "2", generateMultiplier(3));
             this.setMultiplier(2, "X", generateMultiplier(3));
@@ -385,39 +387,33 @@ public class Match {
     /**
      * Initialize and randmomize the multipliers.
      */
-    public void initializeAndRandomizeMultipliers(){
+    public void initializeAndRandomizeMultipliers() {
         this.initializeMultipliers();
         this.randomizeMultipliers();
     }
 
     /**
-     *
      * @return True if the match can be inserted in MongoDB.
      */
-    public boolean checkMatchValidity(){
-        if(
-                        !checkTimestampFormat(this.matchDate) ||
-                        this.team_home != null ||
-                        this.team_away != null ||
-                        !this.allMultipliersValid()
-        ){
-            return false;
-        }
-        return true;
+    public boolean checkMatchValidity() {
+        return checkTimestampFormat(this.matchDate) &&
+                !this.team_home.isEmpty() &&
+                !this.team_away.isEmpty() &&
+                !this.matchDate.isEmpty() &&
+                this.allMultipliersValid();
 
     }
 
     /**
-     *
      * @return True if the multipliers list is valid.
      */
-    private boolean allMultipliersValid(){
-        if(this.multipliers.size() != NUMBER_OF_MULTIPLIERS){
+    private boolean allMultipliersValid() {
+        if (this.multipliers.size() != NUMBER_OF_MULTIPLIERS) {
             return false;
         }
 
-        for(int i = 0 ; i < NUMBER_OF_MULTIPLIERS ; i++){
-            if(!this.multipliers.get(i).validMultiplier()){
+        for (int i = 0; i < NUMBER_OF_MULTIPLIERS; i++) {
+            if (!this.multipliers.get(i).validMultiplier()) {
                 return false;
             }
         }
@@ -427,6 +423,7 @@ public class Match {
 
     /**
      * create a string with all attributes of the Matches
+     *
      * @return a string in a JSON format
      */
     @Override
@@ -461,8 +458,10 @@ public class Match {
                 Objects.equals(status, match.status) &&
                 Objects.equals(multipliers, match.multipliers);
     }
+
     /**
      * create a hash for the match
+     *
      * @return the hash code
      */
     @Override

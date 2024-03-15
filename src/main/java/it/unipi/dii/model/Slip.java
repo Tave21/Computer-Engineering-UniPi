@@ -11,8 +11,8 @@ import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
 import static it.unipi.dii.utility.regularExpressionChecks.checkTimestampFormat;
 
 public class Slip {
-    private final int MIN_BETAMOUNT = 2; // Minimum amount of credit required to place a bet.
-    private final int MAX_AMOUNT = 3000; // maximum winning quantity.
+    private final static int MIN_BETAMOUNT = 2; // Minimum amount of credit required to place a bet.
+    private final static int MAX_AMOUNT = 3000; // maximum winning quantity.
     private Integer slipID;
     private String username;
     private String creationDate;
@@ -28,8 +28,8 @@ public class Slip {
         this.creationDate = creationDate;
         this.confirmationDate = confirmationDate;
         this.betAmount = betAmount;
-        this.amount = 0;
         this.win = -1;
+        this.amount = 0;
     }
 
     public Slip() {
@@ -38,37 +38,36 @@ public class Slip {
     }
 
     /**
-     *
      * @param betAmount The target bet amount.
      * @return True if the input value is bigger than the minimum value for a bet amount.
      */
-    public boolean checkBetAmount(double betAmount) {
-        return this.betAmount >= this.MIN_BETAMOUNT;
+    public static boolean checkBetAmount(double betAmount) {
+        return betAmount >= MIN_BETAMOUNT;
     }
 
     @JsonProperty("slipID")
     public Integer getSlipID() {
-        return slipID;
+        return this.slipID;
     }
 
     @JsonProperty("username")
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     @JsonProperty("confirmationDate")
     public String getConfirmationDate() {
-        return confirmationDate;
+        return this.confirmationDate;
     }
 
     @JsonProperty("creationDate")
     public String getCreationDate() {
-        return creationDate;
+        return this.creationDate;
     }
 
     @JsonProperty("amount")
     public double getAmount() {
-        return amount;
+        return this.amount;
     }
 
     @JsonProperty("betAmount")
@@ -78,12 +77,12 @@ public class Slip {
 
     @JsonProperty("win")
     public Integer getWin() {
-        return win;
+        return this.win;
     }
 
     @JsonProperty("betsList")
     public List<Bet> findBetsList() {
-        return betsList;
+        return this.betsList;
     }
 
     public void setUsername(String username) {
@@ -103,15 +102,15 @@ public class Slip {
     }
 
     public void setAmount(double amount) {
-        if(amount > this.MAX_AMOUNT){
-            this.amount = this.MAX_AMOUNT;
-        }else {
+        if (amount > MAX_AMOUNT) {
+            this.amount = MAX_AMOUNT;
+        } else {
             this.amount = amount;
         }
     }
 
     public void setBetAmount(double bet_amount) {
-        if (bet_amount >= this.MIN_BETAMOUNT) {
+        if (bet_amount >= MIN_BETAMOUNT) {
             this.betAmount = bet_amount;
         }
     }
@@ -133,30 +132,11 @@ public class Slip {
         this.setAmount(this.betAmount * this.computeTotalMultiplicator());
     }
 
-    /**
-     *
-     * @param matchID the target match.
-     * @return The index of the bet related to the target match, or -1 if
-     * There aren't any bets related to the target match.
-     */
-
-    public int findBetIndex(int matchID) {
-        if(matchID >= 0) {
-            for (int i = 0; i < this.betsList.size(); i++) {
-                if (this.betsList.get(i).getMatchID().equals(matchID)) {
-                    // is the Bet is present in the slip.
-                    return i;
-                }
-            }
-        }
-        return -1; // if is not present.
-    }
 
     /**
-     *
      * @return True if al the bets in the list have win = -1.
      */
-    public boolean betListNotEvaluated(){
+    public boolean betListNotEvaluated() {
         for (Bet bet : this.betsList) {
             if (bet.getWin() != -1) {
                 return false;
@@ -167,7 +147,6 @@ public class Slip {
 
 
     /**
-     *
      * @return The total multiplier of the slip.
      */
 
@@ -184,7 +163,7 @@ public class Slip {
      * Moreover, it set amount to 0.
      */
 
-    public void setBetsWinToMinus1(){
+    public void setBetsWinToMinus1() {
         for (Bet bet : this.betsList) {
             bet.setWin(-1); // The bet is not evaluated yet.
         }
@@ -194,13 +173,14 @@ public class Slip {
 
     /**
      * A set of checks that must be done before the inserting operation of a slip in MongoDB.
+     *
      * @return True if the slip is valid to be inserted in the database.
      */
     public boolean checkSlipValidity() {
         if (
                 this.betsList.isEmpty()
                         || !this.betListNotEvaluated()
-                        || !this.checkBetAmount(this.getBetAmount())
+                        || !checkBetAmount(this.getBetAmount())
                         || this.getAmount() != 0
                         || this.getWin() != -1
                         || this.getUsername().isEmpty()
@@ -220,8 +200,8 @@ public class Slip {
             return false;
         }
         // We do some variable recycling.
-        for (int i = 0; i < this.betsList.size(); i++) {
-            dateToCheckCreation = Instant.parse(this.betsList.get(i).getMatchDate());
+        for (Bet bet : this.betsList) {
+            dateToCheckCreation = Instant.parse(bet.getMatchDate());
             if (!dateToCheckConfirmation.isBefore(dateToCheckCreation)) {
                 return false;
             }
@@ -231,6 +211,7 @@ public class Slip {
 
     /**
      * create a string with all atributes of the Slip
+     *
      * @return a string in a JSON format
      */
     @Override
@@ -241,6 +222,7 @@ public class Slip {
 
     /**
      * Check if a slip is equals to another one
+     *
      * @param o is a slip
      * @return true if the two slips are equal, otherwise false
      */
@@ -261,6 +243,7 @@ public class Slip {
 
     /**
      * create a hash for the admin
+     *
      * @return the hash code
      */
     @Override

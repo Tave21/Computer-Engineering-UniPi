@@ -29,9 +29,6 @@ public class generationMainIndexes {
         Integer[] indexOrder = { - 1, 1 , 1};
         createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
 
-        indexFields[0] = "competition_id";
-        createCompoundIndex(ms.mongoDB , "matches" , indexFields, indexOrder);
-
         // Customer indexes
         indexFields = new String[]{"username", "name", "surname"};
         indexOrder = new Integer[]{1, 1, 1};
