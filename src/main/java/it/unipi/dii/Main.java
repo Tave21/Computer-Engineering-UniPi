@@ -12,7 +12,6 @@ public class Main {
         testTIMEDtoPOSTPONED();
         testCustomers();
         testPolls();
-
         System.out.println("OK! All test succeeded, BeansBet works perfectly!");
     }
 }

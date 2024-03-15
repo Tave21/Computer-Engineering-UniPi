@@ -77,7 +77,10 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
     @Override
     public void removeSlip(Document query) {
-        deleteDocuments(this.mongoDB.getCollection("slips"), query);
+        deleteDocuments(
+                this.mongoDB.getCollection("slips"),
+                query
+        );
     }
 
     @Override
@@ -93,28 +96,31 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
     @Override
     public void removeBet(String slipID, Integer matchID) {
-        Document updateQuery = new Document("SlipID", slipID).append("betsList.MatchID", matchID);
-        Document update = new Document("$pull", new Document("betsList", new Document("MatchID", matchID)));
-        this.mongoDB.getCollection("slips").updateMany(updateQuery, update);
+        this.mongoDB.getCollection("slips").updateMany(
+                new Document("SlipID", slipID).append("betsList.MatchID", matchID),
+                new Document("$pull", new Document("betsList", new Document("MatchID", matchID)))
+        );
     }
 
     /**
      * Remove all the bets in the database related to the target match.
      * This function make two write queries,
-     *  the first is the update one, the second is used to delete all the slips with no bets.
+     * the first is the update one, the second is used to delete all the slips with no bets.
+     *
      * @param matchID ID of the target match.
      */
     @Override
     public void removeAllBetsOfMatch(Integer matchID) {
-        MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
-        // Update the slips with a bet on the target match.
-        slips_coll.updateMany(
-                new Document(),
-                Updates.pull("betsList", Filters.eq("matchID", matchID))
-        );
-
-        // Delete all the slips with no bets.
-        slips_coll.deleteMany(Filters.size("betsList", 0));
+        if(matchID >= 0) {
+            MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
+            // Update the slips with a bet on the target match.
+            slips_coll.updateMany(
+                    new Document(),
+                    Updates.pull("betsList", Filters.eq("matchID", matchID))
+            );
+            // Delete all the slips with no bets.
+            slips_coll.deleteMany(Filters.size("betsList", 0));
+        }
     }
 
     /**
@@ -166,8 +172,10 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
 
     private void substituteSlip(Integer slipID, Slip slip) {
-        Document query = new Document("slipID", new Document("$eq", slipID));
-        this.mongoDB.getCollection("slips").replaceOne(query, convertJsonToDocument(convertObjectToJsonString(slip)));
+        this.mongoDB.getCollection("slips").replaceOne(
+                new Document("slipID",  slipID),
+                convertJsonToDocument(convertObjectToJsonString(slip))
+        );
     }
 
     /**
@@ -179,17 +187,24 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
 
     public void checkSlipsWhenMatchEnds(Integer matchID) {
-        Document query = new Document("betsList", new Document("$elemMatch", new Document("matchID", matchID)));
-        List<Slip> sl = getSlips(query, new Document("_id", 0));
-        CustomerMongoDBDAO cs = new CustomerMongoDBDAO();
-        MatchMongoDBDAO mb = new MatchMongoDBDAO();
-        cs.openConnection();
-        mb.openConnection();
-        for (Slip slip : sl) {
-            checkBetWin(slip, matchID, true, mb, cs);
+        if(matchID >= 0) {
+            List<Slip> sl = getSlips(
+                    new Document("betsList", new Document("$elemMatch", new Document("matchID", matchID))),
+                    new Document("_id", 0)
+            );
+
+            CustomerMongoDBDAO cs = new CustomerMongoDBDAO();
+            MatchMongoDBDAO mb = new MatchMongoDBDAO();
+            cs.openConnection();
+            mb.openConnection();
+
+            for (Slip slip : sl) {
+                checkBetWin(slip, matchID, true, mb, cs);
+            }
+
+            cs.closeConnection();
+            mb.closeConnection();
         }
-        cs.closeConnection();
-        mb.closeConnection();
     }
 
     /**
@@ -205,7 +220,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                         new Document("elem.matchID", matchID)
                 )
         );
-        this.mongoDB.getCollection("slips").updateMany(filter , update , options);
+        this.mongoDB.getCollection("slips").updateMany(filter, update, options);
     }
 
     /**
@@ -245,7 +260,11 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
 
     public Slip getSlip(Integer slipID) {
-        List<Slip> ml = getSlips(new Document("slipID", new Document("$eq", slipID)), new Document("_id", 0));
+        List<Slip> ml = getSlips(
+                new Document("slipID", slipID),
+                new Document("_id", 0)
+        );
+
         if (ml.isEmpty()) {
             return null;
         } else {
