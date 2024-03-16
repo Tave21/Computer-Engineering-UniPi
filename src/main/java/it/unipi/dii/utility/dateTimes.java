@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
 
-public class DateTimes {
+public class dateTimes {
 
     /**
      * @param birthDate The date of birth.
@@ -134,6 +134,14 @@ public class DateTimes {
 
     public static String getCurrentDateString(){
         return getCurrentDate().toString();
+    }
+
+    /**
+     *
+     * @return The first day of the current month.
+     */
+    public static LocalDate getFirstDayOfMonth() {
+        return getCurrentDate().withDayOfMonth(1);
     }
 
 }

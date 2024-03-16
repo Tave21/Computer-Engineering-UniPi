@@ -1,7 +1,7 @@
 package it.unipi.dii.generation;
 import it.unipi.dii.dao.mongo.MatchMongoDBDAO;
 
-import static it.unipi.dii.utility.MongoUtility.*;
+import static it.unipi.dii.utility.mongoUtility.*;
 
 public class generationMainIndexes {
     public static void main(String[] args) {

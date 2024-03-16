@@ -1,9 +1,7 @@
 package it.unipi.dii.pagesGUI;
 
-import it.unipi.dii.dao.mongo.MatchMongoDBDAO;
 import it.unipi.dii.dao.redis.SlipRedisDAO;
 import it.unipi.dii.model.Bet;
-import it.unipi.dii.model.Match;
 import it.unipi.dii.model.Slip;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentInstantString;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstantString;
 
 public class addToSlipPage {
 

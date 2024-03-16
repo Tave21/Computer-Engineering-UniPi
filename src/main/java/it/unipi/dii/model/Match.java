@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.randomGeneration.generateMultiplier;
+import static it.unipi.dii.utility.generators.randomGeneration.generateMultiplier;
 import static it.unipi.dii.utility.regularExpressionChecks.checkTimestampFormat;
 import static it.unipi.dii.utility.regularExpressionChecks.isNaN;
 

@@ -19,10 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
-import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
-import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstant;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertDocumentToJson;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
 
 public class pollsPage {
     private final List<pollProgressBar> progressList = new ArrayList<>();

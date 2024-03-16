@@ -7,7 +7,6 @@ import it.unipi.dii.dao.mongo.AdminMongoDBDAO;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
 import it.unipi.dii.dao.redis.PollRedisDAO;
 import it.unipi.dii.userCookie.customerInfo;
-import it.unipi.dii.utility.JsonToObjectConverter;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -19,8 +18,7 @@ import javafx.geometry.Pos;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
 
 public class loginPage {
     private BeansBetGUI beansBetGUI;

@@ -3,7 +3,7 @@ import it.unipi.dii.dao.mongo.MatchMongoDBDAO;
 
 import java.io.IOException;
 
-import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
+import static it.unipi.dii.utility.mongoUtility.deactivateMongoDBNotifications;
 
 //USED TO RETRIEVE NEW MATCHES FROM API
 public class update_matches_from_API {

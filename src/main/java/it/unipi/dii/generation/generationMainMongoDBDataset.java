@@ -20,15 +20,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import static it.unipi.dii.utility.DateTimes.*;
-import static it.unipi.dii.utility.MongoUtility.*;
-import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
-import static it.unipi.dii.utility.PasswordGenerator.generateRandomPassword;
-import static it.unipi.dii.utility.RandomNumber.*;
-import static it.unipi.dii.utility.Security.calculateSHA256;
-import static it.unipi.dii.utility.WriteJsonToFile.deleteFile;
-import static it.unipi.dii.utility.WriteJsonToFile.writeToJsonFile;
-import static it.unipi.dii.utility.randomGeneration.*;
+import static it.unipi.dii.utility.dateTimes.*;
+import static it.unipi.dii.utility.mongoUtility.*;
+import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
+import static it.unipi.dii.utility.generators.passwordGenerator.generateRandomPassword;
+import static it.unipi.dii.utility.generators.randomGeneration.*;
+import static it.unipi.dii.utility.securityLibrary.calculateSHA256;
+import static it.unipi.dii.utility.converters.writeJsonToFileConverter.deleteFile;
+import static it.unipi.dii.utility.converters.writeJsonToFileConverter.writeToJsonFile;
 
 public class generationMainMongoDBDataset {
     public static final String[] italianProvinces = {
@@ -67,6 +66,7 @@ public class generationMainMongoDBDataset {
         dropCollection(cl.mongoDB, "slips");
         dropCollection(cl.mongoDB, "matches");
         dropCollection(cl.mongoDB, "polls");
+        dropCollection(cl.mongoDB, "analytics");
 
         // Create again the collection
         createCollection(cl.mongoDB, "admins");
@@ -74,6 +74,7 @@ public class generationMainMongoDBDataset {
         createCollection(cl.mongoDB, "slips");
         createCollection(cl.mongoDB, "matches");
         createCollection(cl.mongoDB, "polls");
+        createCollection(cl.mongoDB, "analytics");
 
         JSONParser jsonParser = new JSONParser();
 

@@ -5,7 +5,6 @@ import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
 import it.unipi.dii.model.Customer;
 import it.unipi.dii.userCookie.customerInfo;
-import it.unipi.dii.userCookie.customerVotedPollVoice;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -18,10 +17,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.unipi.dii.userCookie.usernameCookie.createUserCookie;
-import static it.unipi.dii.utility.DateTimes.getCurrentDateString;
-import static it.unipi.dii.utility.DateTimes.isAdult;
-import static it.unipi.dii.utility.Security.calculateSHA256;
+import static it.unipi.dii.utility.dateTimes.getCurrentDateString;
+import static it.unipi.dii.utility.dateTimes.isAdult;
+import static it.unipi.dii.utility.securityLibrary.calculateSHA256;
 import static it.unipi.dii.utility.regularExpressionChecks.*;
 
 public class registerPage{

@@ -6,7 +6,7 @@ import it.unipi.dii.dao.base.BaseMongoDAO;
 import org.bson.BsonNull;
 import org.bson.Document;
 import java.util.*;
-import static it.unipi.dii.utility.RandomNumber.truncateNumber;
+import static it.unipi.dii.utility.generators.randomGeneration.truncateNumber;
 
 public class StatisticsMongoDBDAO extends BaseMongoDAO implements StatisticsDAO {
 
@@ -94,7 +94,11 @@ public class StatisticsMongoDBDAO extends BaseMongoDAO implements StatisticsDAO 
                         new Document("_id", 0L)));
 
         AggregateIterable<Document> docs = this.mongoDB.getCollection("slips").aggregate(pipeline);
-        return truncateNumber(Objects.requireNonNull(docs.first()).getDouble("totalDifference"), 2);
+        try {
+            return truncateNumber(Objects.requireNonNull(docs.first()).getDouble("totalDifference"), 2);
+        }catch(NullPointerException e){
+            return 0; // No slips have been made in this period.
+        }
     }
 
     @Override

@@ -13,13 +13,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
-import static it.unipi.dii.utility.MongoUtility.deleteDocuments;
-import static it.unipi.dii.utility.MongoUtility.insertDocuments;
-import static it.unipi.dii.utility.ObjectToDocument.ObjectToDocumentConverter;
-import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
-import static it.unipi.dii.utility.RandomNumber.truncateNumber;
-import static it.unipi.dii.utility.Security.CheckHash;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.mongoUtility.deleteDocuments;
+import static it.unipi.dii.utility.mongoUtility.insertDocuments;
+import static it.unipi.dii.utility.converters.objectToDocumentConverter.ObjectToDocumentConverter;
+import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
+import static it.unipi.dii.utility.generators.randomGeneration.truncateNumber;
+import static it.unipi.dii.utility.securityLibrary.CheckHash;
 import static java.lang.Math.abs;
 
 public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {

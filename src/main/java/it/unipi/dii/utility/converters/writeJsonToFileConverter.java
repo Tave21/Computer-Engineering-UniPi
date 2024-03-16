@@ -1,10 +1,10 @@
-package it.unipi.dii.utility;
+package it.unipi.dii.utility.converters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class WriteJsonToFile {
+public class writeJsonToFileConverter {
     /**
      * Write a list of object as an array of object document in a local file.
      * @param objects List of the object to write.

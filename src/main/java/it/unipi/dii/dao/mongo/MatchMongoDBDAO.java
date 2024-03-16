@@ -3,7 +3,6 @@ package it.unipi.dii.dao.mongo;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.result.UpdateResult;
 import it.unipi.dii.dao.MatchDAO;
 import it.unipi.dii.dao.base.BaseMongoDAO;
 import it.unipi.dii.dao.redis.SlipRedisDAO;
@@ -15,13 +14,13 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 
-import static it.unipi.dii.utility.DateTimes.*;
-import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
-import static it.unipi.dii.utility.ObjectToDocument.*;
-import static it.unipi.dii.utility.MongoUtility.insertDocuments;
-import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
-import static it.unipi.dii.utility.SportAPI.getNewMatchesUpdates;
+import static it.unipi.dii.utility.dateTimes.*;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertDocumentToJson;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.converters.objectToDocumentConverter.*;
+import static it.unipi.dii.utility.mongoUtility.insertDocuments;
+import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
+import static it.unipi.dii.utility.sportAPI.getNewMatchesUpdates;
 
 
 public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {

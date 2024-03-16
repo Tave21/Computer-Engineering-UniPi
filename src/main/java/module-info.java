@@ -38,4 +38,11 @@ module it.unipi.dii {
     opens it.unipi.dii.pagesGUI to javafx.fxml;
     exports it.unipi.dii.userCookie;
     opens it.unipi.dii.userCookie to javafx.fxml;
+    exports it.unipi.dii.testing;
+    opens it.unipi.dii.testing to javafx.fxml;
+    exports it.unipi.dii.analyticsPeriodicCalculator;
+    exports it.unipi.dii.utility.converters;
+    exports it.unipi.dii.utility.generators;
+    exports it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.financialResults;
+    exports it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuery;
 }

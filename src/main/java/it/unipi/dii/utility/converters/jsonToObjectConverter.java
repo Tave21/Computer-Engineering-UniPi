@@ -1,8 +1,8 @@
-package it.unipi.dii.utility;
+package it.unipi.dii.utility.converters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
 
-public class JsonToObjectConverter {
+public class jsonToObjectConverter {
     /**
      *
      * @param jsonString JSON to convert

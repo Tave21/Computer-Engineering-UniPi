@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
-import static it.unipi.dii.utility.DateTimes.getCurrentInstantString;
-import static it.unipi.dii.utility.PasswordGenerator.generateRandomPassword;
-import static it.unipi.dii.utility.Security.calculateSHA256;
-import static it.unipi.dii.utility.randomGeneration.generatePhoneNumber;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstant;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstantString;
+import static it.unipi.dii.utility.generators.passwordGenerator.generateRandomPassword;
+import static it.unipi.dii.utility.securityLibrary.calculateSHA256;
+import static it.unipi.dii.utility.generators.randomGeneration.generatePhoneNumber;
 import static org.junit.Assert.*;
 
 public class transitionsTests {

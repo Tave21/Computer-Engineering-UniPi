@@ -1,6 +1,8 @@
 package it.unipi.dii.pagesGUI;
 
-import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCursor;
+import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.financialResults.financialReport;
+import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuery.mainReport;
 import it.unipi.dii.dao.mongo.StatisticsMongoDBDAO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,15 +15,13 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static it.unipi.dii.utility.DateTimes.getCurrentDate;
-import static it.unipi.dii.utility.DateTimes.getCurrentDateString;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.dateTimes.*;
 
 
 public class statsPage {
 
     public StackPane getContent() {
-
         StackPane stackPane = new StackPane();
 
         Region topSpacer = new Region();
@@ -36,37 +36,79 @@ public class statsPage {
         StatisticsMongoDBDAO st = new StatisticsMongoDBDAO();
         st.openConnection();
 
+
+        financialReport f;
         List<String> financialArray = new ArrayList<>();
-        financialArray.add(String.valueOf(st.showFinancialResults(getCurrentDate().minusYears(2).toString(), getCurrentDateString())));
+
+        try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
+                .find(new Document("type", "financial").append("periodRelated", getFirstDayOfMonth().toString()))
+                .projection(new Document("_id", 0L))
+                .iterator()) {
+            Document document = cursor.next();
+            f = convertJsonToObject(document.toJson(), financialReport.class);
+            assert f != null;
+            financialArray.add(String.valueOf(f.getValueList().get(0).getValue()));
+        } catch (NullPointerException e) {
+            financialArray.add("No info available!");
+        }
 
         List<String> appreciatedTeams = st.showMostAppreciatedTeamsPolls();
 
         List<String> appreciatedPlayers = st.showMostAppreciatedPlayersPolls();
 
-        AggregateIterable<Document> av = st.averageNumberOfMatchesForEachChampionshipForEachSlip(getCurrentDate().minusYears(1).toString(), getCurrentDateString());
-
+        /*
         List<String> topTeams = st.showUsersFavouriteTeams(getCurrentDate().minusYears(1).toString(), getCurrentDateString(), 10);
+         */
+        mainReport m;
+        List<String> topTeams = new ArrayList<>();
+        try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
+                .find(new Document("type", "users favourite teams").append("periodRelated", getFirstDayOfMonth().toString()))
+                .projection(new Document("_id", 0L))
+                .iterator()) {
+            Document document = cursor.next();
+            m = convertJsonToObject(document.toJson(), mainReport.class);
+            assert m != null;
 
-        List<String> averageMatches = new ArrayList<>();
-
-        for (int i = 0; i < 5; i++) {
-            averageMatches.add("No Info");
+            for(int i = 0 ; i < m.getValueList().size() ; i++){
+                topTeams.add(m.getValueList().get(i).getChampionship_id());
+            }
+        } catch (NullPointerException e) {
+            topTeams.clear();
         }
 
-        for (Document document : av) {
-            String id = document.getString("_id");
-            String howMany = String.valueOf(document.getDouble("HowMany"));
+        List<String> averageMatches = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            averageMatches.add("No info available!");
+        }
 
-            if (Objects.equals(id, "GB1")) {
-                averageMatches.set(0, howMany);
-            } else if (Objects.equals(id, "IT1")) {
-                averageMatches.set(1, howMany);
-            } else if (Objects.equals(id, "L1")) {
-                averageMatches.set(2, howMany);
-            } else if (Objects.equals(id, "ES1")) {
-                averageMatches.set(3, howMany);
-            } else if (Objects.equals(id, "FR1")) {
-                averageMatches.set(4, howMany);
+        try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
+                .find(new Document("type", "seventh").append("periodRelated", getFirstDayOfMonth().toString()))
+                .projection(new Document("_id", 0L))
+                .iterator()) {
+            Document document = cursor.next();
+            m = convertJsonToObject(document.toJson(), mainReport.class);
+            assert m != null;
+
+            for (int i = 0; i < Objects.requireNonNull(m).getValueList().size() ; i++) {
+                final String id = m.getValueList().get(i).getChampionship_id();
+                final String howMany = String.valueOf(m.getValueList().get(i).getValue());
+
+                if (Objects.equals(id, "GB1")) {
+                    averageMatches.set(0, howMany);
+                } else if (Objects.equals(id, "IT1")) {
+                    averageMatches.set(1, howMany);
+                } else if (Objects.equals(id, "L1")) {
+                    averageMatches.set(2, howMany);
+                } else if (Objects.equals(id, "ES1")) {
+                    averageMatches.set(3, howMany);
+                } else if (Objects.equals(id, "FR1")) {
+                    averageMatches.set(4, howMany);
+                }
+            }
+
+        } catch (NullPointerException e) {
+            for (int i = 0; i < 5; i++) {
+                averageMatches.add("No info available!");
             }
         }
 
@@ -99,6 +141,7 @@ public class statsPage {
 
         return new StackPane(scrollPane);
     }
+
     protected VBox createStatElement(String title, List<String> array) {
         String[] championships = {"Premier League", "Serie A", "Bundesliga", "La Liga", "Ligue 1"};
         VBox form = new VBox();
@@ -146,6 +189,7 @@ public class statsPage {
 
         return form;
     }
+
     private HBox createRegionBox(String averageAge) {
         Label regionLabel = new Label("Average age: ");
         regionLabel.getStyleClass().add("input-label");
@@ -157,6 +201,7 @@ public class statsPage {
 
         return regionBox;
     }
+
     private HBox createTeamBox(String team, int i) {
         Label teamLabel = new Label((i + 1) + ") ");
         teamLabel.getStyleClass().add("input-label");
@@ -168,6 +213,7 @@ public class statsPage {
 
         return regionBox;
     }
+
     private HBox createFinancialBox(String value) {
         Label financialLabel = new Label("");
 
@@ -184,6 +230,7 @@ public class statsPage {
 
         return regionBox;
     }
+
     private HBox createMatchesBox(String league, String value) {
         Label leagueLabel = new Label(league);
         leagueLabel = colorLeagueLabel(leagueLabel);
@@ -200,6 +247,7 @@ public class statsPage {
 
         return regionBox;
     }
+
     private Label colorLeagueLabel(Label label) {
         livePage liveInstance = new livePage(); // Create an instance of Live.
         return liveInstance.colorLeagueLabel(label);

@@ -20,10 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.differenceDays;
-import static it.unipi.dii.utility.DateTimes.getCurrentDateString;
-import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.dateTimes.differenceDays;
+import static it.unipi.dii.utility.dateTimes.getCurrentDateString;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertDocumentToJson;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
 
 public class livePage {
     private final Stage dialog = new Stage();

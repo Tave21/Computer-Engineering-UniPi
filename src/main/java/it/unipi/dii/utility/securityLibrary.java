@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
-public class Security {
+public class securityLibrary {
     /**
      * This function calculate the digest of a string using the SHA256 algorithm.
      * @param input The string to convert to hash.

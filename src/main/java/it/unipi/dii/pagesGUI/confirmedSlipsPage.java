@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertDocumentToJson;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
 
 public class confirmedSlipsPage {
 

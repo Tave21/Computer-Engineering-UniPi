@@ -11,8 +11,8 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
-import static it.unipi.dii.utility.Security.CheckHash;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.securityLibrary.CheckHash;
 
 public class AdminMongoDBDAO extends BaseMongoDAO implements AdminDAO {
 

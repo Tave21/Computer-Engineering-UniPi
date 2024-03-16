@@ -1,11 +1,11 @@
-package it.unipi.dii.utility;
+package it.unipi.dii.utility.converters;
 
 import org.bson.Document;
 
-import static it.unipi.dii.utility.JsonToDocument.convertJsonToDocument;
-import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertJsonToDocument;
+import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
 
-public class ObjectToDocument {
+public class objectToDocumentConverter {
     /**
      * This function convert an object to the Document version of it.
      * @param object The object to convert.

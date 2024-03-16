@@ -18,7 +18,7 @@ import redis.clients.jedis.resps.ScanResult;
 import java.io.IOException;
 import java.util.*;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentInstantString;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstantString;
 
 
 public class SlipRedisDAO extends BaseRedisDAO implements SlipDAO {

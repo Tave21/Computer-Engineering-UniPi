@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.WriteJsonToFile.writeToJsonFile;
+import static it.unipi.dii.utility.converters.writeJsonToFileConverter.writeToJsonFile;
 
 public class usernameCookie {
     private static final String PATH = "src/main/java/it/unipi/dii/userCookie/cookies/";

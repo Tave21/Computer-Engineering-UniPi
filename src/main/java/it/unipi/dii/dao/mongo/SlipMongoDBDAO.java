@@ -17,12 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.*;
-import static it.unipi.dii.utility.JsonToDocument.convertJsonToDocument;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
-import static it.unipi.dii.utility.MongoUtility.*;
-import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
-import static it.unipi.dii.utility.RandomNumber.truncateNumber;
+import static it.unipi.dii.utility.dateTimes.*;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertJsonToDocument;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.generators.randomGeneration.*;
+import static it.unipi.dii.utility.mongoUtility.*;
+import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
 
 public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     /**
@@ -127,12 +127,11 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      *
      * @param slip    The slip to be checked.
      * @param matchID The match related to the bet.
-     * @param update  If true, the update is written to the database too.
      * @param mb      MatchMongoDBDAO Object.
      * @param cb      CustomerMongoDBDAO Object.
      */
 
-    private void checkBetWin(Slip slip, Integer matchID, boolean update, MatchMongoDBDAO mb, CustomerMongoDBDAO cb) {
+    private void checkBetWin(Slip slip, Integer matchID, MatchMongoDBDAO mb, CustomerMongoDBDAO cb) {
         int betListSize = slip.betsList.size();
         for (int i = 0; i < betListSize; i++) {
             if (Objects.equals(matchID, slip.betsList.get(i).getMatchID())) {
@@ -142,21 +141,19 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                                         slip.betsList.get(i).getChosenMultiplierName()
                                 )
                 );
-                if (update) {
-                    int winSlip = checkIfSlipWin(slip);
-                    if (winSlip == 0 || winSlip == 1 || winSlip == 2) {
-                        if (winSlip == 2) {
-                            winSlip = 0;
-                        }
-                        slip.setWin(winSlip);
-                        slip.setAmount(truncateNumber(slip.getAmount(), 3));
-                    } else {
-                        slip.setWin(winSlip);
+                int winSlip = checkIfSlipWin(slip);
+                if (winSlip == 0 || winSlip == 1 || winSlip == 2) {
+                    if (winSlip == 2) {
+                        winSlip = 0;
                     }
-                    substituteSlip(slip.getSlipID(), slip);
-                    if (winSlip == 1) {
-                        cb.redeem(slip.getUsername(), slip.getAmount());
-                    }
+                    slip.setWin(winSlip);
+                    slip.setAmount(truncateNumber(slip.getAmount(), 3));
+                } else {
+                    slip.setWin(winSlip);
+                }
+                substituteSlip(slip.getSlipID(), slip);
+                if (winSlip == 1) {
+                    cb.redeem(slip.getUsername(), slip.getAmount());
                 }
                 return;
             }
@@ -198,7 +195,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             mb.openConnection();
 
             for (Slip slip : sl) {
-                checkBetWin(slip, matchID, true, mb, cs);
+                checkBetWin(slip, matchID, mb, cs);
             }
 
             cs.closeConnection();
@@ -215,7 +212,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
         Document filter = new Document("betsList.matchID", matchID);
         Document update = new Document("$set", new Document("betsList.$[elem].matchDate", newDate));
         UpdateOptions options = new UpdateOptions().arrayFilters(
-                Arrays.asList(
+                List.of(
                         new Document("elem.matchID", matchID)
                 )
         );
@@ -237,8 +234,9 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
                 Slip s = convertJsonToObject(document.toJson(), Slip.class);
-                //take competition_id,teamHome,teamAway, matchDate,win from each bet in the Slip contained in document and set them in Slip s
-                for (int i = 0; i < s.betsList.size(); i++) {
+                // Take the competition_id, the home teams, the away team, the match date and the result (win)
+                // from each bet in the Slip contained in document and set them in Slip s
+                for (int i = 0; i < Objects.requireNonNull(s).betsList.size(); i++) {
                     s.betsList.get(i).setCompetition_id(document.getList("betsList", Document.class).get(i).getString("competition_id"));
                     s.betsList.get(i).setTeamHome(document.getList("betsList", Document.class).get(i).getString("teamHome"));
                     s.betsList.get(i).setTeamAway(document.getList("betsList", Document.class).get(i).getString("teamAway"));
@@ -247,6 +245,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                 }
                 s_list.add(s);
             }
+        }catch (NullPointerException e){
+            return null;
         }
         return s_list;
     }

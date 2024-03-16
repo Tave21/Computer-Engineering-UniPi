@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentDate;
-import static it.unipi.dii.utility.JsonToDocument.convertDocumentToJson;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.dateTimes.getCurrentDate;
+import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertDocumentToJson;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
 
 public class matchesPage {
     private final int DAY_LOOK_UP = 10; // Shows every match with matchDate greater that today - DAY_LOOK_UP days.

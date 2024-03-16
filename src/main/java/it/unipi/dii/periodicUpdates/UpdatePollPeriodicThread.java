@@ -1,16 +1,14 @@
 package it.unipi.dii.periodicUpdates;
 
-import it.unipi.dii.dao.mongo.MatchMongoDBDAO;
 import it.unipi.dii.dao.redis.PollRedisDAO;
 import it.unipi.dii.model.Poll;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.TimerTask;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstant;
 
 public class UpdatePollPeriodicThread extends TimerTask {
     /**

@@ -1,8 +1,8 @@
-package it.unipi.dii.utility;
+package it.unipi.dii.utility.converters;
 
 import org.bson.Document;
 
-public class JsonToDocument {
+public class jsonToDocumentConverter {
     /**
      * @param Json JSON String to convert
      * @return The document equivalent of the JSON String.

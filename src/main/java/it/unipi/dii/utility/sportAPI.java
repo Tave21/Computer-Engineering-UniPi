@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static it.unipi.dii.utility.DateTimes.*;
+import static it.unipi.dii.utility.dateTimes.*;
 
-public class SportAPI {
+public class sportAPI {
     public static final String API_KEY = "d78f2f22b4324475b801e9fe8534eba7"; // Key to access to the services of the API.
-    public SportAPI() {
+    public sportAPI() {
     }
 
     /**

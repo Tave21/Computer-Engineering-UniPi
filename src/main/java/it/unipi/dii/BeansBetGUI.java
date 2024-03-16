@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
+import static it.unipi.dii.utility.mongoUtility.deactivateMongoDBNotifications;
 
 public class BeansBetGUI extends Application {
     private BorderPane root;

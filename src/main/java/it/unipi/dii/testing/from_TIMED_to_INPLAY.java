@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentInstant;
-import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
+import static it.unipi.dii.utility.dateTimes.getCurrentInstant;
+import static it.unipi.dii.utility.mongoUtility.deactivateMongoDBNotifications;
 
 public class from_TIMED_to_INPLAY {
     public static void main(String[] args) {

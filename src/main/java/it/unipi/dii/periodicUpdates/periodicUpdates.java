@@ -1,14 +1,13 @@
 package it.unipi.dii.periodicUpdates;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import static it.unipi.dii.utility.mongoUtility.deactivateMongoDBNotifications;
 
-import static it.unipi.dii.utility.MongoUtility.deactivateMongoDBNotifications;
 public class periodicUpdates {
     public static void main(String[] args) {
         deactivateMongoDBNotifications();
-        launchPeriodicUpdate(); // launch of the update function.
+        launchPeriodicUpdate(); // Launch of the update function.
     }
 
     private static void launchPeriodicUpdate(){
@@ -20,7 +19,7 @@ public class periodicUpdates {
 
         // Every 5 hours, the system checks if some poll has to be deleted from Redis.
         UpdatePollPeriodicThread updatePollTask = new UpdatePollPeriodicThread();
-        executorService.scheduleAtFixedRate(updatePollTask, 0, 1, TimeUnit.HOURS);
+        executorService.scheduleAtFixedRate(updatePollTask, 0, 5, TimeUnit.HOURS);
     }
 }
 

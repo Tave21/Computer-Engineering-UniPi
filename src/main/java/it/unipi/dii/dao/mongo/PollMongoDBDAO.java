@@ -14,12 +14,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static it.unipi.dii.utility.DateTimes.getCurrentDate;
-import static it.unipi.dii.utility.JsonToObjectConverter.convertJsonToObject;
-import static it.unipi.dii.utility.MongoUtility.deleteDocuments;
-import static it.unipi.dii.utility.MongoUtility.insertDocuments;
-import static it.unipi.dii.utility.ObjectToDocument.ObjectToDocumentConverter;
-import static it.unipi.dii.utility.ObjectToJsonString.convertObjectToJsonString;
+import static it.unipi.dii.utility.dateTimes.getCurrentDate;
+import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
+import static it.unipi.dii.utility.mongoUtility.deleteDocuments;
+import static it.unipi.dii.utility.mongoUtility.insertDocuments;
+import static it.unipi.dii.utility.converters.objectToDocumentConverter.ObjectToDocumentConverter;
+import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
 
 public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
     /**

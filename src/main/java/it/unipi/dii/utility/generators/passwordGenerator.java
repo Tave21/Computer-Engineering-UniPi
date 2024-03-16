@@ -1,9 +1,9 @@
-package it.unipi.dii.utility;
+package it.unipi.dii.utility.generators;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 
-public class PasswordGenerator {
+public class passwordGenerator {
     private static final String LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
