@@ -18,59 +18,13 @@ import java.util.Objects;
 import static it.unipi.dii.utility.dateTimes.getCurrentInstantString;
 
 public class addToSlipPage {
-
     private VBox slipsCartColumn;
-    private livePage live;
+    private final livePage live;
     public addToSlipPage(livePage live) {
         this.live = live;
     }
 
     public  StackPane getContent(String concat) {
-        /*
-        //TEST FOR LIVE MATCH ADDED TO A SLIP CONSISTENCY
-        List<Match> ml = new ArrayList<>();
-        MatchMongoDBDAO c = new MatchMongoDBDAO();
-        c.openConnection();
-        Match match = new Match();
-        match.setMatchID(5064); //change matchID
-        match.setTeam_home("Chelsea FC"); //change team names and data for testing in another match
-        match.setTeam_away("Newcastle United FC");
-        match.setAway_goals(0);
-        match.setHome_goals(0);
-        match.setMatchDate("2024-03-11T20:00:00Z");
-        match.setCompetition_id("GB1");
-        match.setStatus("IN_PLAY");
-        match.setMultiplier(0, "1", 1.2);
-        match.setMultiplier(1, "1", 1.2);
-        match.setMultiplier(2, "1", 1.2);
-        match.setMultiplier(3, "1", 1.2);
-        match.setMultiplier(4, "1", 1.2);
-        match.setMultiplier(5, "1", 1.2);
-        match.setMultiplier(6, "1", 1.2);
-        match.setMultiplier(7, "1", 1.2);
-        match.setMultiplier(8, "1", 1.2);
-        match.setMultiplier(9, "1", 1.2);
-        match.setMultiplier(10, "1", 1.2);
-        match.setMultiplier(11, "1", 1.2);
-        match.setMultiplier(12, "1", 1.2);
-        match.setMultiplier(13, "1", 1.2);
-        match.setMultiplier(14, "1", 1.2);
-        match.setMultiplier(15, "1", 1.2);
-        match.setMultiplier(16, "1", 1.2);
-        match.setMultiplier(17, "1", 1.2);
-        match.setMultiplier(18, "1", 1.2);
-        match.setMultiplier(19, "1", 1.2);
-        match.setMultiplier(20, "1", 1.2);
-        match.setMultiplier(21, "1", 1.2);
-        match.setMultiplier(22, "1", 1.2);
-        ml.add(match);
-        try {
-            c.updateMatches(ml);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
-
         StackPane stackPane = new StackPane();
 
         Region topSpacer = new Region();
@@ -300,9 +254,8 @@ public class addToSlipPage {
                 bet.setMatchID(0);
                 bet.setWin(-1);
                 int x = slipRedisDAO.addBetToSlip(Session.getUsername(), id, bet);
-                //send message error because match is started
+                // Send an error message because the match is started.
                 if (x == 1) {
-                    //message
                     Label errorLabel = new Label("This match is now in play");
                     errorLabel.getStyleClass().add("error");
                     slip.getChildren().add(errorLabel);

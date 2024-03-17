@@ -1,28 +1,28 @@
 package it.unipi.dii.analyticsPeriodicCalculator;
-
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.model.ReplaceOptions;
-import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.financialResults.financialReport;
-import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.financialResults.financialValue;
 import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuery.championshipValue;
 import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuery.mainReport;
 import it.unipi.dii.dao.mongo.StatisticsMongoDBDAO;
 import org.bson.Document;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimerTask;
-
 import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertJsonToDocument;
 import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
 import static it.unipi.dii.utility.dateTimes.*;
 
 public class updateDailyAnalytics extends TimerTask {
+
+    /**
+     * Script that launches the periodic update of the heavy analytics in MongoDB.
+     */
     @Override
     public void run() {
+        System.out.println("Ok Day Start");
         averageNumberOfMatchesForEachChampionshipForEachSlipCalculator();
         showUsersFavouriteTeamsCalculator();
+        System.out.println("Ok Day end");
     }
 
     public static void averageNumberOfMatchesForEachChampionshipForEachSlipCalculator() {

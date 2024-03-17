@@ -3,18 +3,12 @@ package it.unipi.dii.analyticsPeriodicCalculator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import static it.unipi.dii.analyticsPeriodicCalculator.updateDailyAnalytics.*;
-import static it.unipi.dii.analyticsPeriodicCalculator.updateHourlyAnalytics.*;
 import static it.unipi.dii.utility.mongoUtility.deactivateMongoDBNotifications;
 
 public class periodicAnalytics {
     public static void main(String[] args) {
         deactivateMongoDBNotifications();
-        //launchPeriodicAnalytics(); // Launch of the update function.
-        //financialResultHourlyCalculator();
-        //averageNumberOfMatchesForEachChampionshipForEachSlipCalculator();
-        showUsersFavouriteTeamsCalculator();
+        launchPeriodicAnalytics(); // Launch of the update function.
     }
 
     private static void launchPeriodicAnalytics(){

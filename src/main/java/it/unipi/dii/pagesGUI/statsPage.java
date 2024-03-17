@@ -18,7 +18,6 @@ import java.util.Objects;
 import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonToObject;
 import static it.unipi.dii.utility.dateTimes.*;
 
-
 public class statsPage {
 
     public StackPane getContent() {
@@ -36,16 +35,13 @@ public class statsPage {
         StatisticsMongoDBDAO st = new StatisticsMongoDBDAO();
         st.openConnection();
 
-
-        financialReport f;
         List<String> financialArray = new ArrayList<>();
 
         try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
                 .find(new Document("type", "financial").append("periodRelated", getFirstDayOfMonth().toString()))
                 .projection(new Document("_id", 0L))
                 .iterator()) {
-            Document document = cursor.next();
-            f = convertJsonToObject(document.toJson(), financialReport.class);
+            financialReport f = convertJsonToObject(cursor.next().toJson(), financialReport.class);
             assert f != null;
             financialArray.add(String.valueOf(f.getValueList().get(0).getValue()));
         } catch (NullPointerException e) {
@@ -56,17 +52,13 @@ public class statsPage {
 
         List<String> appreciatedPlayers = st.showMostAppreciatedPlayersPolls();
 
-        /*
-        List<String> topTeams = st.showUsersFavouriteTeams(getCurrentDate().minusYears(1).toString(), getCurrentDateString(), 10);
-         */
         mainReport m;
         List<String> topTeams = new ArrayList<>();
         try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
                 .find(new Document("type", "users favourite teams").append("periodRelated", getFirstDayOfMonth().toString()))
                 .projection(new Document("_id", 0L))
                 .iterator()) {
-            Document document = cursor.next();
-            m = convertJsonToObject(document.toJson(), mainReport.class);
+            m = convertJsonToObject(cursor.next().toJson(), mainReport.class);
             assert m != null;
 
             for(int i = 0 ; i < m.getValueList().size() ; i++){
@@ -78,20 +70,19 @@ public class statsPage {
 
         List<String> averageMatches = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            averageMatches.add("No info available!");
+            averageMatches.add("No info available for this championship!");
         }
 
         try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
                 .find(new Document("type", "seventh").append("periodRelated", getFirstDayOfMonth().toString()))
                 .projection(new Document("_id", 0L))
                 .iterator()) {
-            Document document = cursor.next();
-            m = convertJsonToObject(document.toJson(), mainReport.class);
+            m = convertJsonToObject(cursor.next().toJson(), mainReport.class);
             assert m != null;
 
-            for (int i = 0; i < Objects.requireNonNull(m).getValueList().size() ; i++) {
-                final String id = m.getValueList().get(i).getChampionship_id();
-                final String howMany = String.valueOf(m.getValueList().get(i).getValue());
+            for (int i = 0; i < m.getValueList().size() ; i++) {
+                String id = m.getValueList().get(i).getChampionship_id();
+                String howMany = String.valueOf(m.getValueList().get(i).getValue());
 
                 if (Objects.equals(id, "GB1")) {
                     averageMatches.set(0, howMany);
@@ -108,7 +99,7 @@ public class statsPage {
 
         } catch (NullPointerException e) {
             for (int i = 0; i < 5; i++) {
-                averageMatches.add("No info available!");
+                averageMatches.add("No info available for this championship!");
             }
         }
 

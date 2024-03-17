@@ -12,11 +12,13 @@ import static it.unipi.dii.utility.converters.objectToJsonStringConverter.conver
 
 public class updateHourlyAnalytics extends TimerTask {
     /**
-     * Script that launches the periodic update of the matches in MongoDB.
+     * Script that launches the periodic update of the light analytics in MongoDB.
      */
     @Override
     public void run() {
+        System.out.println("Ok Hour start");
         financialResultHourlyCalculator();
+        System.out.println("Ok Hour end");
     }
 
     public static void financialResultHourlyCalculator(){

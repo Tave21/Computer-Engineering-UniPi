@@ -14,9 +14,7 @@ public abstract class BaseRedisDAO {
 
     public Jedis getConnection(){
         initPool();
-        Jedis connection = pool.getResource();
-        // connection.auth("the password goes here");
-        return connection;
+        return pool.getResource();
     }
 
     public static void closePool(){
