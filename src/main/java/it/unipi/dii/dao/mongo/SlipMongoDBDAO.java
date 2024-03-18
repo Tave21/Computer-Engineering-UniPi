@@ -55,7 +55,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     public int getLastID() {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("confirmationDate",
-                                new Document("$gt", getCurrentDate().minusMonths(4).toString()))),
+                                new Document("$gt", getCurrentDate().minusMonths(24).toString()))),
                 new Document("$project",
                         new Document("slipID", 1L)
                                 .append("_id", 0L)),

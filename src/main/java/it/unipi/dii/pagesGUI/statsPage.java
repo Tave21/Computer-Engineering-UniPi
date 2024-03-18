@@ -73,7 +73,7 @@ public class statsPage {
 
         List<String> averageMatches = new ArrayList<>();
         for (int i = 0; i < CHAMPIONSHIP_NUMBER; i++) {
-            averageMatches.add("No info available for this championship!");
+            averageMatches.add("No info");
         }
 
         try (MongoCursor<Document> cursor = st.mongoDB.getCollection("analytics")
@@ -102,7 +102,7 @@ public class statsPage {
 
         } catch (NullPointerException e) {
             for (int i = 0; i < CHAMPIONSHIP_NUMBER; i++) {
-                averageMatches.add("No info available for this championship!");
+                averageMatches.add("No info");
             }
         }
 
@@ -229,7 +229,12 @@ public class statsPage {
         leagueLabel = colorLeagueLabel(leagueLabel);
         leagueLabel.setText(leagueLabel.getText() + ": ");
 
-        double num = Double.parseDouble(value);
+        double num;
+        if(!Objects.equals(value, "No info")) {
+            num = Double.parseDouble(value);
+        }else{
+            num = 0;
+        }
         value = String.format("%.4f", num);
 
         Label valueLabel = new Label(value);

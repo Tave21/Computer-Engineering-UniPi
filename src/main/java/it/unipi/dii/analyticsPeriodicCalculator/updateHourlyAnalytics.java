@@ -32,8 +32,8 @@ public class updateHourlyAnalytics extends TimerTask {
         report.setType("financial");
 
         financialValue financialVal = new financialValue();
-        financialVal.setDateTo(report.getPeriodRelated());
-        financialVal.setDateFrom(getCurrentDateString());
+        financialVal.setDateFrom(report.getPeriodRelated());
+        financialVal.setDateTo(getCurrentDate().plusDays(1).toString());
         financialVal.setValue(st.showFinancialResults(
                 financialVal.getDateFrom() ,
                 financialVal.getDateTo()

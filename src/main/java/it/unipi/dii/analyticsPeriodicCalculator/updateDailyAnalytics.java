@@ -6,6 +6,7 @@ import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuer
 import it.unipi.dii.dao.mongo.StatisticsMongoDBDAO;
 import org.bson.Document;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.TimerTask;
 import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertJsonToDocument;
@@ -37,7 +38,7 @@ public class updateDailyAnalytics extends TimerTask {
 
         AggregateIterable<Document> av = st.averageNumberOfMatchesForEachChampionshipForEachSlip(
                 report.getPeriodRelated(),
-                getCurrentDateString()
+                getCurrentDate().plusDays(1).toString()
         );
 
         for (Document document : av) {
@@ -67,7 +68,7 @@ public class updateDailyAnalytics extends TimerTask {
 
         List<String> sList = st.showUsersFavouriteTeams(
                 report.getPeriodRelated(),
-                getCurrentDateString(),
+                getCurrentDate().plusDays(1).toString(),
                 10
         );
 
