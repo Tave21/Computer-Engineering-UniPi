@@ -19,6 +19,7 @@ import static it.unipi.dii.utility.converters.jsonToObjectConverter.convertJsonT
 import static it.unipi.dii.utility.dateTimes.*;
 
 public class statsPage {
+    private final static int CHAMPIONSHIP_NUMBER = 5;
 
     public StackPane getContent() {
         StackPane stackPane = new StackPane();
@@ -59,17 +60,19 @@ public class statsPage {
                 .projection(new Document("_id", 0L))
                 .iterator()) {
             m = convertJsonToObject(cursor.next().toJson(), mainReport.class);
+
             assert m != null;
 
             for(int i = 0 ; i < m.getValueList().size() ; i++){
                 topTeams.add(m.getValueList().get(i).getChampionship_id());
             }
+
         } catch (NullPointerException e) {
             topTeams.clear();
         }
 
         List<String> averageMatches = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < CHAMPIONSHIP_NUMBER; i++) {
             averageMatches.add("No info available for this championship!");
         }
 
@@ -98,7 +101,7 @@ public class statsPage {
             }
 
         } catch (NullPointerException e) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < CHAMPIONSHIP_NUMBER; i++) {
                 averageMatches.add("No info available for this championship!");
             }
         }
@@ -150,7 +153,6 @@ public class statsPage {
             case "Most appreciated teams":
             case "Most appreciated  players":
             case "Top bet teams by users":
-                // They use the same code.
                 form.getChildren().add(titleLabel);
                 for (int i = 0; i < array.size(); i++) {
                     HBox regionBox = createTeamBox(array.get(i), i);
