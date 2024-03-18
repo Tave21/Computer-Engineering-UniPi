@@ -66,11 +66,11 @@ public class mainReport {
 
     @Override
     public String toString() {
-        return "FinancialValue{" +
-                "type='" + type + '\'' +
-                ", periodRelated='" + periodRelated + '\'' +
-                ", computationTimestamp='" + computationTimestamp + '\'' +
-                ", valueList=" + valueList +
+        return "{" +
+                "type:'" + type + '\'' +
+                ", periodRelated:'" + periodRelated + '\'' +
+                ", computationTimestamp:'" + computationTimestamp + '\'' +
+                ", valueList:" + valueList +
                 '}';
     }
 }
