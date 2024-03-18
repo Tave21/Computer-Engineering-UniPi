@@ -79,17 +79,11 @@ public class customerPage {
         VBox.setVgrow(outputArea, Priority.ALWAYS);
 
         // Action when fields are modified.
-        usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateFilteredUsers(outputArea);
-        });
+        usernameField.textProperty().addListener((observable, oldValue, newValue) -> updateFilteredUsers(outputArea));
 
-        nameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateFilteredUsers(outputArea);
-        });
+        nameField.textProperty().addListener((observable, oldValue, newValue) -> updateFilteredUsers(outputArea));
 
-        surnameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateFilteredUsers(outputArea);
-        });
+        surnameField.textProperty().addListener((observable, oldValue, newValue) -> updateFilteredUsers(outputArea));
 
         Region formSpacer = new Region();
         formSpacer.setPrefHeight(10);
@@ -124,6 +118,7 @@ public class customerPage {
             CustomerMongoDBDAO cs = new CustomerMongoDBDAO();
             cs.openConnection();
             List<Document> regExps = new ArrayList<>();
+
             if (!username.isEmpty()) {
                 regExps.add(new Document("username", new Document("$regex", Pattern.compile("^" + username + "(?i)"))));
             }
@@ -137,13 +132,14 @@ public class customerPage {
             }
 
             List<Document> pipeline = Arrays.asList(new Document("$match",
-                            new Document("$or",regExps )),
+                            new Document("$and",regExps)),
                     new Document("$project",
                             new Document("_id", 0L)
                                     .append("name", 1L)
                                     .append("surname", 1L)
                                     .append("username", 1L)),
                     new Document("$limit", 20L));
+
 
 
             AggregateIterable<Document> docs = cs.mongoDB.getCollection("customers").aggregate(pipeline);
