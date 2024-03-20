@@ -14,8 +14,8 @@ BeansBet is a betting application that enables users to place bets on their favo
         - Change the `WriteConcern` attribute to "W3" in `OpenStrictConnectiona()` if using replicas.
 
 2. **Generate a New Dataset**
-    - Run `Main.java` in the "generation" folder (_src/main/java/it.unipi.dii_).
-    - This script will generate the Database in MongoDBCompass BeansBet database, all the collections and the following three files: `customers.java`, `matches.java`, and `slips.java`.
+    - Run `generationMainMongoDBDataset.java` in the "generation" folder (_src/main/java/it.unipi.dii/generation_).
+    - This script will generate the Database in MongoDBCompass BeansBet database, all the collections and the following three files: `customers.java`, `matches.java`, and `slips.java`. Then running 'generationMainIndexes.java' will be created indexes.
     - Manually add these files to MongoDB (note: uploading `slips.java` with 1 million documents may be slow, we didn't upload it automatically because MongoDBCompass blocks).
 
 3. **Testing scripts**
