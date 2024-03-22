@@ -41,6 +41,7 @@ BeansBet is a betting application that enables users to place bets on their favo
    - The script called `periodicAnalytics` in the `analyticsPeriodicCalculator` folder starts the update thread which:
      - **Hourly** insert an update of the financial report.
      - **Daily** update the report of the "*seventh*" query and the "*users favourite teams*" query.
+   - Those updates refer to the updating the documents in MongoDB related to the analytics (*we store the result of the analytics on MongoDB to be presented by the GUI on-demand*), that's because we suppose a high frequency demand for these analytics and without this pre-computing system, the user-experience may suffer.
 
 6. **Periodic Updates**
     - In "periodicUpdates" folder the java file `periodicUpdates` executes two threads: 
