@@ -198,6 +198,9 @@ public class generationMainMongoDBDataset {
 
         jsonParser = new JSONParser();
 
+        Match mat;
+        Match eprevTimed, eprevFinished;
+
         try (FileReader reader = new FileReader("src/main/java/it/unipi/dii/generation/MatchesJSON.json")) {
             Object obj = jsonParser.parse(reader); // Read JSON file
             JSONObject json_obj = (JSONObject) obj;
@@ -218,8 +221,8 @@ public class generationMainMongoDBDataset {
                                 Objects.equals(competition_id, "FR1") ||
                                 Objects.equals(competition_id, "L1")
                 ) {
-                    Match mat = new Match();
 
+                    mat = new Match();
                     mat.setMatchID(i);
                     mat.setCompetition_id(competition_id);
 
@@ -236,6 +239,7 @@ public class generationMainMongoDBDataset {
                     }
 
                     mat.setTeam_away(clubName);
+
                     mat.setMatchDate(dateToTimestamp(js_i.get("date").toString(), (int) generateRandomNaturalNumber(15 , 21), 0, 0));
                     mat.setHome_goals(Integer.valueOf(js_i.get("home_club_goals").toString()));
                     mat.setAway_goals(Integer.valueOf(js_i.get("away_club_goals").toString()));
@@ -246,8 +250,46 @@ public class generationMainMongoDBDataset {
                 }
             }
 
+            mat = new Match();
+            mat.setMatchID(number + 1);
+            mat.setStatus("TIMED");
+            mat.setTeam_home("Timed Team 1");
+            mat.setTeam_away("Timed Team 2");
+            mat.setMatchDate(getCurrentInstant().plusSeconds(2000).toString());
+            mat.setHome_goals(0);
+            mat.setAway_goals(0);
+            mat.setCompetition_id("IT1");
+            mat.initializeAndRandomizeMultipliers();
+            eprevTimed = mat;
+            matches.add(mat);
+
+            mat = new Match();
+            mat.setMatchID(number + 2);
+            mat.setStatus("IN_PLAY");
+            mat.setTeam_home("Playing Team 1");
+            mat.setTeam_away("Playing Team 2");
+            mat.setMatchDate(getCurrentInstant().minusSeconds(1300).toString());
+            mat.setHome_goals(0);
+            mat.setAway_goals(0);
+            mat.setCompetition_id("IT1");
+            mat.initializeAndRandomizeMultipliers();
+            matches.add(mat);
+
+            mat = new Match();
+            mat.setMatchID(number + 3);
+            mat.setStatus("FINISHED");
+            mat.setTeam_home("Finished Team 1");
+            mat.setTeam_away("Finished Team 2");
+            mat.setMatchDate(getCurrentInstant().minus(2 , ChronoUnit.DAYS).toString());
+            mat.setHome_goals(2);
+            mat.setAway_goals(0);
+            mat.setCompetition_id("GB1");
+            mat.initializeAndRandomizeMultipliers();
+            eprevFinished = mat;
+            matches.add(mat);
+
             writeToJsonFile(matches , "src/main/java/it/unipi/dii/generation/matches.json");
-            deleteFile("src/main/java/it/unipi/dii/generation/MatchesJSON.json"); // Delete the MatchesJSON file.
+            //deleteFile("src/main/java/it/unipi/dii/generation/MatchesJSON.json"); // Delete the MatchesJSON file.
             System.out.println("Matches generation ended. [ " + matches.size() + " ]");
 
         } catch (IOException | ParseException e) {
@@ -352,10 +394,62 @@ public class generationMainMongoDBDataset {
                     );
                     slips.add(sl_j);
                 }
-
-                slipCounter++;
+                slipCounter = slipCounter + 1;
             }
         }
+        
+        Slip s = new Slip();
+        List<Bet> betList = new ArrayList<>();
+        Bet b;
+
+        s.setUsername("user");
+        s.setBetAmount(10);
+        b = new Bet(
+                eprevTimed.getMatchID(),
+                eprevTimed.pickMultiplierValue(1),
+                eprevTimed.pickMultiplierName(1),
+                eprevTimed.getMatchDate()
+        );
+        b.setTeamHome(eprevTimed.getTeam_home());
+        b.setTeamAway(eprevTimed.getTeam_away());
+        b.setCompetition_id(eprevTimed.getCompetition_id());
+        b.setWin(-1);
+        betList.add(b);
+        s.setBetsList(betList);
+        s.setCreationDate(getCurrentInstant().minusSeconds(20).toString());
+        s.setConfirmationDate(getCurrentInstantString());
+        s.setWin(-1);
+        s.setAmount(0);
+        slips.add(s);
+
+        s = new Slip();
+        betList.clear();
+        s.setUsername("user");
+        s.setBetAmount(10);
+        b = new Bet(
+                eprevFinished.getMatchID(),
+                eprevFinished.pickMultiplierValue(1),
+                eprevFinished.pickMultiplierName(1),
+                eprevFinished.getMatchDate()
+        );
+        b.setTeamHome(eprevFinished.getTeam_home());
+        b.setTeamAway(eprevFinished.getTeam_away());
+        b.setCompetition_id(eprevFinished.getCompetition_id());
+        b.setWin(1);
+        betList.add(b);
+        s.setBetsList(betList);
+        s.setCreationDate(getCurrentInstant().minus(2 , ChronoUnit.DAYS).toString());
+        s.setConfirmationDate(getCurrentInstantString());
+        s.setWin(1);
+        s.computeTotal();
+        slips.add(s);
+
+        System.out.println("Slips insertion start. [ " + slips.size() + " ]");
+
+        writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
+
+        System.out.println("Slips insertion ended.");
+
         PollMongoDBDAO pl = new PollMongoDBDAO();
         pl.openConnection();
 
@@ -435,12 +529,6 @@ public class generationMainMongoDBDataset {
         p.UpdateNumberOfVotes();
         pl.addPoll(p);
         pl.closeConnection();
-
-        System.out.println("Slips insertion start. [ " + slips.size() + " ]");
-
-        writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
-
-        System.out.println("Slips insertion ended.");
 
         Customer c = new Customer();
         c.setName("user");
