@@ -178,7 +178,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
                     //This match must be removed from all non-confirmed slips in Redis
 
-                    /*
+
                     // Make the Redis query.
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
@@ -203,7 +203,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                             }
                         }
                     }
-                    */
+
 
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
@@ -222,7 +222,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     updateMatchDate(mlist.get(index).getMatchID(), ml.get(i).getMatchDate());
                     sDAO.updateBetsMatchPostponed(mlist.get(index).getMatchID(), ml.get(i).getMatchDate());
 
-                    /*
+
                     // Make the Redis query.
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
@@ -247,7 +247,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                             }
                         }
                     }
-                    */
+
 
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.
@@ -271,7 +271,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     for (Match m : mlist) {
                         if (m != null) {
 
-                            /*
+
                             if (Objects.equals(m.getStatus(), "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
                                 // Make the Redis query.
@@ -300,7 +300,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                 }
 
                             }
-                            */
+
 
 
                         }
