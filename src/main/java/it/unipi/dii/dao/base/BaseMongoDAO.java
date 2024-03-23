@@ -12,12 +12,12 @@ public class BaseMongoDAO {
     public MongoDatabase mongoDB;
 
     protected MongoClient client; // It represents a pool of connections to the database, also for replicas.
-    public static final String MONGO_PRIMARY_HOST = "localhost"; //10.1.1.55
-    public static final Integer MONGO_PRIMARY_HOST_PORT = 27017;
-    public static String MONGO_SECONDARY_HOST = "localhost";//"10.1.1.54";
-    public static int MONGO_SECONDARY_HOST_PORT = 27019;
-    public static String MONGO_THIRD_HOST = "localhost";//"10.1.1.48";
-    public static int MONGO_THIRD_HOST_PORT = 27020;
+    public static final String MONGO_PRIMARY_HOST = "10.1.1.55"; //10.1.1.55
+    public static final Integer MONGO_PRIMARY_HOST_PORT = 27018;
+    public static String MONGO_SECONDARY_HOST = "10.1.1.54";//"10.1.1.54";
+    public static int MONGO_SECONDARY_HOST_PORT = 27018;
+    public static String MONGO_THIRD_HOST = "10.1.1.48";//"10.1.1.48";
+    public static int MONGO_THIRD_HOST_PORT = 27018;
     public static final String MONGO_DATABASE_NAME = "BeansBet";
     public static final String DB_URL = "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_PRIMARY_HOST_PORT;
 
@@ -39,7 +39,8 @@ public class BaseMongoDAO {
         return this.client;
     }
 
-    public void openConnection() {
+    public void openConnectiona() {
+        // This is for the connection to the single local instance
         if (this.client == null) {
             try {
                 ConnectionString uriString = new ConnectionString(DB_URL);
@@ -52,7 +53,8 @@ public class BaseMongoDAO {
         }
     }
 
-    public void openStrictConnection() {
+    public void openStrictConnectiona() {
+        // This is for the connection to the single local instance
         if (this.client == null) {
             try {
                 ConnectionString uriString = new ConnectionString(DB_URL);
@@ -65,13 +67,14 @@ public class BaseMongoDAO {
         }
     }
 
-    public void openStrictConnectiona() {
+    public void openStrictConnection() {
+        // This is for the connection to the local/VM replicas
         if (this.client == null) {
             // Client not connected.
             try {
                 String url = "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_PRIMARY_HOST_PORT + "," + MONGO_SECONDARY_HOST + ":" + MONGO_SECONDARY_HOST_PORT + "," + MONGO_THIRD_HOST + ":" + MONGO_THIRD_HOST_PORT;
                 ConnectionString uriString = new ConnectionString(url);
-                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primary()).retryWrites(true).writeConcern(WriteConcern.W1).build(); //W3 for replicas
+                MongoClientSettings mcs = MongoClientSettings.builder().applyConnectionString(uriString).readPreference(ReadPreference.primary()).retryWrites(true).writeConcern(WriteConcern.W3).build(); //W3 for replicas
                 this.client = MongoClients.create(mcs);
                 this.mongoDB = this.client.getDatabase(MONGO_DATABASE_NAME);
             } catch (Exception e) {
@@ -82,7 +85,8 @@ public class BaseMongoDAO {
         }
     }
 
-    public MongoClient openConnectiona() {
+    public MongoClient openConnection() {
+        // This is for the connection to the local/VM replicas
         if (this.client != null) {
             // Client already connected.
             return this.client;
