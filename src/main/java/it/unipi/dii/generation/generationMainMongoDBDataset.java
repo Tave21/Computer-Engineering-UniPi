@@ -1,5 +1,7 @@
 package it.unipi.dii.generation;
+
 import java.io.*;
+
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -14,12 +16,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 import static it.unipi.dii.utility.dateTimes.*;
 import static it.unipi.dii.utility.mongoUtility.*;
 import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
@@ -30,6 +34,7 @@ import static it.unipi.dii.utility.converters.writeJsonToFileConverter.deleteFil
 import static it.unipi.dii.utility.converters.writeJsonToFileConverter.writeToJsonFile;
 
 public class generationMainMongoDBDataset {
+    private static final int NUMBER_OF_FRESH_SLIPS = 120;
     public static final String[] italianProvinces = {
             "Agrigento", "Alessandria", "Ancona", "Aosta", "Arezzo", "Ascoli Piceno", "Asti", "Avellino", "Bari",
             "Barletta-Andria-Trani", "Belluno", "Benevento", "Bergamo", "Biella", "Bologna", "Bolzano", "Brescia",
@@ -47,7 +52,7 @@ public class generationMainMongoDBDataset {
     };
 
     public static final String[] livingQuarters = {
-            "Via", "Piazza", "Via appendice", "Locale", "Rione" , "Monte"
+            "Via", "Piazza", "Via appendice", "Locale", "Rione", "Monte"
     };
 
     public static final String[] eMails = {
@@ -90,14 +95,14 @@ public class generationMainMongoDBDataset {
             JSONObject json_obj = (JSONObject) obj;
             JSONArray js_arr = (JSONArray) json_obj.get("people");
             final int number = Math.toIntExact(js_arr.size());
-            String name , gender , surname;
+            String name, gender, surname;
 
             for (int i = 0; i < number; i++) {
                 if (i == (int) (number * 0.25)) {
                     System.out.println("25%");
-                }else if (i == (int) (number * 0.50)) {
+                } else if (i == (int) (number * 0.50)) {
                     System.out.println("50%");
-                }else if (i == (int) (number * 0.75)) {
+                } else if (i == (int) (number * 0.75)) {
                     System.out.println("75%");
                 }
                 JSONObject js_i = (JSONObject) js_arr.get(i);
@@ -142,7 +147,7 @@ public class generationMainMongoDBDataset {
                 }
             }
 
-            writeToJsonFile(users , "src/main/java/it/unipi/dii/generation/customers.json");
+            writeToJsonFile(users, "src/main/java/it/unipi/dii/generation/customers.json");
 
             System.out.println("Customers generation ended. [ " + users.size() + " ]");
 
@@ -228,19 +233,19 @@ public class generationMainMongoDBDataset {
 
                     clubName = (js_i.get("home_club_name")).toString();
                     if (Objects.equals(clubName, "null") || clubName == null) {
-                        clubName = "Tavernone FC - "+competition_id;
+                        clubName = "Tavernone FC - " + competition_id;
                     }
 
                     mat.setTeam_home(clubName);
 
                     clubName = (js_i.get("away_club_name")).toString();
                     if (Objects.equals(clubName, "null") || clubName == null) {
-                        clubName = "Scranagiani FC - "+competition_id;
+                        clubName = "Scranagiani FC - " + competition_id;
                     }
 
                     mat.setTeam_away(clubName);
 
-                    mat.setMatchDate(dateToTimestamp(js_i.get("date").toString(), (int) generateRandomNaturalNumber(15 , 21), 0, 0));
+                    mat.setMatchDate(dateToTimestamp(js_i.get("date").toString(), (int) generateRandomNaturalNumber(15, 21), 0, 0));
                     mat.setHome_goals(Integer.valueOf(js_i.get("home_club_goals").toString()));
                     mat.setAway_goals(Integer.valueOf(js_i.get("away_club_goals").toString()));
                     mat.setStatus("FINISHED");
@@ -249,6 +254,9 @@ public class generationMainMongoDBDataset {
                     matches.add(mat);
                 }
             }
+
+            // Insert some fresh matches in the dataset.
+            // We do this because of the getLastId() function.
 
             mat = new Match();
             mat.setMatchID(number + 1);
@@ -280,7 +288,7 @@ public class generationMainMongoDBDataset {
             mat.setStatus("FINISHED");
             mat.setTeam_home("Finished Team 1");
             mat.setTeam_away("Finished Team 2");
-            mat.setMatchDate(getCurrentInstant().minus(2 , ChronoUnit.DAYS).toString());
+            mat.setMatchDate(getCurrentInstant().minus(3, ChronoUnit.DAYS).toString());
             mat.setHome_goals(2);
             mat.setAway_goals(0);
             mat.setCompetition_id("GB1");
@@ -288,8 +296,8 @@ public class generationMainMongoDBDataset {
             eprevFinished = mat;
             matches.add(mat);
 
-            writeToJsonFile(matches , "src/main/java/it/unipi/dii/generation/matches.json");
-            //deleteFile("src/main/java/it/unipi/dii/generation/MatchesJSON.json"); // Delete the MatchesJSON file.
+            writeToJsonFile(matches, "src/main/java/it/unipi/dii/generation/matches.json");
+            deleteFile("src/main/java/it/unipi/dii/generation/MatchesJSON.json"); // Delete the MatchesJSON file.
             System.out.println("Matches generation ended. [ " + matches.size() + " ]");
 
         } catch (IOException | ParseException e) {
@@ -307,9 +315,9 @@ public class generationMainMongoDBDataset {
         for (i = 0; i < users.size(); i++) {
             if (i == (int) (users.size() * 0.25)) {
                 System.out.println("25%");
-            }else if (i == (int) (users.size() * 0.50)) {
+            } else if (i == (int) (users.size() * 0.50)) {
                 System.out.println("50%");
-            }else if (i == (int) (users.size() * 0.75)) {
+            } else if (i == (int) (users.size() * 0.75)) {
                 System.out.println("75%");
             }
             subDate = users.get(i).getRegistrationDate();
@@ -354,7 +362,7 @@ public class generationMainMongoDBDataset {
                     b.setChosenMultiplierName(matches.get(choosen_match).pickMultiplierName(multIndex));
                     b.setWin(matches.get(choosen_match).checkMultiplierWin(b.getChosenMultiplierName()));
 
-                    if(b.getWin() == 0){
+                    if (b.getWin() == 0) {
                         slipWin = false;
                     }
                     b.setMatchDate(matches.get(choosen_match).getMatchDate());
@@ -368,11 +376,11 @@ public class generationMainMongoDBDataset {
                     }
                 }
 
-                if(slipWin){
+                if (slipWin) {
                     // The slip is win.
                     sl_j.computeTotal();
                     sl_j.setWin(1);
-                }else{
+                } else {
                     // The slip has been lost.
                     sl_j.setAmount(0);
                     sl_j.setWin(0);
@@ -397,13 +405,14 @@ public class generationMainMongoDBDataset {
                 slipCounter = slipCounter + 1;
             }
         }
-        
+
         Slip s = new Slip();
         List<Bet> betList = new ArrayList<>();
         Bet b;
 
+        s.setSlipID(slipCounter);
         s.setUsername("user");
-        s.setBetAmount(10);
+        s.setBetAmount(generateSumOfMoney(10));
         b = new Bet(
                 eprevTimed.getMatchID(),
                 eprevTimed.pickMultiplierValue(1),
@@ -413,40 +422,63 @@ public class generationMainMongoDBDataset {
         b.setTeamHome(eprevTimed.getTeam_home());
         b.setTeamAway(eprevTimed.getTeam_away());
         b.setCompetition_id(eprevTimed.getCompetition_id());
-        b.setWin(-1);
+        b.setWin(eprevTimed.checkMultiplierWin(b.getChosenMultiplierName()));
         betList.add(b);
         s.setBetsList(betList);
         s.setCreationDate(getCurrentInstant().minusSeconds(20).toString());
         s.setConfirmationDate(getCurrentInstantString());
-        s.setWin(-1);
-        s.setAmount(0);
+        s.checkIfThisSlipIsWin();
         slips.add(s);
 
-        s = new Slip();
-        betList.clear();
-        s.setUsername("user");
-        s.setBetAmount(10);
-        b = new Bet(
-                eprevFinished.getMatchID(),
-                eprevFinished.pickMultiplierValue(1),
-                eprevFinished.pickMultiplierName(1),
-                eprevFinished.getMatchDate()
-        );
-        b.setTeamHome(eprevFinished.getTeam_home());
-        b.setTeamAway(eprevFinished.getTeam_away());
-        b.setCompetition_id(eprevFinished.getCompetition_id());
-        b.setWin(1);
-        betList.add(b);
-        s.setBetsList(betList);
-        s.setCreationDate(getCurrentInstant().minus(2 , ChronoUnit.DAYS).toString());
-        s.setConfirmationDate(getCurrentInstantString());
-        s.setWin(1);
-        s.computeTotal();
-        slips.add(s);
+        slipCounter = slipCounter + 1;
+
+        // Insert some confirmed and evaluated slips.
+        for (i = 0; i <= NUMBER_OF_FRESH_SLIPS; i++) {
+            s = new Slip();
+            betList.clear();
+            if (i <= 2) {
+                // 3 of them are of 'user'.
+                s.setUsername("user");
+            } else {
+                // The other slips.
+                s.setUsername("Alessio_Rossi_0" + i);
+            }
+            s.setSlipID(slipCounter);
+            s.setBetAmount(generateSumOfMoney(10));
+
+            multIndex = (int) generateRandomNaturalNumber(0, Match.NUMBER_OF_MULTIPLIERS - 1);
+
+            b = new Bet(
+                    eprevFinished.getMatchID(),
+                    eprevFinished.pickMultiplierValue(multIndex),
+                    eprevFinished.pickMultiplierName(multIndex),
+                    eprevFinished.getMatchDate()
+            );
+            b.setTeamHome(eprevFinished.getTeam_home());
+            b.setTeamAway(eprevFinished.getTeam_away());
+            b.setCompetition_id(eprevFinished.getCompetition_id());
+            b.setWin(eprevFinished.checkMultiplierWin(b.getChosenMultiplierName()));
+            betList.add(b);
+
+            s.setBetsList(betList);
+            s.setCreationDate(stringToTimestamp(eprevFinished.getMatchDate())
+                    .minus((int) generateRandomNaturalNumber(2, 4), ChronoUnit.DAYS)
+                    .minus((int) generateRandomNaturalNumber(0, 23), ChronoUnit.HOURS)
+                    .plus((int) generateRandomNaturalNumber(0, 59), ChronoUnit.MINUTES)
+                    .plus((int) generateRandomNaturalNumber(0, 59), ChronoUnit.SECONDS)
+                    .toString());
+            s.setConfirmationDate(
+                    stringToTimestamp(s.getCreationDate()).plus(generateRandomNaturalNumber(1, 4), ChronoUnit.HOURS).toString()
+            );
+            s.checkIfThisSlipIsWin();
+            slips.add(s);
+            slipCounter = slipCounter + 1;
+        }
+
 
         System.out.println("Slips insertion start. [ " + slips.size() + " ]");
 
-        writeToJsonFile(slips , "src/main/java/it/unipi/dii/generation/slips.json");
+        writeToJsonFile(slips, "src/main/java/it/unipi/dii/generation/slips.json");
 
         System.out.println("Slips insertion ended.");
 
@@ -494,8 +526,8 @@ public class generationMainMongoDBDataset {
         p = new Poll();
         p.setPollType("Best Team");
         p.setPollName("Best Team of this season");
-        p.setCreationDate("2024-01-20");
-        p.setActivationDate("2024-01-26");
+        p.setCreationDate(getCurrentInstantString());
+        p.setActivationDate(getCurrentInstant().plusSeconds(3000).toString());
         options = new ArrayList<>();
         pollOpt = new pollOption("Udinese");
         pollOpt.multipleVoteOption(0);
@@ -513,8 +545,8 @@ public class generationMainMongoDBDataset {
         p = new Poll();
         p.setPollType("Best Team");
         p.setPollName("Best Team of this season");
-        p.setCreationDate("2024-01-20");
-        p.setActivationDate("2024-01-26");
+        p.setCreationDate(Instant.parse("2023-02-01T12:00:00Z").toString());
+        p.setActivationDate(Instant.parse("2023-02-01T12:00:00Z").plusSeconds(3600).toString());
         options = new ArrayList<>();
         pollOpt = new pollOption("Inter");
         pollOpt.multipleVoteOption(3);

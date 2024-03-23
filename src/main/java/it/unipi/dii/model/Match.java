@@ -20,7 +20,7 @@ public class Match {
     private Integer away_goals;
     private String status;
     public List<Multiplier> multipliers = new ArrayList<>();
-    private final static int NUMBER_OF_MULTIPLIERS = 23;
+    public final static int NUMBER_OF_MULTIPLIERS = 23;
 
     public Match() {
     }

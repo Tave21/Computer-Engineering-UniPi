@@ -172,6 +172,25 @@ public class Slip {
     }
 
     /**
+     * Evaluate the slips by seeing the bet results.
+     */
+    public void checkIfThisSlipIsWin(){
+        for (Bet bet : this.betsList) {
+            if (bet.getWin() == -1) {
+                this.setWin(-1);
+                this.setAmount(0);
+                return;
+            } else if (bet.getWin() == 0) {
+                this.setWin(0);
+                this.setAmount(0);
+                return;
+            }
+        }
+        this.computeTotal();
+        this.setWin(1);
+    }
+
+    /**
      * A set of checks that must be done before the inserting operation of a slip in MongoDB.
      *
      * @return True if the slip is valid to be inserted in the database.
