@@ -45,7 +45,7 @@ BeansBet is a betting application that enables users to place bets on their favo
 
 6. **Periodic Updates**
     - In "periodicUpdates" folder the java file `periodicUpdates` executes two threads: 
-      - The first **every minute** sends a request to the SportAPI for get and update of the current matches and for adding not yet inserted match.
+      - The first **every minute** sends a request to the SportAPI for get and update of the current matches and for adding not yet inserted match. For using it correctly, in real test, line 117 in SportAPI must be substituted in the if statement instead of "true".
       - The second **every 5 hours** checks (*in Redis*) if there are some expired polls (*so when current time is greater than ActivationDate + 1 day*), they will be deleted in Redis and added to MongoDB in polls collection.
 
 7. **Customer**
