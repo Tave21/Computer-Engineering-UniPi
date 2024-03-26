@@ -7,25 +7,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class customerInfo {
-    private String username;
     private List<customerVotedPollVoice> voices;
 
-    public customerInfo(String username, List<customerVotedPollVoice> voices) {
-        this.username = username;
+    public customerInfo(List<customerVotedPollVoice> voices) {
         this.voices = voices;
     }
-
     public customerInfo(){
         this.voices = new ArrayList<>();
-    }
-
-    @JsonProperty("username")
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @JsonProperty("voices")
@@ -37,39 +25,24 @@ public class customerInfo {
         this.voices = voices;
     }
 
-    public int AddOption(int pollID ,String caption){
-        return this.AddOption(new customerVotedPollVoice(pollID , caption));
-    }
 
     /**
      * Insert a new option when a user votes in a poll
+     *
      * @param voice is an object that contains the pollID and the caption voted by the user
-     * @return 2 if the user has already voted the option of the poll, 1 if it has already voted
-     * another option of that poll, 0 if it has never voted in that poll before.
      */
-    public int AddOption(customerVotedPollVoice voice){
+    public void AddOption(customerVotedPollVoice voice){
         for (it.unipi.dii.userCookie.customerVotedPollVoice customerVotedPollV : this.voices) {
             if (customerVotedPollV.getPollID() == voice.getPollID()) {
-                if(Objects.equals(customerVotedPollV.getVotedOptionCaption(), voice.getVotedOptionCaption())){
-                    return 2;
-                }else {
+                if (!Objects.equals(customerVotedPollV.getVotedOptionCaption(), voice.getVotedOptionCaption())) {
                     customerVotedPollV.setVotedOptionCaption(voice.getVotedOptionCaption());
-                    return 1;
                 }
-            }
-        }
-        this.voices.add(voice);
-        return 0;
-    }
-
-    public void RemoveOption(int pollID){
-        for (int i = 0 ; i < this.voices.size() ; i++) {
-            if (this.voices.get(i).getPollID() == pollID) {
-                this.voices.remove(i);
                 return;
             }
         }
+        this.voices.add(voice);
     }
+
 
     /**
      * Check if a user has already voted for that poll
@@ -90,19 +63,15 @@ public class customerInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         customerInfo that = (customerInfo) o;
-        return Objects.equals(username, that.username) &&
-                Objects.equals(voices, that.voices);
+        return Objects.equals(voices, that.voices);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(username, voices);
+        return Objects.hash(voices);
     }
 
     @Override
     public String toString() {
-        return "{"+
-                "username:'" + username + '\'' +
-                ", voices:" + voices +
-                '}';
+        return "{voices:" + voices + "}";
     }
 }

@@ -18,7 +18,6 @@ import java.util.Objects;
 import static it.unipi.dii.utility.dateTimes.getCurrentInstantString;
 
 public class addToSlipPage {
-    private VBox slipsCartColumn;
     private final livePage live;
     public addToSlipPage(livePage live) {
         this.live = live;
@@ -36,7 +35,7 @@ public class addToSlipPage {
         Label titleLabel = new Label("Choose Slip");
         titleLabel.getStyleClass().add("live-title");
 
-        slipsCartColumn = createSlipsColumn(concat);
+        VBox slipsCartColumn = createSlipsColumn(concat);
 
         HBox slipsContent = new HBox();
         slipsContent.setAlignment(Pos.CENTER);
@@ -83,7 +82,7 @@ public class addToSlipPage {
 
         VBox.setMargin(firstAdd, new Insets(5, 5, 5, 5));
 
-        VBox.setMargin(newSlip, new Insets(0, 0, 10, 0)); //margin, to distanciate all slips
+        VBox.setMargin(newSlip, new Insets(0, 0, 10, 0)); //margin, to distance all slips
 
         //add everything to the column
         newSlip.getChildren().addAll(firstAdd);
@@ -119,7 +118,7 @@ public class addToSlipPage {
                 betlist.add(bet);
                 slip.setBetsList(betlist);
                 SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
-                List<Slip> list = new ArrayList<>();
+                List<Slip> list;
                 try {
                     list = slipRedisDAO.getListFromUser(Session.getUsername());
                 } catch (IOException e) {
@@ -155,12 +154,12 @@ public class addToSlipPage {
         VBox column = new VBox();
         column.setAlignment(Pos.TOP_CENTER);
 
-        VBox firstLine = new VBox();
+        VBox firstLine;
         firstLine = createNewSlip(concat);
         column.getChildren().add(firstLine);
 
         SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
-        List<Slip> list = new ArrayList<>();
+        List<Slip> list;
         try {
             list = slipRedisDAO.getListFromUser(Session.getUsername());
         } catch (IOException e) {
@@ -183,7 +182,7 @@ public class addToSlipPage {
                 i++;
             }
             VBox slip = createSlip(matchArray, multiplierArray,s.getSlipID(),concat,f);
-            VBox.setMargin( slip, new Insets(0, 0, 10, 0)); //margin, to distanciate all slips
+            VBox.setMargin( slip, new Insets(0, 0, 10, 0)); //margin, to distance all slips
             column.getChildren().add(slip);
         }
 
@@ -206,7 +205,7 @@ public class addToSlipPage {
             multiplierLabel.getStyleClass().add("input-label");
 
             Region spacingRegion = new Region();
-            HBox.setHgrow(spacingRegion, Priority.ALWAYS);  // seconda label a destra
+            HBox.setHgrow(spacingRegion, Priority.ALWAYS);  // Second label to the right.
             HBox.setMargin(spacingRegion, new Insets(0, 0, 0, 55));
 
             //create a horizontal line for each match-multiplier

@@ -64,7 +64,7 @@ public class pollsPage {
             for (Document document : docs) {
                 Poll p = convertJsonToObject(convertDocumentToJson(document), Poll.class);
                 if (p != null) {
-                    choice = createResult(registered, active, p.getPollName(), p.getOptions(),p.getPollID(), null);
+                    choice = createResult(registered, false, p.getPollName(), p.getOptions(),p.getPollID(), null);
                     choice.setMaxWidth(350);
 
                     pollsContent.getChildren().addAll(choice);
@@ -117,7 +117,7 @@ public class pollsPage {
                     votedCaption = null;
                 }
 
-                VBox choice = createResult(registered, active, p.getPollName(), p.getOptions(), p.getPollID(), votedCaption);
+                VBox choice = createResult(registered, true, p.getPollName(), p.getOptions(), p.getPollID(), votedCaption);
                 choice.setMaxWidth(350);
                 pollsContent.getChildren().addAll(choice);
             }
@@ -149,7 +149,7 @@ public class pollsPage {
 
         double sum = 0;
 
-        List<Double> Perc = new ArrayList<>();
+        List<Double> Perch = new ArrayList<>();
         List<RadioButton> RadioButtons = new ArrayList<>();
 
         for (it.unipi.dii.model.pollOption pollOption : options) {
@@ -169,26 +169,25 @@ public class pollsPage {
 
         for(pollOption option : options){
             if(sum != 0){
-                Perc.add(option.getOptionVotes()/sum);
+                Perch.add(option.getOptionVotes()/sum);
             }else{
-                Perc.add(0.0);
+                Perch.add(0.0);
             }
         }
 
         List<HBox> HBoxes = new ArrayList<>();
 
         for(int i = 0 ; i < options.size() ; i++) {
-            HBoxes.add(createOptionBox(pollID , options.get(i).getOptionCaption() , RadioButtons.get(i), Perc.get(i)));
+            HBoxes.add(createOptionBox(pollID , options.get(i).getOptionCaption() , RadioButtons.get(i), Perch.get(i)));
         }
 
         if(registered && active) {
-            double total = sum;
             // If is the case of registered user, the user can vote.
             // Add a listener to update the ProgressBar when an option of a Poll is selected.
             optionGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
                 for(int i = 0 ; i < options.size() ; i++) {
                     String caption = RadioButtons.get(i).getText();
-                    updateOptionBox(HBoxes.get(i), RadioButtons.get(i), total, caption, pollID);
+                    updateOptionBox(RadioButtons.get(i), caption, pollID);
                 }
             });
         }else{
@@ -236,7 +235,7 @@ public class pollsPage {
      *  Method to update the ProgressBar and Label based on user selection.
      */
 
-    private void updateOptionBox(HBox hbox, RadioButton option, double sum, String caption,int pollID) {
+    private void updateOptionBox(RadioButton option, String caption,int pollID) {
         if (option.isSelected()) {
             Poll p = new Poll();
             // We get from Redis the poll at which the user has voted.
@@ -249,7 +248,7 @@ public class pollsPage {
                 }
             }
             // We get the number of votes on that poll.
-            sum = p.getNumberOfVotes();
+            double sum = p.getNumberOfVotes();
             // Creation of the object Poll.
             String oldVotedCaption = Session.getCustomerInfo().OptionPresent(pollID);
             ProgressBar oldCaptionProgressBar = getCaptionProgressBar(oldVotedCaption);
@@ -337,9 +336,8 @@ public class pollsPage {
             }
 
             Session.getCustomerInfo().AddOption(new customerVotedPollVoice(pollID,caption));
-            // createUserCookie(Session.getCustomerInfo());
             PollRedisDAO pRedis2 = new PollRedisDAO();
-            pRedis2.createPollCookieOfUser(Session.getCustomerInfo().getUsername(), Session.getCustomerInfo().toString());
+            pRedis2.createPollCookieOfUser(Session.getUsername() , Session.getCustomerInfo().toString());
 
             for (int i = 0; i < p.getOptions().size(); i++) {
                 if (Objects.equals(p.getOptions().get(i).getOptionCaption(), caption)) {

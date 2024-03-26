@@ -23,11 +23,11 @@ import static it.unipi.dii.utility.securityLibrary.calculateSHA256;
 import static it.unipi.dii.utility.regularExpressionChecks.*;
 
 public class registerPage{
-    private BeansBetGUI beansBetGUI;
+    private final BeansBetGUI beansBetGUI;
     private CheckBox femaleCheckBox;
     private CheckBox maleCheckBox;
-    private Label errorLabel;
-    private List<Label> additionalLabels = new ArrayList<>();
+    private final Label errorLabel;
+    private final List<Label> additionalLabels = new ArrayList<>();
 
     public registerPage(BeansBetGUI beansBetGUI) {
         this.beansBetGUI = beansBetGUI;
@@ -143,24 +143,24 @@ public class registerPage{
         titleLabel.getStyleClass().add("login-title");
         double maxWidth = 300;
 
-        VBox nameBox = createInputBox("Name", nameField, null, null, maxWidth, "");
-        VBox surnameBox = createInputBox("Surname", surnameField, null, null, maxWidth, "");
-        VBox emailBox = createInputBox("Email", emailField, null, null, maxWidth, "");
-        VBox cellNumberBox = createInputBox("Cell Number", cellNumberField, null, null, maxWidth, "");
+        VBox nameBox = createInputBox("Name", nameField, null, null, maxWidth);
+        VBox surnameBox = createInputBox("Surname", surnameField, null, null, maxWidth);
+        VBox emailBox = createInputBox("Email", emailField, null, null, maxWidth);
+        VBox cellNumberBox = createInputBox("Cell Number", cellNumberField, null, null, maxWidth);
 
         VBox genderBox = new VBox();
         Region spacingRegion = new Region();
         VBox.setMargin(spacingRegion, new Insets(5, 0, 0, 0));
         genderBox.getChildren().addAll(femaleCheckBox, spacingRegion, maleCheckBox);
-        genderBox = createInputBox("Gender", null, genderBox, null, maxWidth, "");
+        genderBox = createInputBox("Gender", null, genderBox, null, maxWidth);
 
-        VBox birthDateBox = createInputBox("Birthdate", null, null, birthDate, maxWidth, "");
+        VBox birthDateBox = createInputBox("Birthdate", null, null, birthDate, maxWidth);
 
-        VBox addressBox = createInputBox("Address", addressField, null, null, maxWidth, "");
-        VBox cityOfResidenceBox = createInputBox("City Of Residence", cityOfResidenceField, null, null, maxWidth, "");
-        VBox provinceBox = createInputBox("Province", provinceField, null, null, maxWidth, "");
-        VBox usernameBox = createInputBox("Username", usernameField, null, null, maxWidth, "");
-        VBox passwordBox = createInputBox("Password", passwordField, null, null, maxWidth, "");
+        VBox addressBox = createInputBox("Address", addressField, null, null, maxWidth);
+        VBox cityOfResidenceBox = createInputBox("City Of Residence", cityOfResidenceField, null, null, maxWidth);
+        VBox provinceBox = createInputBox("Province", provinceField, null, null, maxWidth);
+        VBox usernameBox = createInputBox("Username", usernameField, null, null, maxWidth);
+        VBox passwordBox = createInputBox("Password", passwordField, null, null, maxWidth);
 
         VBox buttonBox = new VBox();
         loginButton.setMaxWidth(maxWidth);
@@ -174,7 +174,7 @@ public class registerPage{
 
         return form;
     }
-    private VBox createInputBox(String labelText, javafx.scene.control.TextInputControl inputField, VBox inputVBox, DatePicker birthDateBox, double maxWidth, String additionalLabelText) {
+    private VBox createInputBox(String labelText, javafx.scene.control.TextInputControl inputField, VBox inputVBox, DatePicker birthDateBox, double maxWidth) {
         Label label = new Label(labelText);
         label.getStyleClass().addAll("input-label", "custom-label");
 
@@ -326,7 +326,7 @@ public class registerPage{
             cDB.closeConnection();
 
             if(b){
-                customerInfo customer = new customerInfo(username, new ArrayList<>());
+                customerInfo customer = new customerInfo(new ArrayList<>());
                 // createUserCookie(customer); // Create a cookie file.
                 Session.setCustomerInfo(customer);
                 additionalLabels.get(9).setText(" ");

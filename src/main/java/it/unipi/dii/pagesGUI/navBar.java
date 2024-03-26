@@ -224,7 +224,7 @@ public class navBar {
         for (javafx.scene.Node node : ((HBox) selectedLabel.getParent()).getChildren()) {
             if (node instanceof Label) {
                 // Necessary, otherwise, the label is still green
-                ((Label) node).getStyleClass().remove("selected-label");
+                (node).getStyleClass().remove("selected-label");
                 node.getStyleClass().add("menu-label");
             }
         }

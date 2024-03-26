@@ -162,7 +162,7 @@ public class loginPage {
                     Session.setCustomerInfo(customer);
                 } else {
                     // The user does not have a cookie in Redis.
-                    customerInfo customer = new customerInfo(username, new ArrayList<>());
+                    customerInfo customer = new customerInfo(new ArrayList<>());
                     //createUserCookie(customer); // Create a cookie file.
                     Session.setCustomerInfo(customer);
                     pollRedisDAO.createPollCookieOfUser(username, customer.toString());

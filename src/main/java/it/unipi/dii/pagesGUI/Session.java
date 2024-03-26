@@ -11,7 +11,6 @@ public class Session {
     }
 
     public static void setCustomerInfo(customerInfo customerInfo) {
-        Session.username = customerInfo.getUsername();
         Session.customerInfo = customerInfo;
     }
     public static customerInfo getCustomerInfo() {

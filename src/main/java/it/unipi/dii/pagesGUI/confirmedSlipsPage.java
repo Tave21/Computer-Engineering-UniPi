@@ -81,7 +81,7 @@ public class confirmedSlipsPage {
 
             int x = 0;
             for (Document betDocument : betsList) {
-                int winValue = betDocument.getInteger("win", -1); // Default a -1 se non è presente
+                int winValue = betDocument.getInteger("win", -1); // -1 if it is not present.
                 slips.get(p).findBetsList().get(x).setWin(winValue);
                 x++;
             }
