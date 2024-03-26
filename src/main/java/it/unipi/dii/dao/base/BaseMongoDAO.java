@@ -12,11 +12,11 @@ public class BaseMongoDAO {
     public MongoDatabase mongoDB;
 
     protected MongoClient client; // It represents a pool of connections to the database, also for replicas.
-    public static final String MONGO_PRIMARY_HOST = "10.1.1.55"; //10.1.1.55
-    public static final Integer MONGO_PRIMARY_HOST_PORT = 27018;
-    public static String MONGO_SECONDARY_HOST = "10.1.1.54";//"10.1.1.54";
+    public static final String MONGO_PRIMARY_HOST = "localhost"; //10.1.1.55
+    public static final Integer MONGO_PRIMARY_HOST_PORT = 27017;
+    public static String MONGO_SECONDARY_HOST = "localhost";//"10.1.1.54";
     public static int MONGO_SECONDARY_HOST_PORT = 27018;
-    public static String MONGO_THIRD_HOST = "10.1.1.48";//"10.1.1.48";
+    public static String MONGO_THIRD_HOST = "localhost";//"10.1.1.48";
     public static int MONGO_THIRD_HOST_PORT = 27018;
     public static final String MONGO_DATABASE_NAME = "BeansBet";
     public static final String DB_URL = "mongodb://" + MONGO_PRIMARY_HOST + ":" + MONGO_PRIMARY_HOST_PORT;
@@ -39,7 +39,7 @@ public class BaseMongoDAO {
         return this.client;
     }
 
-    public void openConnectiona() {
+    public void openConnection() {
         // This is for the connection to the single local instance
         if (this.client == null) {
             try {
@@ -53,7 +53,7 @@ public class BaseMongoDAO {
         }
     }
 
-    public void openStrictConnectiona() {
+    public void openStrictConnection() {
         // This is for the connection to the single local instance
         if (this.client == null) {
             try {
@@ -67,7 +67,7 @@ public class BaseMongoDAO {
         }
     }
 
-    public void openStrictConnection() {
+    public void openStrictConnectiona() {
         // This is for the connection to the local/VM replicas
         if (this.client == null) {
             // Client not connected.
@@ -85,7 +85,7 @@ public class BaseMongoDAO {
         }
     }
 
-    public MongoClient openConnection() {
+    public MongoClient openConnectiona() {
         // This is for the connection to the local/VM replicas
         if (this.client != null) {
             // Client already connected.
