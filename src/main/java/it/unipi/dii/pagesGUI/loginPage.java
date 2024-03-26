@@ -158,12 +158,12 @@ public class loginPage {
                     // The user already has a cookie in Redis.
                     customerInfo customer = convertJsonToObject(key, customerInfo.class);
                     assert customer != null;
-                    //createUserCookie(customer); // Create a cookie file.
+                    Session.setUsername(username);
                     Session.setCustomerInfo(customer);
                 } else {
                     // The user does not have a cookie in Redis.
                     customerInfo customer = new customerInfo(new ArrayList<>());
-                    //createUserCookie(customer); // Create a cookie file.
+                    Session.setUsername(username);
                     Session.setCustomerInfo(customer);
                     pollRedisDAO.createPollCookieOfUser(username, customer.toString());
                 }
