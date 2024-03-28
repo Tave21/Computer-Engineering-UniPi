@@ -53,6 +53,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      * @return The biggest value of slipID from MongoDB.
      */
     public int getLastID() {
+        // Firsts let's try with a limit on the confirmation date to speed up the query.
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("confirmationDate",
                                 new Document("$gt", getCurrentDate().minusMonths(2).toString()))),
@@ -65,13 +66,28 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
         AggregateIterable<Document> docs = this.mongoDB.getCollection("slips").aggregate(pipeline);
         try {
             return Objects.requireNonNull(docs.first()).getInteger("slipID");
-        } catch (NullPointerException e) {
-            return 0;
+        } catch (NullPointerException e1) {
+            // Now we will try with no limit on the confirmation date.
+            pipeline = Arrays.asList(new Document("$project",
+                            new Document("slipID", 1L)
+                                    .append("_id", 0L)),
+                    new Document("$sort",
+                            new Document("slipID", -1L)),
+                    new Document("$limit", 1L));
+            docs = this.mongoDB.getCollection("slips").aggregate(pipeline);
+
+            try {
+                return Objects.requireNonNull(docs.first()).getInteger("slipID");
+            } catch (NullPointerException e2) {
+                return 0;
+
+            }
         }
     }
 
     /**
-     * Remove all the slips from MongoDB that match the criteria.
+     * Remove all the slips from MongoDB that match the given criteria.
+     *
      * @param query the match criteria.
      */
     @Override
@@ -80,11 +96,6 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                 this.mongoDB.getCollection("slips"),
                 query
         );
-    }
-
-    @Override
-    public void replaceSlip(Integer slipID, Slip slip) {
-        throw new UnsupportedOperationException("Not supported in MongoDB implementation");
     }
 
     /**
@@ -110,7 +121,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
     @Override
     public void removeAllBetsOfMatch(Integer matchID) {
-        if(matchID >= 0) {
+        if (matchID >= 0) {
             MongoCollection<Document> slips_coll = this.mongoDB.getCollection("slips");
             // Update the slips with a bet on the target match.
             slips_coll.updateMany(
@@ -169,7 +180,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
     private void substituteSlip(Integer slipID, Slip slip) {
         this.mongoDB.getCollection("slips").replaceOne(
-                new Document("slipID",  slipID),
+                new Document("slipID", slipID),
                 convertJsonToDocument(convertObjectToJsonString(slip))
         );
     }
@@ -183,7 +194,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      */
 
     public void checkSlipsWhenMatchEnds(Integer matchID) {
-        if(matchID >= 0) {
+        if (matchID >= 0) {
             List<Slip> sl = getSlips(
                     new Document("betsList", new Document("$elemMatch", new Document("matchID", matchID))),
                     new Document("_id", 0)
@@ -245,7 +256,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                 }
                 s_list.add(s);
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
         }
         return s_list;
@@ -396,6 +407,11 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     public List<String> getAllUsernames() {
         throw new
                 UnsupportedOperationException("Not supported in MongoDB implementation");
+    }
+
+    @Override
+    public void replaceSlip(Integer slipID, Slip slip) {
+        throw new UnsupportedOperationException("Not supported in MongoDB implementation");
     }
 }
 
