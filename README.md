@@ -30,11 +30,11 @@ BeansBet is a betting application that enables users to place bets on their favo
       1) Run `from_TIMED_to_INPLAY` to add some new (*randomly generated*) matches in the GUI's live page.
     - **SLIP VALIDITY CHECK 1:** 
       1) For testing this and the following ones you have to log in with "*user*" as username and "*user*" as password. 
-      2) Run `insert_TIMED_Matches_and_place_slip` (under:_src/main/java/it.unipi.dii/testing/testEvaluationslip_) to add 3 matches to MongoDB that will appear in GUI's match page, and it creates a Slip on those 3 matches.
+      2) Run `insert_TIMED_Matches_and_place_slip` (under:_src/main/java/it.unipi.dii/testing/testEvaluationslip_) to add 3 matches to MongoDB that will appear in GUI's match page, and it creates a confirmed Slip on those 3 matches.
          1) **after this step, please follow the test order and do not run any other script**
       3) Run `BeanBetGUI` (_src/main/java/it.unipi.dii_) 
       4) Go to the match page.
-      5) Add a bet on the match between "*Test Manual Timed Team 5*" and "*Test Manual Timed Team 6*". 
+      5) Add a bet on the match between "*Test Manual Timed Team 5*" and "*Test Manual Timed Team 6*" which are in the "*Ligue 1*" championship (this match will appear two times, since the double execution of the script). 
       6) Go to the slip cart page.
       7) You can see the new  bet in the unconfirmed slip.
       8) Run `insert_TIMED_Matches_go_INPLAY` .
@@ -47,11 +47,9 @@ BeansBet is a betting application that enables users to place bets on their favo
       3) Go to the match page.
       4) Click on a multiplier of the match between "*Test Manual Timed Team 5*" and "*Test Manual Timed Team 6*". 
          1) Please, don't click anything else on GUI.
-      5) Run `insert_TIMED_Matches_go_INPLAY`. 
-      6) If you have closed it, run again `BeanBetGUI`.
-      7) Go to the match page.
-      8) Try to add that bet to a new or already created Slip. 
-      9) The GUI will reject the operation showing an error message. 
+      5) Run `insert_TIMED_Matches_go_INPLAY`.
+      6) Try to add that bet to a new or already created Slip. 
+      7) The GUI will reject the operation showing an error message. 
          1) This has been done because if the user don't refresh the match page he can bet on an IN_PLAY match.
     - **SLIP STATUS TEST:** 
       1) Run `insert_TIMED_Matches_and_place_slip`.

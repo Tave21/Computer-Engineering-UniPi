@@ -23,7 +23,7 @@ import static it.unipi.dii.utility.dateTimes.getCurrentInstantString;
 
 public class SlipRedisDAO extends BaseRedisDAO implements SlipDAO {
     public static final String APP_NS = "BeansBet";
-    public static final int EXPIRATION_IN_SEC = 86400; //temporary slips are alive only for one day
+    public static final int EXPIRATION_IN_SEC = 10800; //temporary slips are alive only for one day
     private static final String NS = "cust"; //namespace
 
     //EXAMPLE OF KEY FOR A SPECIFIC SLIP OF A SPECIFIC USER:
