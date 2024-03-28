@@ -14,7 +14,7 @@ public class generationMainIndexes {
 
         // Slips indexes.
         createIndex(ms.mongoDB , "slips" , "username" , 1); // Good index.
-        createIndex(ms.mongoDB , "slips" , "betList.matchID" , -1); // Good index.
+        createIndex(ms.mongoDB , "slips" , "betsList.matchID" , -1); // Good index.
 
         // Matches indexes.
         createIndex(ms.mongoDB , "matches" , "status" , 1); // Good Index
