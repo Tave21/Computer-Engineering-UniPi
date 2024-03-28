@@ -15,7 +15,7 @@ public class dateTimes {
      * @return True if the person have more than 18 years.
      */
     public static boolean isAdult(LocalDate birthDate) {
-        return differenceDays(birthDate.toString() , getCurrentDateString()) >= 18;
+        return (differenceDays(birthDate.toString() , getCurrentDateString())/365) >= 18;
     }
 
     /**
