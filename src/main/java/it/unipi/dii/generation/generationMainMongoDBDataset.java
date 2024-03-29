@@ -30,7 +30,6 @@ import static it.unipi.dii.utility.converters.objectToJsonStringConverter.conver
 import static it.unipi.dii.utility.generators.passwordGenerator.generateRandomPassword;
 import static it.unipi.dii.utility.generators.randomGeneration.*;
 import static it.unipi.dii.utility.securityLibrary.calculateSHA256;
-import static it.unipi.dii.utility.converters.writeJsonToFileConverter.deleteFile;
 import static it.unipi.dii.utility.converters.writeJsonToFileConverter.writeToJsonFile;
 
 public class generationMainMongoDBDataset {
