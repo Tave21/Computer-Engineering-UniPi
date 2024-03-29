@@ -349,7 +349,6 @@ public class generationMainMongoDBDataset {
             matches.add(mat);
 
             writeToJsonFile(matches, "src/main/java/it/unipi/dii/generation/matches.json");
-            deleteFile("src/main/java/it/unipi/dii/generation/MatchesJSON.json"); // Delete the MatchesJSON file.
             System.out.println("Matches generation ended. [ " + matches.size() + " ]");
 
         } catch (IOException | ParseException e) {
