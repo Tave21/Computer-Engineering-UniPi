@@ -34,7 +34,7 @@ import static it.unipi.dii.utility.converters.writeJsonToFileConverter.deleteFil
 import static it.unipi.dii.utility.converters.writeJsonToFileConverter.writeToJsonFile;
 
 public class generationMainMongoDBDataset {
-    private static final int NUMBER_OF_FRESH_SLIPS = 120;
+    private static final int NUMBER_OF_FRESH_SLIPS = 250; // The number of fresh slips to insert in the dataset.
     public static final String[] italianProvinces = {
             "Agrigento", "Alessandria", "Ancona", "Aosta", "Arezzo", "Ascoli Piceno", "Asti", "Avellino", "Bari",
             "Barletta-Andria-Trani", "Belluno", "Benevento", "Bergamo", "Biella", "Bologna", "Bolzano", "Brescia",
@@ -204,7 +204,7 @@ public class generationMainMongoDBDataset {
         jsonParser = new JSONParser();
 
         Match mat;
-        Match eprevTimed, eprevFinished;
+        Match prevTimed, prevFinishedIT, prevFinishedGB, prevFinishedGE, prevFinishedFR, prevFinishedSP;
 
         try (FileReader reader = new FileReader("src/main/java/it/unipi/dii/generation/MatchesJSON.json")) {
             Object obj = jsonParser.parse(reader); // Read JSON file
@@ -268,7 +268,7 @@ public class generationMainMongoDBDataset {
             mat.setAway_goals(0);
             mat.setCompetition_id("IT1");
             mat.initializeAndRandomizeMultipliers();
-            eprevTimed = mat;
+            prevTimed = mat;
             matches.add(mat);
 
             mat = new Match();
@@ -286,14 +286,66 @@ public class generationMainMongoDBDataset {
             mat = new Match();
             mat.setMatchID(number + 3);
             mat.setStatus("FINISHED");
-            mat.setTeam_home("Finished Team 1");
-            mat.setTeam_away("Finished Team 2");
+            mat.setTeam_home("Finished Team GB 1");
+            mat.setTeam_away("Finished Team GB 2");
             mat.setMatchDate(getCurrentInstant().minus(3, ChronoUnit.DAYS).toString());
-            mat.setHome_goals(2);
-            mat.setAway_goals(0);
+            mat.setHome_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setAway_goals((int)generateRandomNaturalNumber(0 , 5));
             mat.setCompetition_id("GB1");
             mat.initializeAndRandomizeMultipliers();
-            eprevFinished = mat;
+            prevFinishedGB = mat;
+            matches.add(mat);
+
+            mat = new Match();
+            mat.setMatchID(number + 4);
+            mat.setStatus("FINISHED");
+            mat.setTeam_home("Finished Team IT 1");
+            mat.setTeam_away("Finished Team IT 2");
+            mat.setMatchDate(getCurrentInstant().minus(3, ChronoUnit.DAYS).toString());
+            mat.setHome_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setAway_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setCompetition_id("IT1");
+            mat.initializeAndRandomizeMultipliers();
+            prevFinishedIT = mat;
+            matches.add(mat);
+
+            mat = new Match();
+            mat.setMatchID(number + 5);
+            mat.setStatus("FINISHED");
+            mat.setTeam_home("Finished Team FR 1");
+            mat.setTeam_away("Finished Team FR 2");
+            mat.setMatchDate(getCurrentInstant().minus(3, ChronoUnit.DAYS).toString());
+            mat.setHome_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setAway_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setCompetition_id("FR1");
+            mat.initializeAndRandomizeMultipliers();
+            prevFinishedFR = mat;
+            matches.add(mat);
+
+            mat = new Match();
+            mat.setMatchID(number + 6);
+            mat.setStatus("FINISHED");
+            mat.setTeam_home("Finished Team GE 1");
+            mat.setTeam_away("Finished Team GE 2");
+            mat.setMatchDate(getCurrentInstant().minus(3, ChronoUnit.DAYS).toString());
+            mat.setHome_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setAway_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setCompetition_id("GE1");
+            mat.initializeAndRandomizeMultipliers();
+            prevFinishedGE = mat;
+            matches.add(mat);
+
+            mat = new Match();
+            mat.setMatchID(number + 7);
+            mat.setStatus("FINISHED");
+            mat.setTeam_home("Finished Team SP 1");
+            mat.setTeam_away("Finished Team SP 2");
+            mat.setMatchDate(getCurrentInstant().minus(3, ChronoUnit.DAYS).toString());
+            mat.setHome_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setAway_goals((int)generateRandomNaturalNumber(0 , 5));
+            mat.setCompetition_id("SP1");
+            mat.initializeAndRandomizeMultipliers();
+            prevFinishedSP = mat;
             matches.add(mat);
 
             writeToJsonFile(matches, "src/main/java/it/unipi/dii/generation/matches.json");
@@ -414,15 +466,15 @@ public class generationMainMongoDBDataset {
         s.setUsername("user");
         s.setBetAmount(generateSumOfMoney(10));
         b = new Bet(
-                eprevTimed.getMatchID(),
-                eprevTimed.pickMultiplierValue(1),
-                eprevTimed.pickMultiplierName(1),
-                eprevTimed.getMatchDate()
+                prevTimed.getMatchID(),
+                prevTimed.pickMultiplierValue(1),
+                prevTimed.pickMultiplierName(1),
+                prevTimed.getMatchDate()
         );
-        b.setTeamHome(eprevTimed.getTeam_home());
-        b.setTeamAway(eprevTimed.getTeam_away());
-        b.setCompetition_id(eprevTimed.getCompetition_id());
-        b.setWin(eprevTimed.checkMultiplierWin(b.getChosenMultiplierName()));
+        b.setTeamHome(prevTimed.getTeam_home());
+        b.setTeamAway(prevTimed.getTeam_away());
+        b.setCompetition_id(prevTimed.getCompetition_id());
+        b.setWin(prevTimed.checkMultiplierWin(b.getChosenMultiplierName()));
         betList.add(b);
         s.setBetsList(betList);
         s.setCreationDate(getCurrentInstant().minusSeconds(20).toString());
@@ -432,36 +484,53 @@ public class generationMainMongoDBDataset {
 
         slipCounter = slipCounter + 1;
 
+        Match prevFinished; // Temporary match object.
+        int champCont = 0; // Variable used to assign championship in a uniformly distributed manner.
+
         // Insert some confirmed and evaluated slips.
         for (i = 0; i <= NUMBER_OF_FRESH_SLIPS; i++) {
             s = new Slip();
             betList.clear();
-            if (i <= 2) {
-                // 3 of them are of 'user'.
-                s.setUsername("user");
+            if (i <= 10) {
+                s.setUsername("user"); // Some of them are of 'user'.
             } else {
-                // The other slips.
-                s.setUsername("Alessio_Rossi_0" + i);
+                s.setUsername("Alessio_Rossi_0" + generateRandomNaturalNumber(0 , 100)); // The other slips.
             }
+
             s.setSlipID(slipCounter);
             s.setBetAmount(generateSumOfMoney(10));
 
             multIndex = (int) generateRandomNaturalNumber(0, Match.NUMBER_OF_MULTIPLIERS - 1);
 
+            prevFinished = switch (champCont) {
+                case 0 -> prevFinishedGB;
+                case 1 -> prevFinishedIT;
+                case 2 -> prevFinishedGE;
+                case 3 -> prevFinishedSP;
+                default -> prevFinishedFR;
+            };
+
+            // Increment of 'champCont' in modulus of 5.
+            if(champCont == 4){
+                champCont = 0;
+            }else{
+                champCont = champCont + 1;
+            }
+
             b = new Bet(
-                    eprevFinished.getMatchID(),
-                    eprevFinished.pickMultiplierValue(multIndex),
-                    eprevFinished.pickMultiplierName(multIndex),
-                    eprevFinished.getMatchDate()
+                    prevFinished.getMatchID(),
+                    prevFinished.pickMultiplierValue(multIndex),
+                    prevFinished.pickMultiplierName(multIndex),
+                    prevFinished.getMatchDate()
             );
-            b.setTeamHome(eprevFinished.getTeam_home());
-            b.setTeamAway(eprevFinished.getTeam_away());
-            b.setCompetition_id(eprevFinished.getCompetition_id());
-            b.setWin(eprevFinished.checkMultiplierWin(b.getChosenMultiplierName()));
+            b.setTeamHome(prevFinished.getTeam_home());
+            b.setTeamAway(prevFinished.getTeam_away());
+            b.setCompetition_id(prevFinished.getCompetition_id());
+            b.setWin(prevFinished.checkMultiplierWin(b.getChosenMultiplierName()));
             betList.add(b);
 
             s.setBetsList(betList);
-            s.setCreationDate(stringToTimestamp(eprevFinished.getMatchDate())
+            s.setCreationDate(stringToTimestamp(prevFinished.getMatchDate())
                     .minus((int) generateRandomNaturalNumber(2, 4), ChronoUnit.DAYS)
                     .minus((int) generateRandomNaturalNumber(0, 23), ChronoUnit.HOURS)
                     .plus((int) generateRandomNaturalNumber(0, 59), ChronoUnit.MINUTES)
@@ -474,7 +543,6 @@ public class generationMainMongoDBDataset {
             slips.add(s);
             slipCounter = slipCounter + 1;
         }
-
 
         System.out.println("Slips insertion start. [ " + slips.size() + " ]");
 
@@ -491,7 +559,7 @@ public class generationMainMongoDBDataset {
         p.setCreationDate(getCurrentInstantString());
         p.setActivationDate(getCurrentInstant().plusSeconds(3600).toString());
         List<pollOption> options = new ArrayList<>();
-        pollOption pollOpt = new pollOption("Haaland");
+        pollOption pollOpt = new pollOption("Harland");
         pollOpt.multipleVoteOption(10);
         options.add(pollOpt);
         pollOpt = new pollOption("Verstappen");
