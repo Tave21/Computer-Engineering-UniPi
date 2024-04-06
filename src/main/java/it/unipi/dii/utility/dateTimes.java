@@ -109,7 +109,7 @@ public class dateTimes {
      */
 
     public static Instant getCurrentInstant(){
-        return Instant.now().plusSeconds(3600).truncatedTo(ChronoUnit.SECONDS);
+        return Instant.now().plusSeconds(7200).truncatedTo(ChronoUnit.SECONDS);
     }
 
     /**
