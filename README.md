@@ -65,7 +65,8 @@ BeansBet is a betting application that enables users to place bets on their favo
       2) You can simply add a new poll through a pre-added admin account...
         - **username:** save@gmail.com
         - **password:** save
-      3) That will finish after 2 minutes setting activation date to your actual date - 1 day + 2 minutes, date must be in this format: "2024-03-18T15:00:00Z".
+      3) The last character of the Question field must be the question mark "?".
+      4) That will finish after 2 minutes setting activation date to your actual date - 1 day + 2 minutes, date must be in this format: "2024-03-18T15:00:00Z".
    
 4. **Automatic Testing Scripts**
     - We developed an automatic testing (*by using the assert functions*) procedure that can be launched by using the `testLauncher.java` script.

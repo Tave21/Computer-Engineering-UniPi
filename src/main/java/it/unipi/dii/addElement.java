@@ -297,7 +297,7 @@ public class addElement {
             countErrors++;
         }
 
-        String regex2 = "^[a-zA-Z]+$";
+        String regex2 = "^[a-zA-Z ]+$";
         Pattern pattern2 = Pattern.compile(regex2);
         Matcher matcher2 = pattern2.matcher(type);
 
@@ -316,7 +316,7 @@ public class addElement {
         }
 
 
-        String regex1 = "^[a-zA-Z0-9]+$";
+        String regex1 = "^[a-zA-Z0-9 ]+$";
         if(Pattern.matches(regex1, option1)){
             additionalLabels.get(3).setText("");
         }else{
