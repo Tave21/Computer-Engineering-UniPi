@@ -1,4 +1,4 @@
-package it.unipi.dii.userCookie;
+package it.unipi.dii.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,7 +32,7 @@ public class customerInfo {
      * @param voice is an object that contains the pollID and the caption voted by the user
      */
     public void AddOption(customerVotedPollVoice voice){
-        for (it.unipi.dii.userCookie.customerVotedPollVoice customerVotedPollV : this.voices) {
+        for (customerVotedPollVoice customerVotedPollV : this.voices) {
             if (customerVotedPollV.getPollID() == voice.getPollID()) {
                 if (!Objects.equals(customerVotedPollV.getVotedOptionCaption(), voice.getVotedOptionCaption())) {
                     customerVotedPollV.setVotedOptionCaption(voice.getVotedOptionCaption());

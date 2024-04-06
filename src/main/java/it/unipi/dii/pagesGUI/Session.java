@@ -1,5 +1,5 @@
 package it.unipi.dii.pagesGUI;
-import it.unipi.dii.userCookie.customerInfo;
+import it.unipi.dii.model.customerInfo;
 public class Session {
     private static String username;
     private static customerInfo customerInfo;

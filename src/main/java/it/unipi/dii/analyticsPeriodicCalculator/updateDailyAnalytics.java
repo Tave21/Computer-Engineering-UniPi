@@ -6,7 +6,6 @@ import it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuer
 import it.unipi.dii.dao.mongo.StatisticsMongoDBDAO;
 import org.bson.Document;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.TimerTask;
 import static it.unipi.dii.utility.converters.jsonToDocumentConverter.convertJsonToDocument;

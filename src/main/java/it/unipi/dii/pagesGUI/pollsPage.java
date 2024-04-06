@@ -4,7 +4,7 @@ import it.unipi.dii.dao.mongo.PollMongoDBDAO;
 import it.unipi.dii.dao.redis.PollRedisDAO;
 import it.unipi.dii.model.Poll;
 import it.unipi.dii.model.pollOption;
-import it.unipi.dii.userCookie.customerVotedPollVoice;
+import it.unipi.dii.model.customerVotedPollVoice;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;

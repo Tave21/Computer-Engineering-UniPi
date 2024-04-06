@@ -1,4 +1,4 @@
-package it.unipi.dii.userCookie;
+package it.unipi.dii.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

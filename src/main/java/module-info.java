@@ -45,4 +45,5 @@ module it.unipi.dii {
     exports it.unipi.dii.utility.generators;
     exports it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.financialResults;
     exports it.unipi.dii.analyticsPeriodicCalculator.analyticsResultModel.seventhQuery;
+    opens it.unipi.dii.model to javafx.fxml;
 }

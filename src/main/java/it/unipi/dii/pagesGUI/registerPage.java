@@ -4,7 +4,7 @@ import it.unipi.dii.BeansBetGUI;
 import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
 import it.unipi.dii.model.Customer;
-import it.unipi.dii.userCookie.customerInfo;
+import it.unipi.dii.model.customerInfo;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
