@@ -36,8 +36,6 @@ module it.unipi.dii {
     exports it.unipi.dii.dao.base;
 
     opens it.unipi.dii.pagesGUI to javafx.fxml;
-    exports it.unipi.dii.userCookie;
-    opens it.unipi.dii.userCookie to javafx.fxml;
     exports it.unipi.dii.testing;
     opens it.unipi.dii.testing to javafx.fxml;
     exports it.unipi.dii.analyticsPeriodicCalculator;
