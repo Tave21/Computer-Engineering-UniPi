@@ -15,7 +15,7 @@ BeansBet is a betting application that enables users to place bets on their favo
 
 2. **Generate a New Dataset (*if you are using it locally*)**
    1) Run `generationMainMongoDBDataset.java` in the `generation` folder (_src/main/java/it.unipi.dii/generation_).
-   2) This script will generate the Database in MongoDBCompass BeansBet database, all the collections and the following three files: `customers.java`, `matches.java`, and `slips.java`. 
+   2) This script will generate the Database in MongoDBCompass BeansBet database, all the collections and the following three files: `customers.json`, `matches.json`, and `slips.json`. 
       1) This script insert also the testing Customer `< user , user >` and the testing Admin `< save@gmail.com , save >`.
    3) Now you have to manually add these files in MongoDB through the **import** feature of MongoDB Compass. 
       1) This has been done to speed up the process.
