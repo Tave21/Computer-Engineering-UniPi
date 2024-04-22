@@ -27,9 +27,9 @@ import static it.unipi.dii.utility.converters.objectToJsonStringConverter.conver
 public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     /**
      * Adds a new slip in MongoDB.
-     * This function fails if the slip is not valid.
-     *
+     * The function fails if the slip is not valid.
      * @param slip The object slip to be inserted.
+     * @return The new slipID value if it has been successfully inserted or -1 instead.
      */
     @Override
     public Integer addSlip(Slip slip) {
@@ -43,8 +43,6 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
             } else {
                 return -1;
             }
-
-
         }
         return -1;
     }
@@ -101,8 +99,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     /**
      * Remove the bet related to the input match from a slip in the database.
      *
-     * @param slipID  The id of the target slip.
-     * @param matchID The target match.
+     * @param slipID  The ID of the target slip.
+     * @param matchID The ID of the target match.
      */
     @Override
     public void removeBet(String slipID, Integer matchID) {
@@ -117,7 +115,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      * This function make two write queries,
      * the first is the update one, the second is used to delete all the slips with no bets.
      *
-     * @param matchID ID of the target match.
+     * @param matchID The ID of the target match.
      */
     @Override
     public void removeAllBetsOfMatch(Integer matchID) {
@@ -136,8 +134,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     /**
      * Check if a bet has a successful result or not.
      *
-     * @param slip    The slip to be checked.
-     * @param matchID The match related to the bet.
+     * @param slip    The slip object to be checked.
+     * @param matchID The match ID related to the bet that we want to check.
      * @param mb      MatchMongoDBDAO Object.
      * @param cb      CustomerMongoDBDAO Object.
      */
@@ -174,8 +172,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     /**
      * Substitute the slip with slipID = slipID with the input slip.
      *
-     * @param slipID The id of slip to be substituted.
-     * @param slip   The new slip.
+     * @param slipID The ID of the target slip.
+     * @param slip   The new slip object.
      */
 
     private void substituteSlip(Integer slipID, Slip slip) {
@@ -190,7 +188,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
      * This function loop all the slips in the database, and check if they have a bet related to the target match.
      * If so, the bet will be evaluated.
      *
-     * @param matchID The target match.
+     * @param matchID The ID of the target match.
      */
 
     public void checkSlipsWhenMatchEnds(Integer matchID) {
@@ -199,16 +197,13 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                     new Document("betsList", new Document("$elemMatch", new Document("matchID", matchID))),
                     new Document("_id", 0)
             );
-
             CustomerMongoDBDAO cs = new CustomerMongoDBDAO();
             MatchMongoDBDAO mb = new MatchMongoDBDAO();
             cs.openConnection();
             mb.openConnection();
-
             for (Slip slip : sl) {
                 checkBetWin(slip, matchID, mb, cs);
             }
-
             cs.closeConnection();
             mb.closeConnection();
         }
@@ -216,8 +211,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
     /**
      * When a match is postponed, every matchDate in the bets (for that match) must be updated.
-     *
-     * @param matchID The postponed match ID.
+     * @param matchID The ID of the postponed match.
      */
     public void updateBetsMatchPostponed(Integer matchID, String newDate) {
         Document filter = new Document("betsList.matchID", matchID);
@@ -265,8 +259,8 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
     /**
      * Query the database and return the wanted slip.
      *
-     * @param slipID The id of the slip to get.
-     * @return The object slip.
+     * @param slipID The ID of the target slip.
+     * @return The slip object related to the ID, or null if the ID does not belong to any slip.
      */
 
     public Slip getSlip(Integer slipID) {
@@ -284,28 +278,24 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
 
     /**
      * Check if a slip has a successful result or not.
-     *
-     * @param slip The slip to check.
+     * @param slip The slip object to check.
      * @return The result of the slip or -1 if it is impossible to evaluate it.
      */
 
     public int checkIfSlipWin(Slip slip) {
-
         int betListSize = slip.betsList.size();
         boolean winSlip = true;
-
-        double amount = slip.getBetAmount();
-
+        double betAmount = slip.getBetAmount(); // The bet amount of the slip.
         int p = 0;
         for (int i = 0; i < betListSize; i++) {
             if (slip.betsList.get(i).getWin() == 1) {
                 // The bet has a positive result.
-                amount = amount * slip.betsList.get(i).getChosenMultiplierValue();
+                betAmount = betAmount * slip.betsList.get(i).getChosenMultiplierValue();
 
 
             } else if (slip.betsList.get(i).getWin() == 0) {
                 // The bet has a negative result.
-                amount = 0;
+                betAmount = 0;
                 winSlip = false; // the slip is lost.
 
             } else {
@@ -314,7 +304,7 @@ public class SlipMongoDBDAO extends BaseMongoDAO implements SlipDAO {
                 p = -1;
             }
         }
-        slip.setAmount(truncateNumber(amount, 2));
+        slip.setAmount(truncateNumber(betAmount, 2));
         if (p == -1) {// there is a match that is not ended yet
             if (!winSlip) { // there is a match that is not ended yet and the slip is lost
                 return 2;
