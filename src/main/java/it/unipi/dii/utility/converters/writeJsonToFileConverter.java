@@ -20,21 +20,4 @@ public class writeJsonToFileConverter {
         }
     }
 
-    /**
-     * @param filePath The file to delete, is it does not exist the function does nothing.
-     */
-    public static void deleteFile(String filePath) {
-        if (!filePath.isEmpty()) {
-            File file = new File(filePath);
-            if (file.exists()) {
-                if (file.delete()) {
-                    System.out.println("'" + filePath + "' deleted successfully.");
-                } else {
-                    System.out.println("Failed to delete '" + filePath + "'");
-                }
-            } else {
-                System.out.println("'" + filePath + "' does not exist.");
-            }
-        }
-    }
 }

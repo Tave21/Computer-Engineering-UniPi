@@ -1,7 +1,5 @@
 package it.unipi.dii.model;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class Bet {
@@ -26,20 +24,15 @@ public class Bet {
         this.win = -1;
     }
 
-    /**
-     * Check if a bet is equals to another one
-     * @param obj is a bet
-     * @return true if the two bets are equal, otherwise false
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object bet) {
+        if (this == bet) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (bet == null || getClass() != bet.getClass()) {
             return false;
         }
-        Bet otherBet = (Bet) obj;
+        Bet otherBet = (Bet) bet;
         return Objects.equals(matchID, otherBet.matchID) &&
                 Objects.equals(teamHome, otherBet.teamHome) &&
                 Objects.equals(teamAway, otherBet.teamAway) &&
@@ -48,10 +41,6 @@ public class Bet {
                 Objects.equals(competition_id, otherBet.competition_id);
     }
 
-    /**
-     * create a hash for the bet
-     * @return the hash code
-     */
     @Override
     public int hashCode() {
         return Objects.hash(matchID, teamHome, teamAway, chosenMultiplierName, chosenMultiplierValue, competition_id);
@@ -115,7 +104,10 @@ public class Bet {
         this.chosenMultiplierName = chosenMultiplierName;
     }
     public void setWin(Integer win){
-        this.win = win;
+        if (win == 1 || win == 0 || win == -1) {
+            // Only accepted values.
+            this.win = win;
+        }
     }
     public void setWin(boolean win){
         if(win){
@@ -125,11 +117,6 @@ public class Bet {
         }
     }
 
-
-    /**
-     * create a string with all attributes of the bet
-     * @return a string in a JSON format
-     */
     @Override
     public String toString() {
         return "Bet{" +
@@ -143,6 +130,4 @@ public class Bet {
                 ", win=" + win+
                 '}';
     }
-
-
 }

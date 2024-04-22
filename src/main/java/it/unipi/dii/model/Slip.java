@@ -9,10 +9,11 @@ import java.util.Objects;
 
 import static it.unipi.dii.utility.dateTimes.getCurrentInstant;
 import static it.unipi.dii.utility.regularExpressionChecks.checkTimestampFormat;
+import static java.lang.Math.abs;
 
 public class Slip {
     private final static int MIN_BETAMOUNT = 2; // Minimum amount of credit required to place a bet.
-    private final static int MAX_AMOUNT = 3000; // maximum winning quantity.
+    private final static int MAX_AMOUNT = 3000; // Maximum winning quantity.
     private Integer slipID;
     private String username;
     private String creationDate;
@@ -22,7 +23,6 @@ public class Slip {
     private Integer win;
     public List<Bet> betsList = new ArrayList<>();
 
-    // Constructor
     public Slip(String username, String confirmationDate, String creationDate, double betAmount) {
         this.username = username;
         this.creationDate = creationDate;
@@ -105,18 +105,19 @@ public class Slip {
         if (amount > MAX_AMOUNT) {
             this.amount = MAX_AMOUNT;
         } else {
-            this.amount = amount;
+            this.amount = abs(amount);
         }
     }
 
     public void setBetAmount(double bet_amount) {
         if (bet_amount >= MIN_BETAMOUNT) {
-            this.betAmount = bet_amount;
+            this.betAmount = abs(bet_amount);
         }
     }
 
     public void setWin(int win) {
         if (win == 1 || win == 0 || win == -1) {
+            // Only accepted values.
             this.win = win;
         }
     }
@@ -126,15 +127,15 @@ public class Slip {
     }
 
     /**
-     * Compute the potential winning quantity.
+     * Compute the potential winning quantity and set the value in the amount field.
      */
-    public void computeTotal() { // Compute the eventual total win of a slip.
+    public void computeTotal() {
         this.setAmount(this.betAmount * this.computeTotalMultiplicator());
     }
 
 
     /**
-     * @return True if al the bets in the list have win = -1.
+     * @return True if al the bets in the list have win = -1, False instead.
      */
     public boolean betListNotEvaluated() {
         for (Bet bet : this.betsList) {
@@ -159,8 +160,8 @@ public class Slip {
     }
 
     /**
-     * Set the win field to -1 to all the bets of the slip and to the slip.
-     * Moreover, it set amount to 0.
+     * Set the win field to -1 to all the bets of the slip and to the slip too.
+     * Moreover, it set the amount of this slip to 0.
      */
 
     public void setBetsWinToMinus1() {
@@ -168,31 +169,41 @@ public class Slip {
             bet.setWin(-1); // The bet is not evaluated yet.
         }
         this.setWin(-1); // The slip is not evaluated yet.
-        this.setAmount(0);
+        this.setAmount(0); // Set the amount to 0.
     }
 
     /**
-     * Evaluate the slips by seeing the bet results.
+     * Evaluate the slip by seeing the bet results.
+     * It also set the win field of the slip to:
+     *  <ul>
+     *      <li>1 the slip has been win.</li>
+     *      <li>0 the slip has been lost.</li>
+     *      <li>-1 if the slip cannot be evaluated yet.</li>
+     *  </ul>
+     *  This function do not modify the bets in any way.
      */
     public void checkIfThisSlipIsWin(){
         for (Bet bet : this.betsList) {
+            // For each bet in the slip.
             if (bet.getWin() == -1) {
+                // The slip can't be evaluated yet.
                 this.setWin(-1);
                 this.setAmount(0);
                 return;
             } else if (bet.getWin() == 0) {
+                // The slip is surely lost, because a bet is lost.
                 this.setWin(0);
                 this.setAmount(0);
                 return;
             }
         }
-        this.computeTotal();
+        // The slip is win.
+        this.computeTotal(); // Compute the winning amount.
         this.setWin(1);
     }
 
     /**
      * A set of checks that must be done before the inserting operation of a slip in MongoDB.
-     *
      * @return True if the slip is valid to be inserted in the database.
      */
     public boolean checkSlipValidity() {
@@ -228,23 +239,11 @@ public class Slip {
         return true;
     }
 
-    /**
-     * create a string with all atributes of the Slip
-     *
-     * @return a string in a JSON format
-     */
     @Override
     public String toString() {
         return "Slip{" + "SlipID = " + slipID + ", username = '" + username + '\'' + ", creationDate = '" + creationDate + '\'' + ", confirmationDate = '" + confirmationDate + '\'' + ", amount = " + amount + ", betAmount = " + betAmount + ", win = " + win + ", betsList = " + betsList + '}';
     }
 
-
-    /**
-     * Check if a slip is equals to another one
-     *
-     * @param o is a slip
-     * @return true if the two slips are equal, otherwise false
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -260,11 +259,6 @@ public class Slip {
                 Objects.equals(betsList, slip.betsList);
     }
 
-    /**
-     * create a hash for the admin
-     *
-     * @return the hash code
-     */
     @Override
     public int hashCode() {
         return Objects.hash(slipID, username, creationDate, confirmationDate, amount, betAmount, win, betsList);

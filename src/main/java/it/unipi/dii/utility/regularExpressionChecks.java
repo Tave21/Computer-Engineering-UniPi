@@ -82,19 +82,4 @@ public class regularExpressionChecks {
         }
     }
 
-    /**
-     * @param date The date string to check.
-     * @return True if the string is formatted like "YYYY-MM-dd"
-     */
-    public static boolean checkDateFormat(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(date);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
 }

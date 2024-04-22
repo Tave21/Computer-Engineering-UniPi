@@ -103,23 +103,4 @@ public class mongoUtility {
         }
     }
 
-    /**
-     * @param mongoDB       The mongoDB instance.
-     * @param dstCollection The target collection.
-     * @param fields        The list of the target field.
-     * @param order         The order of the index:
-     *                      <ul>
-     *                        <li> 1 : Ascending order.</li>
-     *                        <li> -1 : Descending order.</li>
-     *                      </ul>
-     */
-    public static void createCompoundIndex(MongoDatabase mongoDB, String dstCollection, String[] fields, Integer[] order) {
-        MongoCollection<Document> collection = mongoDB.getCollection(dstCollection);
-        Document index = new Document();
-        for (int i = 0; i < fields.length; i++) {
-            index.append(fields[i], order[i]);
-        }
-
-        collection.createIndex(index);
-    }
 }

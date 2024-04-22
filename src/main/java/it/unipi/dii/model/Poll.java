@@ -30,15 +30,6 @@ public class Poll {
         UpdateNumberOfVotes();
     }
 
-    /**
-     * This function tail-inserts a new option in the poll.
-     * @param op The option to add.
-     */
-
-    public void addOption(pollOption op){
-        this.options.add(op);
-    }
-
     @JsonProperty("pollID")
     public Integer getPollID() {
         return pollID;
@@ -89,26 +80,20 @@ public class Poll {
     public Integer getNumberOfVotes(){
         return this.numberOfVotes;
     }
-    public void setNumberOfVotes(Integer numberOfVotes){
+    public void setNumberOfVotes(){
         UpdateNumberOfVotes();
     }
-
 
     /**
      * This function update the numberOfVotes field to the current situation.
      */
     public void UpdateNumberOfVotes(){
         this.numberOfVotes = 0;
-        for(int i = 0; i < this.options.size(); i++){
-            this.numberOfVotes = this.numberOfVotes + this.options.get(i).optionVotes;
+        for (pollOption option : this.options) {
+            this.numberOfVotes = this.numberOfVotes + option.optionVotes;
         }
     }
 
-    /**
-     * Check if a poll is equals to another one
-     * @param o is a poll
-     * @return true if the two polls are equal, otherwise false
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,10 +108,6 @@ public class Poll {
                 Objects.equals(numberOfVotes, poll.numberOfVotes);
     }
 
-    /**
-     * create a hash for the admin
-     * @return the hash code
-     */
     @Override
     public int hashCode() {
         return Objects.hash(pollID, pollName, pollType, creationDate, activationDate, options, numberOfVotes);

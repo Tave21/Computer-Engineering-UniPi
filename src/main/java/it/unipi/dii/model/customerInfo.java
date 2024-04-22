@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class customerInfo {
     private List<customerVotedPollVoice> voices;
-
     public customerInfo(List<customerVotedPollVoice> voices) {
         this.voices = voices;
     }
@@ -20,7 +19,6 @@ public class customerInfo {
     public List<customerVotedPollVoice> getVoices() {
         return voices;
     }
-
     public void setVoices(List<customerVotedPollVoice> voices) {
         this.voices = voices;
     }
@@ -28,7 +26,6 @@ public class customerInfo {
 
     /**
      * Insert a new option when a user votes in a poll
-     *
      * @param voice is an object that contains the pollID and the caption voted by the user
      */
     public void AddOption(customerVotedPollVoice voice){
@@ -42,8 +39,6 @@ public class customerInfo {
         }
         this.voices.add(voice);
     }
-
-
     /**
      * Check if a user has already voted for that poll
      * @param pollID the id of the poll
@@ -69,7 +64,6 @@ public class customerInfo {
     public int hashCode() {
         return Objects.hash(voices);
     }
-
     @Override
     public String toString() {
         return "{voices:" + voices + "}";

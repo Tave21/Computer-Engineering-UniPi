@@ -14,7 +14,6 @@ public class Admin extends User {
         this.hiredDate = hiredDate;
     }
 
-    // Getter and setter methods for each field
     @JsonProperty("title")
     public String getTitle() {
         return title;
@@ -32,10 +31,6 @@ public class Admin extends User {
         this.hiredDate = hiredDate;
     }
 
-    /**
-     * create a string with all atributes of the Admin
-     * @return a string in a JSON format
-     */
     @Override
     public String toString() {
         return "Admin{" +
@@ -49,20 +44,12 @@ public class Admin extends User {
                 '}';
     }
 
-    /**
-     * create a hash for the admin
-     * @return the hash code
-     */
+
     @Override
     public int hashCode() {
         return Objects.hash(name, surname, email, cellNumber, password, hiredDate, title);
     }
 
-    /**
-     * Check if an admin is equals to another one
-     * @param obj is an admin
-     * @return true if the two admins are equal, otherwise false
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

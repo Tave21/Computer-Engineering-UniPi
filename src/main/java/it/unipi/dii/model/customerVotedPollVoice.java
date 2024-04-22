@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class customerVotedPollVoice {
     private int pollID; // The REDIS pollID.
     private String votedOptionCaption;
-
     public customerVotedPollVoice(int pollID, String votedOptionCaption) {
         this.pollID = pollID;
         this.votedOptionCaption = votedOptionCaption;
     }
-
     public customerVotedPollVoice(){
     }
 
@@ -18,7 +16,6 @@ public class customerVotedPollVoice {
     public int getPollID() {
         return this.pollID;
     }
-
     public void setPollID(int pollID) {
         this.pollID = pollID;
     }
@@ -30,7 +27,6 @@ public class customerVotedPollVoice {
     public void setVotedOptionCaption(String value) {
         this.votedOptionCaption = value;
     }
-
     @Override
     public String toString() {
         return "{" + "pollID:'" + this.pollID + '\'' + ",votedOptionCaption:'" + this.votedOptionCaption+ "'}";

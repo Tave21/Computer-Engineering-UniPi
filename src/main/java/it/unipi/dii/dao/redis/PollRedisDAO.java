@@ -252,7 +252,7 @@ public class PollRedisDAO extends BaseRedisDAO implements PollDAO {
                         if (inc)
                             op.voteOption();
                         else if(op.getOptionVotes() > 0)
-                            op.unvoteOption();
+                            op.downvoteOption();
                         break;
                     }
                 }

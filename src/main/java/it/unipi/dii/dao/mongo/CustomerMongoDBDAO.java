@@ -24,9 +24,9 @@ import static java.lang.Math.abs;
 
 public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
     /**
-     *
-     * @param user The customer to register.
-     * @return True if the registration has been successfully done.
+     * Insert a new customer document in the MongoDB database.
+     * @param user The customer object to register.
+     * @return True if the registration has been successfully done, false instead.
      */
     @Override
     public boolean registerCustomer(Customer user) {
@@ -42,8 +42,8 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
     }
 
     /**
-     * @param username Username of the customer.
-     * @param password Password of the customer.
+     * @param username  The username of the target customer.
+     * @param password  The password of the target customer.
      * @return True if the login has been successfully done.
      */
     @Override
@@ -62,7 +62,7 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
 
     /**
      *
-     * @param username of the customer.
+     * @param username  The username of the target customer.
      * @return The related customer object.
      */
     @Override
@@ -173,7 +173,7 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
 
     /**
      * Add credit to a user in the database.
-     * @param Username The username of the customer.
+     * @param Username The username of the target customer.
      * @param howMuch How much credit it has to be added.
      */
 
@@ -189,7 +189,7 @@ public class CustomerMongoDBDAO extends BaseMongoDAO implements CustomerDAO {
     }
     /**
      * Remove credit to a user in the MongoDB database.
-     * @param Username The username of the customer.
+     * @param Username  The username of the target customer.
      * @param howMuch How much credit it has to be removed; if a negative number is given, the absolute value will be used.
      */
     @Override
