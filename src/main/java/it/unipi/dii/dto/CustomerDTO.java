@@ -9,12 +9,6 @@ public class CustomerDTO {
     private String surname;
     private String username;
 
-    public CustomerDTO(String name, String surname, String username) {
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-    }
-
     public CustomerDTO() {}
 
     @JsonProperty("name")
