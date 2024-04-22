@@ -742,7 +742,6 @@ public class transitionsTests {
         assertEquals(numSlipNow, numSlipInit + 3); // The slip number does not change.
 
         // Check every slip evolution.
-
         s = sDAO.getSlip(numSlipNow - 2 );
         // Checks on the just inserted slip.
         assertNotNull(s);
