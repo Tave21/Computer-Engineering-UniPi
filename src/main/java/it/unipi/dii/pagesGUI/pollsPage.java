@@ -81,9 +81,6 @@ public class pollsPage {
             Instant activationDatePlusOneDay;
             // Check date of poll.
             for (int i = 0; i < polllist.size(); i++) {
-                if(polllist.get(i).getActivationDate().isEmpty() || polllist.get(i).getActivationDate() == null){
-                    continue;
-                }
                 id = polllist.get(i).getPollID();
                 activationDate = Instant.parse(polllist.get(i).getActivationDate());
                 activationDatePlusOneDay = activationDate.plus(Duration.ofDays(1));
@@ -95,6 +92,7 @@ public class pollsPage {
                     // otherwise we'll skip an element.
                     i--;
                 }
+
                 if(activationDatePlusOneDay.isBefore(now)){
                     // We have to remove poll if it is expired,
                     // A poll is expired one day after its activation.
