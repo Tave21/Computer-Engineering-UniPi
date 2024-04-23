@@ -259,7 +259,7 @@ public class pollsPage {
                 pRedis.updatePollOptionVotes(pollID, new pollOption(caption), true);
                 sum++;
                 oldValue++;
-                p.setNumberOfVotes();
+                p.setNumberOfVotes(0);
                 p.getOptions().get(index).setOptionVotes((int)oldValue);
                 currentCaptionProgressBar.setProgress(oldValue / sum);
 

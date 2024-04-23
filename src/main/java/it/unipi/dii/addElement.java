@@ -358,7 +358,7 @@ public class addElement {
             poll.setPollName(question);
             poll.setOptions(pollOptions);
             poll.setCreationDate(Instant.now().truncatedTo(ChronoUnit.SECONDS).toString());
-            poll.setNumberOfVotes();
+            poll.setNumberOfVotes(0);
             poll.setPollType(type);
             poll.setActivationDate(date);
 

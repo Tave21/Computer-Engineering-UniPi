@@ -3,6 +3,7 @@ package it.unipi.dii.pagesGUI;
 import it.unipi.dii.BeansBetGUI;
 import it.unipi.dii.HomeRegistered;
 import it.unipi.dii.dao.mongo.CustomerMongoDBDAO;
+import it.unipi.dii.dao.redis.PollRedisDAO;
 import it.unipi.dii.model.Customer;
 import it.unipi.dii.model.customerInfo;
 import javafx.scene.control.*;
@@ -325,9 +326,11 @@ public class registerPage{
             cDB.closeConnection();
 
             if(b){
+                PollRedisDAO pollRedisDAO = new PollRedisDAO();
                 customerInfo customer = new customerInfo(new ArrayList<>());
-                // createUserCookie(customer); // Create a cookie file.
+                Session.setUsername(username);
                 Session.setCustomerInfo(customer);
+                pollRedisDAO.createPollCookieOfUser(username, customer.toString());
                 additionalLabels.get(9).setText(" ");
                 openRegister();
             } else {

@@ -80,7 +80,7 @@ public class Poll {
     public Integer getNumberOfVotes(){
         return this.numberOfVotes;
     }
-    public void setNumberOfVotes(){
+    public void setNumberOfVotes(Integer num){
         UpdateNumberOfVotes();
     }
 

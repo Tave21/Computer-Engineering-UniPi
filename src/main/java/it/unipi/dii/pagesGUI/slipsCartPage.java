@@ -41,6 +41,7 @@ public class slipsCartPage {
         CustomerMongoDBDAO customerMongoDBDAO = new CustomerMongoDBDAO();
         customerMongoDBDAO.openStrictConnection(); // Open with strict.
         userCredit = customerMongoDBDAO.getCreditOfCustomer(Session.getUsername()); // Take credit of specific user
+
         customerMongoDBDAO.closeConnection();
         creditColumn = createCreditColumn("Credit");
 
