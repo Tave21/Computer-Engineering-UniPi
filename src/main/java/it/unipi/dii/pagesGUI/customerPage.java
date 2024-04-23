@@ -80,9 +80,7 @@ public class customerPage {
 
         // Action when fields are modified.
         usernameField.textProperty().addListener((observable, oldValue, newValue) -> updateFilteredUsers(outputArea));
-
         nameField.textProperty().addListener((observable, oldValue, newValue) -> updateFilteredUsers(outputArea));
-
         surnameField.textProperty().addListener((observable, oldValue, newValue) -> updateFilteredUsers(outputArea));
 
         Region formSpacer = new Region();
@@ -140,8 +138,6 @@ public class customerPage {
                                     .append("username", 1L)),
                     new Document("$limit", 20L));
 
-
-
             AggregateIterable<Document> docs = cs.mongoDB.getCollection("customers").aggregate(pipeline);
             for (Document document : docs) {
                 userList.add(convertJsonToObject(convertDocumentToJson(document), CustomerDTO.class));
@@ -169,9 +165,7 @@ public class customerPage {
     private List<CustomerDTO> filterUsers(String username, String name, String surname) {
         List<CustomerDTO> filteredUsers = new ArrayList<>();
         initializeUserList(name, surname, username);
-
         if(!userList.isEmpty()) {
-
             for (CustomerDTO user : userList) {
                 if ((username.isEmpty() || user.getUsername().toLowerCase().startsWith(username)) &&
                         (name.isEmpty() || user.getName().toLowerCase().startsWith(name)) &&
@@ -180,7 +174,6 @@ public class customerPage {
                 }
             }
         }
-
         return filteredUsers;
     }
 
@@ -225,7 +218,7 @@ public class customerPage {
                 cs.removeCustomer(user.getUsername());
                 cs.closeConnection();
 
-                //after the user is removed, show again the new list
+                // After the user is removed, show again the new list.
                 showUsers(outputArea, filterUsers(usernameField.getText().toLowerCase(),
                         nameField.getText().toLowerCase(),
                         surnameField.getText().toLowerCase()));
