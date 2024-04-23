@@ -326,11 +326,9 @@ public class registerPage{
             cDB.closeConnection();
 
             if(b){
-                PollRedisDAO pollRedisDAO = new PollRedisDAO();
                 customerInfo customer = new customerInfo(new ArrayList<>());
                 Session.setUsername(username);
                 Session.setCustomerInfo(customer);
-                pollRedisDAO.createPollCookieOfUser(username, customer.toString());
                 additionalLabels.get(9).setText(" ");
                 openRegister();
             } else {
