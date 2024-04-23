@@ -76,15 +76,17 @@ public class pollsPage {
             PollRedisDAO pRedis = new PollRedisDAO();
             List<Poll> polllist = pRedis.getAllPollFromRedis();
             int id;
+            final Instant now = getCurrentInstant();
+            Instant activationDate;
+            Instant activationDatePlusOneDay;
             // Check date of poll.
             for (int i = 0; i < polllist.size(); i++) {
-                if(polllist.get(i).getActivationDate().isEmpty()){
+                if(polllist.get(i).getActivationDate().isEmpty() || polllist.get(i).getActivationDate() == null){
                     continue;
                 }
                 id = polllist.get(i).getPollID();
-                Instant now = getCurrentInstant();
-                Instant activationDate = Instant.parse(polllist.get(i).getActivationDate());
-                Instant activationDatePlusOneDay = activationDate.plus(Duration.ofDays(1));
+                activationDate = Instant.parse(polllist.get(i).getActivationDate());
+                activationDatePlusOneDay = activationDate.plus(Duration.ofDays(1));
                 if (now.isBefore(activationDate)){
                     // We have to remove the poll if it is not active.
                     polllist.remove(i);
