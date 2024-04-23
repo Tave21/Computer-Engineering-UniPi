@@ -128,7 +128,6 @@ public class registerPage{
         return checkBox;
     }
     private VBox createRegisterForm(TextField nameField, TextField surnameField, TextField emailField, TextField cellNumberField, CheckBox femaleCheckBox, CheckBox maleCheckBox, DatePicker birthDate, TextField addressField, TextField cityOfResidenceField, TextField provinceField, TextField usernameField, PasswordField passwordField, Button loginButton) {
-
         VBox form = new VBox();
         form.getStyleClass().addAll("form", "form-container");
 
