@@ -421,11 +421,7 @@ public class Match {
 
     }
 
-    /**
-     * create a string with all attributes of the Matches
-     *
-     * @return a string in a JSON format
-     */
+
     @Override
     public String toString() {
         return "Match{" +
@@ -459,11 +455,7 @@ public class Match {
                 Objects.equals(multipliers, match.multipliers);
     }
 
-    /**
-     * create a hash for the match
-     *
-     * @return the hash code
-     */
+
     @Override
     public int hashCode() {
         return Objects.hash(matchID, competition_id, team_home, team_away, matchDate, home_goals, away_goals, status, multipliers);

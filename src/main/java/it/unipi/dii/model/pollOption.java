@@ -7,7 +7,6 @@ import java.util.Objects;
 public class pollOption {
     String optionCaption; // The text caption of the option.
     int optionVotes; // How many votes this option has.
-
     public pollOption() {
         optionVotes = 0;
     }
@@ -69,17 +68,8 @@ public class pollOption {
     /**
      * Remove a vote of this option.
      */
-    public void unvoteOption() {
+    public void downvoteOption() {
         this.optionVotes--;
-    }
-
-    /**
-     * Subtract howMuch votes to the option.
-     *
-     * @param howMuch How many vote to subtract.
-     */
-    public void multipleUnvoteOption(int howMuch) {
-        this.optionVotes = this.optionVotes - howMuch;
     }
 
     @Override

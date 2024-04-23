@@ -6,7 +6,7 @@ BeansBet is a betting application that enables users to place bets on their favo
 1. **Setup Redis and MongoDB Instances:**
     - Open a Redis instance on localhost using port `6379`.
     - Open a MongoDB instance on localhost using port `27017`.
-    - If testing with MongoDB replicas, modify the `BaseMongoDAO` class (located in _src/main/java/it.unipi.dii/dao/base_).
+    - If testing with MongoDB replicas (this is the current configuration, no need to do these steps), modify the `BaseMongoDAO` class (located in _src/main/java/it.unipi.dii/dao/base_).
         - Set `MONGO_PRIMARY/SECONDARY/THIRD_HOST_PORT` equal to `27018`.
         - Update `MONGO_PRIMARY/SECONDARY/THIRD` with VM IPs.
         - Rename the `OpenConnection()` function to your preference (*e.g., add "a" at the end*) and call it as `OpenConnectiona()` and rename OpenConnectiona() as `OpenConnection()`.

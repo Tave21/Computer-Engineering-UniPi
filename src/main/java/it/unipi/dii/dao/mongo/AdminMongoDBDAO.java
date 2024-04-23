@@ -17,9 +17,9 @@ import static it.unipi.dii.utility.securityLibrary.CheckHash;
 public class AdminMongoDBDAO extends BaseMongoDAO implements AdminDAO {
 
     /**
-     * @param email email of the admin.
-     * @param password Password of the admin.
-     * @return True if the login has been successfully done.
+     * @param email The email of the target admin.
+     * @param password The (clear) password of the admin.
+     * @return True if the login has been successfully done, null instead.
      */
     @Override
     public Admin authenticateAdmin(String email, String password) {
@@ -36,9 +36,9 @@ public class AdminMongoDBDAO extends BaseMongoDAO implements AdminDAO {
     }
 
     /**
-     *
-     * @param email of the admin.
-     * @return The Admin object.
+     * Fetch all the admin information related to the email.
+     * @param email The email of the target admin.
+     * @return The Admin object, null instead.
      */
 
     @Override
@@ -52,7 +52,7 @@ public class AdminMongoDBDAO extends BaseMongoDAO implements AdminDAO {
     }
 
     /**
-     *
+     * Query the database and return the wanted admins.
      * @param query Match criteria.
      * @param projection Projection criteria.
      * @return The admin list that match the criteria.
@@ -69,7 +69,6 @@ public class AdminMongoDBDAO extends BaseMongoDAO implements AdminDAO {
                 s_list.add(s);
             }
         }
-
         return s_list;
     }
 }

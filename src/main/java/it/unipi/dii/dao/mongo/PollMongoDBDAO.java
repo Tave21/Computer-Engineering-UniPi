@@ -1,7 +1,6 @@
 package it.unipi.dii.dao.mongo;
 
 import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import it.unipi.dii.dao.PollDAO;
 import it.unipi.dii.dao.base.BaseMongoDAO;
@@ -23,26 +22,21 @@ import static it.unipi.dii.utility.converters.objectToJsonStringConverter.conver
 
 public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
     /**
-     * Add a new poll in the database.
-     * @param poll The poll to add.
+     * Add a new poll in the database MongoDB.
+     * @param poll The poll object to add.
      */
     @Override
     public void addPoll(Poll poll) {
         poll.setPollID(this.getLastID() + 1);
-        String jsonString = convertObjectToJsonString(poll);
-        MongoCollection<Document> poll_coll = this.mongoDB.getCollection("polls");
-
         List<Document> documents = new ArrayList<>();
-        documents.add(Document.parse(jsonString));
-        insertDocuments(poll_coll , documents);
-        
+        documents.add(Document.parse(convertObjectToJsonString(poll)));
+        insertDocuments(this.mongoDB.getCollection("polls") , documents);
     }
 
     /**
-     *
-     * @return The biggest value of pollID from MongoDB.
+     * Fetch the biggest value of pollID from MongoDB.
+     * @return The biggest value of pollID, -1 if the collection is empty.
      */
-
     public Integer getLastID() {
         List<Document> pipeline = Arrays.asList(new Document("$match",
                         new Document("activationDate",
@@ -57,7 +51,7 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
         try {
             return Objects.requireNonNull(result.first()).getInteger("pollID");
         }catch(NullPointerException e){
-            return -1;
+            return -1; // The poll collection is empty.
         }
     }
 
@@ -65,13 +59,11 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
      * Replace the first poll that match the criteria with the info of newPoll.
      * @param query Match criteria.
      * @param newPoll The poll information to be inserted.
-     * @return The poll id.
+     * @return The poll ID.
      */
     @Override
     public Integer replacePoll(Document query ,Poll newPoll) {
-        MongoCollection<Document> poll_coll = this.mongoDB.getCollection("polls");
-        poll_coll.replaceOne( query, ObjectToDocumentConverter(newPoll));
-        
+        this.mongoDB.getCollection("polls").replaceOne(query, ObjectToDocumentConverter(newPoll));
         return newPoll.getPollID();
     }
     /**
@@ -90,8 +82,7 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
      */
     @Override
     public void removePoll(Document query) {
-        MongoCollection<Document> poll_coll = this.mongoDB.getCollection("polls");
-        deleteDocuments(poll_coll , query);
+        deleteDocuments(this.mongoDB.getCollection("polls") , query);
     }
 
     /**
@@ -113,23 +104,18 @@ public class PollMongoDBDAO extends BaseMongoDAO implements PollDAO {
 
     @Override
     public List<Poll> getPolls(Document query, Document projection) {
-        MongoCollection<Document> poll_coll = this.mongoDB.getCollection("polls");
         List<Poll> s_list = new ArrayList<>();
-        try (MongoCursor<Document> cursor = poll_coll.find(query).projection(projection).iterator()) {
+        try (MongoCursor<Document> cursor = this.mongoDB.getCollection("polls").find(query).projection(projection).iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
-                Poll s = convertJsonToObject(document.toJson() , Poll.class);
+                Poll s = convertJsonToObject(document.toJson(), Poll.class);
                 s_list.add(s);
             }
         }
-        
         return s_list;
     }
 
-
-
-
-    //redis
+    // Redis
     public void refreshTTL(String username) {
         throw new
                 UnsupportedOperationException("Not supported in MongoDB implementation");

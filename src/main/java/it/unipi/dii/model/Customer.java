@@ -1,7 +1,5 @@
 package it.unipi.dii.model;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class Customer extends User {
@@ -93,32 +91,6 @@ public class Customer extends User {
     public void setCredit(double credit) {
         this.credit = credit;
     }
-
-    /**
-     * the customer pays the slip
-     * @param howMuch is the bet amount inserted by the user
-     * @return true if the customer has sufficient credit, false oterwise
-     */
-    public boolean pay(double howMuch){
-        if(howMuch <= this.credit){
-            this.credit = this.credit - howMuch;
-            return true;
-        }else{
-            return false;
-        }
-    }
-    /**
-     * the customer add moneys to his/her credit
-     * @param howMuch are the moneys inserted by the user
-     */
-    public void redeem(double howMuch){
-        this.credit = this.credit + howMuch;
-    }
-
-    /**
-     * create a string with all atributes of the Customer
-     * @return a string in a JSON format
-     */
     @Override
     public String toString() {
         return "Customer{" +
@@ -128,25 +100,17 @@ public class Customer extends User {
                 ", registrationDate = '" + this.registrationDate + '\'' +
                 ", address = '" + this.address + '\'' +
                 ", province = '" + this.province + '\'' +
-                ", cityofResidence = '" + this.cityOfResidence + '\'' +
+                ", cityResidence = '" + this.cityOfResidence + '\'' +
                 ", credit = '" + this.credit + '\'' +
                 '}';
     }
-    /**
-     * create a hash for the admin
-     * @return the hash code
-     */
+
     @Override
     public int hashCode() {
         return Objects.hash(username, gender, birthDate, registrationDate, address, cityOfResidence, province, credit,
                 name, surname, email, cellNumber, password);
     }
 
-    /**
-     * Check if a customer is equals to another one
-     * @param obj is a customer
-     * @return true if the two customers are equal, otherwise false
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

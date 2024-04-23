@@ -1,14 +1,11 @@
 package it.unipi.dii.model;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class Multiplier {
     private String name;
     private double value;
-
-    private static double MIN_VALUE = 1.1;
+    private final static double MIN_VALUE = 1.1;
 
     /**
      * Multiplier Format: {"1X" : 1.69}
@@ -20,8 +17,7 @@ public class Multiplier {
         this.value = value;
     }
 
-    public Multiplier(){
-    }
+    public Multiplier(){}
 
     @JsonProperty("name")
     public String getName() {
@@ -39,12 +35,6 @@ public class Multiplier {
     }
 
     public boolean validMultiplier(){
-        if(
-                this.value >= MIN_VALUE &&
-                        !Objects.equals(this.name, "-")
-        ) {
-            return true;
-        }
-        return false;
+        return this.value >= MIN_VALUE && !Objects.equals(this.name, "-");
     }
 }

@@ -1,5 +1,4 @@
 package it.unipi.dii.model;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
@@ -7,6 +6,7 @@ public class User {
     protected String surname;
     protected String email;
     protected String cellNumber;
+
     protected String password;
 
     public User() {
@@ -59,15 +59,11 @@ public class User {
         this.password = password;
     }
 
-    /**
-     * create a string with all atributes of the User
-     * @return a string in a JSON format
-     */
     @Override
     public String toString() {
-        return "RegisteredUser{" +
-                ", firstName='" + name + '\'' +
-                ", lastName='" + surname + '\'' +
+        return "Customer{" +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", email ='" + email + '\'' +
                 ", cellNumber =" + cellNumber+

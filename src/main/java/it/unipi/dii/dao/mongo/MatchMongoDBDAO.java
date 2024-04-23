@@ -21,18 +21,16 @@ import static it.unipi.dii.utility.mongoUtility.insertDocuments;
 import static it.unipi.dii.utility.converters.objectToJsonStringConverter.convertObjectToJsonString;
 import static it.unipi.dii.utility.sportAPI.getNewMatchesUpdates;
 
-
 public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     /**
-     * Insert a new match in the database.
-     *
-     * @param match The match to add
+     * Insert a new match in the MongoDB database.
+     * @param match The match object to add in the MongoDB collection.
      */
     @Override
     public void addMatch(Match match) {
-        if (match.checkMatchValidity()) {
+        if (match.checkMatchValidity()) { // If the match object is valid.
             match.cleanGoals(); // Cleaning some input fields.
-            match.setMatchID(this.getLastID() + 1);
+            match.setMatchID(this.getLastID() + 1); // Fetch the new matchID.
             MongoCollection<Document> match_coll = this.mongoDB.getCollection("matches");
             List<Document> documents = new ArrayList<>();
             documents.add(Document.parse(convertObjectToJsonString(match)));
@@ -104,6 +102,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
             return Objects.requireNonNull(result.first()).getInteger("matchID");
         } catch (NullPointerException e1) {
             // Now we will try with no limit on the match date.
+            // the query is slower, but it surely returns something.
             pipeline = Arrays.asList(new Document("$project",
                             new Document("matchID", 1L)
                                     .append("_id", 0L)),
@@ -111,19 +110,21 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                             new Document("matchID", -1L)),
                     new Document("$limit", 1L));
             result = this.mongoDB.getCollection("matches").aggregate(pipeline);
-
             try {
                 return Objects.requireNonNull(result.first()).getInteger("matchID");
             } catch (NullPointerException e2) {
-                // No match in the database.
-                return -1;
+                return -1; // The match collection is empty.
             }
         }
     }
 
     /**
-     * @param match The target match.
-     * @return The id of the match, if the match m don't have the id, then a query is made.
+     * Given a match object, the function return the ID related to the match specification (matchDate, home and away teams).
+     * @param match The target match object.
+     * @return An integer which is the ID of the match:
+     * If the match object don't have the ID;
+     * If the match object does not have an ID then a query in MongoDB is made;
+     * If the match does not exist in MongoDB, -1 is returned.
      */
     @Override
     public Integer getID(Match match) {
@@ -140,7 +141,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
-     *
+     * Short-cut function to build a match criteria.
      * @param targetMatch The target match.
      * @param mode Can be "date" or "competition".
      * @return A document for build a query match statement.
@@ -167,24 +168,22 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
-     * Get new updates from the internet and update the matches in MongoDB.
+     * Get new updates from a public API and update the matches in MongoDB.
      */
     public void updateMatches() throws IOException {
         this.updateMatches(getNewMatchesUpdates()); // Must be called every 60 seconds.
     }
 
     /**
-     * Given an update list, applies the list to the MongoDB match collection.
-     * @param ml The updates list.
-     * @throws IOException Type of thrown exception.
+     * Given a matches update list, applies the updates to the match collection.
+     * @param ml The matches updates list.
      */
 
     public void updateMatches(List<Match> ml) throws IOException {
-        final int size = ml.size();
+        final int size = ml.size(); // Size of the update list.
         if (size > 0) {
             SlipMongoDBDAO sDAO = new SlipMongoDBDAO();
             sDAO.openConnection();
-
             for (int i = 0; i < size; i++) {
                 if (Objects.equals(ml.get(i).getStatus(), "TIMED")) {
                     // The match must be inserted in MongoDB.
@@ -194,10 +193,8 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     }
                 } else if (Objects.equals(ml.get(i).getStatus(), "CANCELED")) {
                     //This match must be removed from all non-confirmed slips in Redis
-                    // Make the Redis query.
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
-
                     // Take in a big slip list all the slip of users in redis
                     for (String username : usernameList) {
                         List<Slip> slipList = slipRedisDAO.getListFromUser(username);
@@ -212,13 +209,11 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                             // If it's the last one.
                                             slipRedisDAO.delete_Slip(username, slip.getSlipID());
                                         }
-
                                     }
                                 }
                             }
                         }
                     }
-
                     // The match must be canceled from MongoDB.
                     Integer id = matchAlreadyPresent(ml.get(i));
                     if (id > -1) {
@@ -235,12 +230,9 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                     final Integer index = nearestMatch(ml.get(i), mlist);
                     updateMatchDate(mlist.get(index).getMatchID(), ml.get(i).getMatchDate());
                     sDAO.updateBetsMatchPostponed(mlist.get(index).getMatchID(), ml.get(i).getMatchDate());
-
-
                     // Make the Redis query.
                     SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                     List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
-
                     // Take in a big slip list all the slip of users in redis
                     for (String username : usernameList) {
                         List<Slip> slipList = slipRedisDAO.getListFromUser(username);
@@ -252,17 +244,13 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                         if (slip.findBetsList().size() > 1) {
                                             slipRedisDAO.deleteBetFromSlip(username, slip.getSlipID(), slip.findBetsList().get(j));
                                         } else {
-                                            // If it's the last one.
-                                            slipRedisDAO.delete_Slip(username, slip.getSlipID());
+                                            slipRedisDAO.delete_Slip(username, slip.getSlipID()); // If it's the last one.
                                         }
-
                                     }
                                 }
                             }
                         }
                     }
-
-
                 } else if (Objects.equals(ml.get(i).getStatus(), "FINISHED")) {
                     // The match is finished.
                     final Integer id = getID(ml.get(i));
@@ -284,11 +272,8 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
 
                     for (Match m : mlist) {
                         if (m != null) {
-
-
                             if (Objects.equals(m.getStatus(), "TIMED")) {
                                 // If it was timed I have to delete all non-confirmed slips in redis for consistency issues.
-                                // Make the Redis query.
                                 SlipRedisDAO slipRedisDAO = new SlipRedisDAO();
                                 List<String> usernameList = slipRedisDAO.getAllUsernames(); // Taking all usernames from Redis.
 
@@ -314,11 +299,8 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
                                 }
 
                             }
-
-
                         }
                     }
-
                     final Integer id = getID(ml.get(i));
                     updateMatchStatusAndResult(id, ml.get(i).getStatus(), ml.get(i).getHome_goals(), ml.get(i).getAway_goals());
                 }
@@ -328,6 +310,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
+     * Given a target match and a list of matches, the function find the nearest (in time terms) match to the target one.
      * @param m  The target match object.
      * @param ml The list of matches.
      * @return The index of the match in the list with the nearest matchDate of the target match.
@@ -360,8 +343,9 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
+     * Check if the target match information are already been inserted in MongoDB.
      * @param match The target match object.
-     * @return True if a match with same date and same teams already is present in the database.
+     * @return The matchID if a match with same date and same teams already is present in the database; -1 instead.
      */
 
     private Integer matchAlreadyPresent(Match match) {
@@ -382,6 +366,7 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
+     * Given match criteria, the function returns the list of matches that match the criteria.
      * @param query      Match criteria of the matches.
      * @param projection Attribute to project.
      * @return The list of match that respect the criteria.
@@ -401,8 +386,9 @@ public class MatchMongoDBDAO extends BaseMongoDAO implements MatchDAO {
     }
 
     /**
+     * Given a matchID, the function return a match object from MongoDB.
      * @param matchID The target match id.
-     * @return The related match object.
+     * @return The related match object, or null if a match with that ID does not exist.
      */
 
     @Override

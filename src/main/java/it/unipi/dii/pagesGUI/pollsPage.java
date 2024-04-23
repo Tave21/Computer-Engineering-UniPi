@@ -41,7 +41,6 @@ public class pollsPage {
         }else{
             titleLabel.setText("Terminated Polls");
         }
-
         VBox pollsContent = new VBox();
         pollsContent.setMaxWidth(350);
         pollsContent.setAlignment(Pos.CENTER);
@@ -76,14 +75,16 @@ public class pollsPage {
             // Redis management.
             PollRedisDAO pRedis = new PollRedisDAO();
             List<Poll> polllist = pRedis.getAllPollFromRedis();
+            int id;
             // Check date of poll.
             for (int i = 0; i < polllist.size(); i++) {
-                int id = polllist.get(i).getPollID();
-
+                if(polllist.get(i).getActivationDate().isEmpty()){
+                    continue;
+                }
+                id = polllist.get(i).getPollID();
                 Instant now = getCurrentInstant();
                 Instant activationDate = Instant.parse(polllist.get(i).getActivationDate());
                 Instant activationDatePlusOneDay = activationDate.plus(Duration.ofDays(1));
-
                 if (now.isBefore(activationDate)){
                     // We have to remove the poll if it is not active.
                     polllist.remove(i);
@@ -107,7 +108,6 @@ public class pollsPage {
                     i--;
                 }
             }
-
             pollsContent.getChildren().addAll(topSpacer, titleLabel);
             for (Poll p : polllist) {
                 String votedCaption;
@@ -116,42 +116,31 @@ public class pollsPage {
                 }else{
                     votedCaption = null;
                 }
-
                 VBox choice = createResult(registered, true, p.getPollName(), p.getOptions(), p.getPollID(), votedCaption);
                 choice.setMaxWidth(350);
                 pollsContent.getChildren().addAll(choice);
             }
             pollsContent.getChildren().add(bottomSpacer);
         }
-
         stackPane.getChildren().addAll(pollsContent);
         ScrollPane scrollPane = new ScrollPane(stackPane);
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("matches_scroll");
-
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
-
         return new StackPane(scrollPane);
     }
 
     protected VBox createResult(boolean registered, boolean active, String question, List<pollOption> options, Integer pollID, String votedCaption) {
-
         VBox form = new VBox();
         form.getStyleClass().addAll("form", "form-container");
-
         form.setAlignment(Pos.CENTER);
         form.setSpacing(5);
-
         Label questionLabel = new Label(question);
         questionLabel.getStyleClass().add("input-label");
-
         ToggleGroup optionGroup = new ToggleGroup();
-
         double sum = 0;
-
         List<Double> Perch = new ArrayList<>();
         List<RadioButton> RadioButtons = new ArrayList<>();
-
         for (it.unipi.dii.model.pollOption pollOption : options) {
             RadioButton radioOption1 = new RadioButton(pollOption.getOptionCaption());
             //if the user has already voted that caption, he will see the relative button selected
@@ -160,11 +149,8 @@ public class pollsPage {
             }
             radioOption1.setToggleGroup(optionGroup);
             radioOption1.getStyleClass().add("radio-button");
-
             RadioButtons.add(radioOption1);
-
             sum = sum + pollOption.getOptionVotes();
-
         }
 
         for(pollOption option : options){
@@ -273,7 +259,7 @@ public class pollsPage {
                 pRedis.updatePollOptionVotes(pollID, new pollOption(caption), true);
                 sum++;
                 oldValue++;
-                p.setNumberOfVotes(p.getNumberOfVotes()+1);
+                p.setNumberOfVotes();
                 p.getOptions().get(index).setOptionVotes((int)oldValue);
                 currentCaptionProgressBar.setProgress(oldValue / sum);
 

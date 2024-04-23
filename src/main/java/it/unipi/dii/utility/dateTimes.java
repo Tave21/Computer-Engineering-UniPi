@@ -87,8 +87,6 @@ public class dateTimes {
         return Math.abs(ChronoUnit.SECONDS.between(instantBefore, instantAfter));
     }
 
-
-
     /**
      * Adds the hours, minutes and second part.
      *
