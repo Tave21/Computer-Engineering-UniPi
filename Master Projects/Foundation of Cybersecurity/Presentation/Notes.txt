@@ -1,0 +1,11 @@
+What is PEM?
+PEM (Privacy Enhanced Mail) format is a type of format that is used to store cryptographic keys and certificates. It is a Base64 encoded DER certificate, enclosed between "-----BEGIN CERTIFICATE-----" and "-----END CERTIFICATE-----" lines. PEM format can include just the public certificate or an entire certificate chain including public key, private key, and root certificates. It's commonly used because it can be easily transmitted as ASCII text and is supported by many servers and systems.
+What is Salt?
+A salt is a random value that is generated for each user and combined with the user's password before applying a hash function. This value is unique for each user and is stored along with the password hash in the database.
+
+Perché Usare il Salt?
+Prevenzione degli Attacchi con Tabelle di Rainbow (Rainbow Table):
+Le tabelle di rainbow sono precompute di hash di password comuni. Senza un salt, un attaccante potrebbe usare una tabella di rainbow per invertire l'hash e ottenere la password in chiaro. Aggiungendo un salt, ogni password diventa unica, rendendo inefficaci le tabelle precompute.
+
+Prevenzione degli Attacchi con Hash Identici:
+Se due utenti hanno la stessa password, senza salt, l'hash delle loro password sarà lo stesso. Con un salt, anche se due utenti hanno la stessa password, i rispettivi hash saranno diversi perché i sali saranno diversi.
