@@ -1,0 +1,205 @@
+.header{
+    -fx-background-color: #B6D83D;
+}
+.menu-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.menu-label:hover {
+    -fx-text-fill: #398300;
+    -fx-cursor: hand;
+}
+
+.right-buttons {
+    -fx-text-fill: white;
+    -fx-background-color: #398300;
+}
+
+.right-buttons:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #59b300;
+    -fx-cursor: hand;
+}
+
+.menu-label.selected-label {
+    -fx-text-fill: #398300;
+}
+
+.form {
+    -fx-width: 50%;
+    -fx-align-items: center; /* Centra verticalmente */
+    -fx-background-color: #B6D83D;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 10;
+}
+.form1 {
+    -fx-width: 80%;
+    -fx-align-items: center; /* Centra verticalmente */
+    -fx-background-color: #B6D83D;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 10;
+}
+.form2 {
+    -fx-width: 50%;
+    -fx-align-items: center; /* Centra verticalmente */
+    -fx-background-color: #92de0e;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 10;
+}
+
+.input-label {
+    -fx-font-size: 1em;
+    -fx-text-fill: #398300;
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+.sign-up{
+    -fx-text-fill: #398300;
+    -fx-underline: false;
+    -fx-max-width: 110;
+
+}
+.sign-up:hover{
+    -fx-text-fill: #59b300;
+    -fx-underline: false;
+    -fx-max-width: 110;
+
+}
+.inputBox {
+
+    -fx-width: 50%;
+}
+
+.login-title {
+    -fx-font-size: 1.5em;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.buttons {
+    -fx-text-fill: white;
+    -fx-background-color: #398300;
+    -fx-font-weight: bold;
+}
+
+.buttons:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #59b300;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.form-container {
+    -fx-max-width: 400; /* Imposta la larghezza massima desiderata */
+}
+.form-container1 {
+    -fx-max-width: 580; /* Imposta la larghezza massima desiderata */
+}
+.form-container-slips {
+    -fx-max-width: 700; /* Imposta la larghezza massima desiderata */
+}
+.custom-label {
+    -fx-max-width: 400;
+}
+
+.check-box{
+    -fx-text-fill: #398300;
+}
+.error{
+    -fx-text-fill: rgba(255, 98, 0, 0.91);
+    -fx-font-weight: bold;
+}
+.live-title {
+    -fx-font-size: 1.5em;
+    -fx-text-fill: #398300;
+    -fx-font-weight: bold;
+}
+
+.premier-label{
+    -fx-font-size: 1.2em;
+    -fx-text-fill: #7614c7;
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+
+.serie-label{
+    -fx-font-size: 1.2em;
+    -fx-text-fill: #7474ea;
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+
+.bundes-label{
+    -fx-font-size: 1.2em;
+    -fx-text-fill: rgba(231, 4, 72, 0.91);
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+
+.liga-label{
+    -fx-font-size: 1.2em;
+    -fx-text-fill: rgba(220, 103, 29, 0.91);
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+
+.ligue-label{
+    -fx-font-size: 1.2em;
+    -fx-text-fill: #b7a7a7;
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+
+.progress-bar{
+    -fx-progress-bar-indeterminate: false;
+    -fx-background-insets: 0;
+    -fx-pref-height: 17;
+}
+.progress-bar > .bar{
+    -fx-background-color: #398300;
+}
+
+.radio-button{
+    -fx-font-size: 1em;
+    -fx-text-fill: #398300;
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+.amount-field{
+    -fx-pref-height: 5;
+}
+.user-label {
+    -fx-font-size: 1em;
+    -fx-text-fill: white;
+    -fx-text-transform: uppercase;
+    -fx-font-weight: bold;
+}
+.welcome-title{
+    -fx-font-size: 2em;
+    -fx-text-fill: #398300;
+    -fx-font-weight: bold;
+}
+.welcome{
+    -fx-background-color: white;
+}
+.multipliers-buttons {
+    -fx-text-fill: white;
+    -fx-background-color: #398300;
+    -fx-background-radius: 0px;
+}
+
+.multipliers-buttons:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #59b300;
+    -fx-cursor: hand;
+}
+.progress{
+    -fx-text-fill: rgb(116, 116, 234);
+    -fx-font-weight: bold;
+}
+.matches_scroll{
+    -fx-background-color: transparent;
+}
