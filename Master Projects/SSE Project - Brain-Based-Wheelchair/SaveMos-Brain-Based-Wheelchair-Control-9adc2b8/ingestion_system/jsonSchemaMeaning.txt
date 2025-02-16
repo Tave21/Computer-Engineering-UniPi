@@ -1,0 +1,115 @@
+Il JSON Schema serve per definire la struttura e le regole di validazione di un file JSON.
+È un contratto che specifica quali chiavi, tipi di dati e relazioni devono essere rispettati.
+
+-------------Meta-informazioni iniziali-------------
+
+"$schema": "http://json-schema.org/draft-04/schema#",
+--> Definisce la versione dello standard JSON Schema utilizzata (in questo caso la bozza draft-04)
+
+"type": "object",
+--> Indica che il JSON da validare deve essere un oggetto.
+
+
+
+-------------------------------------------------------
+
+-----------Proprietà principali--------------
+
+"properties": {
+--> Specifica le chiavi che l'oggetto deve contenere.
+
+1.
+  "source": {
+    "type": "string"
+  },
+--> di tipo stringa
+
+2.
+  "value":
+--> Può essere uno solo dei 4 tipi di oggetto definiti nell'elenco oneOf.
+
+  {
+  "oneOf": [
+    {
+      "type": "object",
+--> il valore di value deve essere un oggetto
+
+      "properties": {
+--> specifica le chiavi obbligatorie di questo oggetto
+
+        "UUID": {
+          "type": "string"
+        },
+        "VarName5": {
+          "type": ["number", "null"]
+        },
+        "VarName6": {
+          "type": ["number", "null"]
+        },
+        "VarName7": {
+          "type": ["number", "null"]
+        },                                                                                                                                                                      } "required": [
+        "required": [
+          "UUID",
+          "VarName5",
+          "VarName6",
+          "VarName7"
+          ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "UUID": {
+          "type": "string"
+        },
+        "LABEL": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "UUID",
+        "LABEL"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "UUID": {
+          "type": "string"
+        },
+        "VAR1": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "UUID",
+        "VAR1"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "UUID": {
+          "type": "string"
+        },
+        "VAR2": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "UUID",
+        "VAR2"
+      ]
+    }
+    ]
+  }
+},
+
+
+"required": [
+    "source",
+    "value"
+  ]
+--> Specifica che "source" e "value" devono essere presenti nel JSON.
+
+}

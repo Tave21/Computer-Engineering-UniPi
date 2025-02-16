@@ -1,0 +1,40 @@
+[
+  //helmet record:
+{
+  "source": "helmet",
+  "value": {
+    "UUID": "a923-45b7-gh12-166",
+    "VarName5": -3.84046737824503,
+    "VarName6": -11.6496435649161,
+    "VarName7": -1.82762627526009,
+   // ....
+    "VarName1379": -12.1459004084948
+  }
+},
+//label record:
+{
+  "source": "label",
+  "value": {
+    "UUID": "a923-45b7-gh12-166",
+    "LABEL": "turnLeft"
+  }
+},
+//calendar record:
+{
+  "source": "calendar",
+  "value": {
+    "UUID": "a923-45b7-gh12-166",
+    "VAR1": "shopping" //activity
+  }
+},
+  //environment record:
+{
+  "source": "environment",
+  "value": {
+    "UUID": "a923-45b7-gh12-166",
+    "VAR2": "slippery"
+  }
+}
+
+]
+

@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "generalization_tolerance": { "type": "number" },
+    "validation_error": { "type": "number" },
+    "test_error": { "type": "number" },
+    "difference": { "type": "number" }
+  },
+  "required": ["generalization_tolerance", "validation_error", "test_error", "difference"]
+}

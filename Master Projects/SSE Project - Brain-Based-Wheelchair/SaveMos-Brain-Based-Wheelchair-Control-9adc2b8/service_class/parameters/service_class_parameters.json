@@ -1,0 +1,7 @@
+{
+  "phase" : "development",
+  "development_sessions" : 10,
+  "classifiers_to_develop" : 10000,
+  "production_sessions" : 25000,
+  "evaluation_sessions" : 10
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "development": {
+      "type": "boolean"
+    },
+    "port_segregation": {
+       "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "port_preparation": {
+       "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "port_production": {
+       "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+    "ip_preparation": {
+      "type": "string",
+      "format": "ipv4"
+    },
+    "ip_production": {
+      "type": "string",
+      "format": "ipv4"
+    },
+    "ip_segregation": {
+      "type": "string",
+      "format": "ipv4"
+    }
+  },
+  "required": [
+    "development",
+    "ip_production",
+    "ip_segregation",
+    "ip_preparation",
+    "port_segregation",
+    "port_preparation",
+    "port_production"
+  ]
+}

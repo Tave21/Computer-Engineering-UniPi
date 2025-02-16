@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "report": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "num_iterations": { "type": "integer" },
+          "validation_error": { "type": "number" },
+          "training_error": { "type": "number" },
+          "difference": { "type": "number" },
+          "num_layers": { "type": "integer" },
+          "num_neurons": { "type": "integer" },
+          "network_complexity": { "type": "integer" }
+        },
+        "required": [
+          "index",
+          "num_iterations",
+          "validation_error",
+          "training_error",
+          "difference",
+          "num_layers",
+          "num_neurons",
+          "network_complexity"
+        ]
+      },
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "overfitting_tolerance": { "type": "number" }
+  },
+  "required": ["report", "overfitting_tolerance"]
+}

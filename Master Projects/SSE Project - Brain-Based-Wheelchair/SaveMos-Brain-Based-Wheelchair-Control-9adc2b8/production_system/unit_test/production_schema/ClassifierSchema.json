@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "num_iteration": {
+      "type": "number"
+    },
+    "num_layers": {
+      "type": "number"
+    },
+    "num_neurons": {
+      "type": "number"
+    },
+    "test_error": {
+      "type": "number"
+    },
+    "validation_error": {
+      "type": "number"
+    },
+    "training_error": {
+      "type": "number"
+    }
+  },
+    "required":[ "num_iteration",
+      "num_layers",
+      "num_neurons",
+      "test_error",
+      "validation_error",
+      "training_error"
+    ]
+
+}
+
+
+

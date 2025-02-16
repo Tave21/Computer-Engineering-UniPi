@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "label": {
+      "type": ["string", "null"],
+      "enum": ["turnRight", "turnLeft", "move", null]
+    },
+    "psd_alpha_band": {
+      "type": "number"
+
+    },
+    "psd_beta_band": {
+      "type": "number"
+    },
+    "psd_theta_band": {
+      "type": "number"
+    },
+    "psd_delta_band": {
+      "type": "number"
+    },
+    "activity": {
+      "type": "string",
+      "enum": ["shopping", "sport", "cooking", "relax", "gaming"]
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["slippery", "plain", "slope", "house", "track"]
+    }
+  },
+  "required": [
+      "uuid",
+      "label",
+      "psd_alpha_band",
+      "psd_beta_band",
+      "psd_theta_band",
+      "psd_delta_band",
+      "activity",
+      "environment"
+    ]
+}

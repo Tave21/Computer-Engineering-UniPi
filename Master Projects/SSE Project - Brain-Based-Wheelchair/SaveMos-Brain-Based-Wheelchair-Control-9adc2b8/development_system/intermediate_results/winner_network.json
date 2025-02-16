@@ -1,0 +1,10 @@
+{
+  "index": 4,
+  "num_iterations": 150,
+  "validation_error": 6.916893685586942,
+  "training_error": 0.0033817202519262663,
+  "difference": 0.9995110926370065,
+  "num_layers": 6,
+  "num_neurons": 55,
+  "network_complexity": 330
+}

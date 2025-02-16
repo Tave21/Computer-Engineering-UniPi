@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "minimum_number_of_collected_sessions": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tolerance_interval": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "training_set_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "validation_set_percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": [
+    "minimum_number_of_collected_sessions",
+    "tolerance_interval",
+    "training_set_percentage",
+    "validation_set_percentage"
+  ],
+  "additionalProperties": false
+}

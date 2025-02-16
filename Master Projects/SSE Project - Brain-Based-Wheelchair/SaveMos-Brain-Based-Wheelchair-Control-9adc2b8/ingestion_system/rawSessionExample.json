@@ -1,0 +1,7 @@
+{
+    "uuid" : "a923-45b7-gh12-1537",
+    "environment": "slippery",
+    "label": "turnLeft",
+    "eeg_data":[1,2,3],
+    "activity": "shopping"
+}

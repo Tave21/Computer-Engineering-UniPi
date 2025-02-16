@@ -1,0 +1,5 @@
+{
+  "evaluation_phase": false,
+  "max_session_evaluation": 5,
+  "max_session_production": 10
+}

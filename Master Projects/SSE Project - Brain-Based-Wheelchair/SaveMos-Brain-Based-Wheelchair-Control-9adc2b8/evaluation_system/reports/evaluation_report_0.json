@@ -1,0 +1,110 @@
+{
+    "classifier_labels": [
+        {
+            "uuid": "a923-45b7-gh12-1889",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-2854",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-2882",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-5109",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-6527",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-6838",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-7150",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-8245",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-8667",
+            "movements": "turnRight",
+            "expert": 0
+        },
+        {
+            "uuid": "a923-45b7-gh12-8899",
+            "movements": "turnRight",
+            "expert": 0
+        }
+    ],
+    "expert_labels": [
+        {
+            "uuid": "a923-45b7-gh12-1889",
+            "movements": "turnRight",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-2854",
+            "movements": "turnRight",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-2882",
+            "movements": "turnRight",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-5109",
+            "movements": "move",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-6527",
+            "movements": "turnRight",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-6838",
+            "movements": "move",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-7150",
+            "movements": "turnLeft",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-8245",
+            "movements": "turnLeft",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-8667",
+            "movements": "turnRight",
+            "expert": 1
+        },
+        {
+            "uuid": "a923-45b7-gh12-8899",
+            "movements": "turnLeft",
+            "expert": 1
+        }
+    ],
+    "total_errors": 3,
+    "max_consecutive_errors": 2,
+    "actual_total_errors": 5,
+    "actual_max_consecutive_errors": 3
+}

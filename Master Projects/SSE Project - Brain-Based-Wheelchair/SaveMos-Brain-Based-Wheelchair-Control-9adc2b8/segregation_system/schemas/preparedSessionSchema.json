@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "uuid": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string",
+        "enum" : ["move", "turnLeft", "turnRight"]
+      },
+      "psd_alpha_band": {
+        "type": "number"
+      },
+      "psd_beta_band": {
+        "type": "number"
+      },
+      "psd_theta_band": {
+        "type": "number"
+      },
+      "psd_delta_band": {
+        "type": "number"
+      },
+      "activity": {
+        "type": "string",
+        "enum": ["shopping", "sport", "cooking", "gaming", "relax"]
+      },
+      "environment": {
+        "type": "string",
+        "enum": ["slippery", "plain", "slope", "house", "track"]
+      }
+    },
+    "required": [
+      "uuid",
+      "label",
+      "psd_alpha_band",
+      "psd_beta_band",
+      "psd_theta_band",
+      "psd_delta_band",
+      "activity",
+      "environment"
+    ]
+  }

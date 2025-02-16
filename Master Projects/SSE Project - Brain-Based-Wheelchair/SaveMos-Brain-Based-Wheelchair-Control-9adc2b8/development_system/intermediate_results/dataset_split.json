@@ -1,0 +1,108 @@
+{
+  "training_set": [
+    {
+      "uuid": "a923-45b7-gh12-3041",
+      "label": "turnLeft",
+      "psd_alpha_band": 5.347453732987393,
+      "psd_beta_band": 4.390237951345921,
+      "psd_theta_band": 13.880183674791528,
+      "psd_delta_band": 19.036654601871682,
+      "activity": "gaming",
+      "environment": "plain"
+    },
+    {
+      "uuid": "a923-45b7-gh12-6782",
+      "label": "turnLeft",
+      "psd_alpha_band": 5.413209256551807,
+      "psd_beta_band": 6.8057711227879425,
+      "psd_theta_band": 15.65654158868653,
+      "psd_delta_band": 13.639346182327225,
+      "activity": "shopping",
+      "environment": "plain"
+    },
+    {
+      "uuid": "a923-45b7-gh12-5870",
+      "label": "turnRight",
+      "psd_alpha_band": 12.052949498414037,
+      "psd_beta_band": 13.159667985624456,
+      "psd_theta_band": 9.602145376121973,
+      "psd_delta_band": 15.776486311369258,
+      "activity": "cooking",
+      "environment": "plain"
+    },
+    {
+      "uuid": "a923-45b7-gh12-4011",
+      "label": "move",
+      "psd_alpha_band": 6.371488662260665,
+      "psd_beta_band": 14.034515984757814,
+      "psd_theta_band": 7.505005997249006,
+      "psd_delta_band": 13.62450373506807,
+      "activity": "relax",
+      "environment": "house"
+    },
+    {
+      "uuid": "a923-45b7-gh12-8808",
+      "label": "turnRight",
+      "psd_alpha_band": 5.626332735374838,
+      "psd_beta_band": 5.186556221357063,
+      "psd_theta_band": 16.934828898016505,
+      "psd_delta_band": 21.154353718406178,
+      "activity": "relax",
+      "environment": "house"
+    },
+    {
+      "uuid": "a923-45b7-gh12-8280",
+      "label": "turnRight",
+      "psd_alpha_band": 3.3806956176773575,
+      "psd_beta_band": 3.3496050234972046,
+      "psd_theta_band": 11.629644896282134,
+      "psd_delta_band": 11.792284921504438,
+      "activity": "sport",
+      "environment": "house"
+    },
+    {
+      "uuid": "a923-45b7-gh12-8600",
+      "label": "turnRight",
+      "psd_alpha_band": 5.635366069012312,
+      "psd_beta_band": 5.178569130318848,
+      "psd_theta_band": 16.913814054318873,
+      "psd_delta_band": 21.190980003526583,
+      "activity": "gaming",
+      "environment": "house"
+    }
+  ],
+  "validation_set": [
+    {
+      "uuid": "a923-45b7-gh12-5495",
+      "label": "move",
+      "psd_alpha_band": 5.621893667931913,
+      "psd_beta_band": 5.746350430217114,
+      "psd_theta_band": 24.75478859957809,
+      "psd_delta_band": 20.547345584358347,
+      "activity": "relax",
+      "environment": "slope"
+    },
+    {
+      "uuid": "a923-45b7-gh12-3705",
+      "label": "turnRight",
+      "psd_alpha_band": 4.803143949417248,
+      "psd_beta_band": 4.605464677508452,
+      "psd_theta_band": 16.895285031009845,
+      "psd_delta_band": 16.589666474477486,
+      "activity": "sport",
+      "environment": "plain"
+    }
+  ],
+  "test_set": [
+    {
+      "uuid": "a923-45b7-gh12-462",
+      "label": "move",
+      "psd_alpha_band": 4.789619543421999,
+      "psd_beta_band": 3.763443505593755,
+      "psd_theta_band": 15.142612109753198,
+      "psd_delta_band": 14.736296313374247,
+      "activity": "relax",
+      "environment": "house"
+    }
+  ]
+}

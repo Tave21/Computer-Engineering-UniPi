@@ -1,0 +1,9 @@
+.idea
+**/__pycache__/
+**/.pytest_cache/
+/segregation_system/test/conf/
+/segregation_system/test/user/
+/utility/database/test_database.db
+/data/augmented_data/
+/segregation_system/test/schemas/
+service_class/MassiveTests/*/raw_logs/
