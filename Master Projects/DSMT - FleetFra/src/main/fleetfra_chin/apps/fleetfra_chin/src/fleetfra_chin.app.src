@@ -1,0 +1,17 @@
+{application, fleetfra_chin,  % Define the OTP application name: fleetfra_chin
+ [
+  {description, "FleetFra, a naval battle application; strike like a Fra!"},  % A brief description of the application
+  {vsn, "0.1.0"},                      % The version of the application
+  {registered, []},                     % List of registered processes (none in this case)
+  {mod, {fleetfra_chin_app, []}},       % The module that contains the application's start/stop logic
+  {applications,                        % List of applications that are dependencies
+   [kernel,                            % The core Erlang kernel library
+    stdlib,                            % The standard Erlang library
+    cowboy                            % Cowboy, a HTTP server for Erlang
+   ]},
+  {env,[]},                             % Environmental variables (none in this case)
+  {modules, []},                        % List of modules included in the application (none in this case)
+  {maintainers, []},
+  {licenses, ["Apache-2.0"]},           % License for the application (Apache-2.0)
+  {links, []}                           % Links to other resources (none in this case)
+ ]}.

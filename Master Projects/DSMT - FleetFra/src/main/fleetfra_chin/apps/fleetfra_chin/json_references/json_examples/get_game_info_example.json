@@ -1,0 +1,4 @@
+{
+  "type_request":"get_game_info",
+  "game_id":"game123"
+}

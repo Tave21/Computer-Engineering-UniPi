@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "game_id": {
+      "type": "string"
+    },
+    "player": {
+      "type": "string"
+    },
+    "type_request": {
+      "type": "string",
+      "enum": ["start_game_client"]
+    },
+    "player_battlefield": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": ["row", "col", "value"],
+        "properties": {
+          "row": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "col": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "value": {
+            "type": "integer",
+            "enum": [0, 1, 2, 3, -1]
+          }
+        }
+      }
+    }
+  },
+  "required": ["game_id", "player", "type_request", "player_battlefield"],
+  "additionalProperties": false
+}
