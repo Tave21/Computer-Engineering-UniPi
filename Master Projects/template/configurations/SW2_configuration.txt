@@ -1,0 +1,43 @@
+!-----------------------------------------------
+! GENERAL CONFIGURATION
+! -----------------------------------------------
+
+hostname SW2
+
+! DHCP SERVER CONFIGURATION
+
+! STATIC CONFIGURATION
+no aaa root
+management api http-commands
+   no shutdown
+transceiver qsfp default-mode 4x10G
+service routing protocols model multi-agent
+spanning-tree mode mstp
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+management api gnmi
+   transport grpc default
+management api netconf
+   transport ssh default
+
+! -----------------------------------------------
+! INTERFACES CONFIGURATION
+! -----------------------------------------------
+interface Ethernet1
+interface Ethernet2
+interface Ethernet3
+interface Loopback0
+   ip address 10.0.1.2/32
+
+! -----------------------------------------------
+! IP ROUTING CONFIGURATION
+! -----------------------------------------------
+
+! OSPF CONFIGURATION
+
+! BGP CONFIGURATION
+
+
+! END CONFIGURATION
+!-----------------------------------------------

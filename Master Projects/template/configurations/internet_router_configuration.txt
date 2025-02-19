@@ -1,0 +1,54 @@
+!-----------------------------------------------
+! GENERAL CONFIGURATION
+! -----------------------------------------------
+
+hostname internet_router
+
+! DHCP SERVER CONFIGURATION
+
+! STATIC CONFIGURATION
+no aaa root
+management api http-commands
+   no shutdown
+transceiver qsfp default-mode 4x10G
+service routing protocols model multi-agent
+spanning-tree mode mstp
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+management api gnmi
+   transport grpc default
+management api netconf
+   transport ssh default
+
+! -----------------------------------------------
+! INTERFACES CONFIGURATION
+! -----------------------------------------------
+interface Ethernet1
+   no switchport
+   ip address 172.20.100.0/31
+interface Ethernet2
+   no switchport
+   ip address 128.128.128.1/24
+interface Loopback0
+   ip address 1.1.1.1/32
+
+! -----------------------------------------------
+! IP ROUTING CONFIGURATION
+! -----------------------------------------------
+ip routing
+
+! OSPF CONFIGURATION
+
+! BGP CONFIGURATION
+router bgp 54000
+   router-id 1.1.1.1
+   ! default safe policy
+   bgp missing-policy direction in action deny-in-out
+   bgp missing-policy direction out action deny-in-out
+   neighbor 172.20.100.1 remote-as 55020
+   network 128.128.128.0/24
+
+
+! END CONFIGURATION
+!-----------------------------------------------

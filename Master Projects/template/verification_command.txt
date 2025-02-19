@@ -1,0 +1,35 @@
+ssh admin@clab-network_topology-R1
+sudo docker exec -it clab-network_topology-r2_d1 sh
+-----------------------------------------------------------------------------------
+Comando client (sorgente):          iperf -c <indirizzo destinazione> -i 2 -u
+Comando server (destinazione):      iperf -u -s -p 5001
+-----------------------------------------------------------------------------------
+[  1] local 127.0.0.1 port 56073 connected with 127.0.0.1 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-2.0000 sec   258 KBytes  1.06 Mbits/sec
+[  1] 2.0000-4.0000 sec   256 KBytes  1.05 Mbits/sec
+[  1] 4.0000-6.0000 sec   256 KBytes  1.05 Mbits/sec
+[  1] 6.0000-8.0000 sec   257 KBytes  1.05 Mbits/sec
+[  1] 8.0000-10.0000 sec   256 KBytes  1.05 Mbits/sec
+[  1] 0.0000-10.0154 sec  1.25 MBytes  1.05 Mbits/sec
+[  1] Sent 896 datagrams
+[  1] Server Report:
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  1] 0.0000-10.0163 sec  1.25 MBytes  1.05 Mbits/sec   0.004 ms 0/895 (0%)
+-----------------------------------------------------------------------------------
+ Server Netcat: nc -p 5001 -l -v
+ Client Netcat: nc 192.168.2.1 5001 -v
+ -------------------------------------------------------------------------------------
+ Host configuration to add:
+
+ ip route del default via 192.168.2.1
+ ip route add default via 172.20.20.1
+ apk add iperf tcpdump
+ ip route del default via 172.20.20.1
+ ip route add default via 192.168.2.1
+ exit
+
+ ip route del 172.20.20.0/24 dev eth0 scope link  src 172.20.20.2
+ ----------------------------------------------------------------------------
+ no ip route 0.0.0.0/0 172.20.20.1
+ -------------------------------------------------------------------------------

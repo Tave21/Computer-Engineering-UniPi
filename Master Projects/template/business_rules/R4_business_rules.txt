@@ -1,0 +1,19 @@
+ip prefix-list LAN_R1 seq 10 permit 192.168.1.0/24
+ip prefix-list LAN_R2 seq 10 permit 192.168.2.0/24
+
+route-map PERMIT_ALL permit 10
+
+route-map R4_LAN_INTERNET_OUT permit 10
+ match ip address prefix-list LAN_R1
+route-map R4_LAN_INTERNET_OUT permit 20
+ match ip address prefix-list LAN_R2
+
+ip prefix-list DEFAULT_ONLY seq 5 permit 0.0.0.0/0
+route-map DEFAULT_ONLY permit 10
+ match ip address prefix-list DEFAULT_ONLY
+
+router bgp 55020
+ neighbor 172.20.40.1 route-map DEFAULT_ONLY out  
+ neighbor 172.20.40.1 route-map PERMIT_ALL in    
+ neighbor 172.20.100.0 route-map PERMIT_ALL in   
+ neighbor 172.20.100.0 route-map R4_LAN_INTERNET_OUT out

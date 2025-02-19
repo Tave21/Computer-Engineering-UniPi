@@ -1,0 +1,4 @@
+route-map PERMIT_ALL permit 10
+
+router bgp 55010
+ neighbor 172.20.50.0 route-map PERMIT_ALL in

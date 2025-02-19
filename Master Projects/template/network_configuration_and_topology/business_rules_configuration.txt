@@ -1,0 +1,65 @@
+//R1
+ip prefix-list LAN_R1 seq 10 permit 192.168.1.0/24
+ip prefix-list LAN_R2 seq 10 permit 192.168.2.0/24
+
+route-map PERMIT_ALL permit 10
+
+route-map YES_R1_LAN_R1_OUT permit 10
+ match ip address prefix-list LAN_R1
+route-map YES_R1_LAN_R1_OUT permit 20
+ match ip address prefix-list LAN_R2
+
+router bgp 55001
+ neighbor 172.20.10.1 route-map PERMIT_ALL out // Export all routes to R2.
+ neighbor 172.20.10.1 route-map PERMIT_ALL in  // Import all routes from R2.
+ neighbor 172.20.40.0 route-map YES_R1_LAN_R1_OUT out // Export only R1 and R2 LANs to R4.
+ neighbor 172.20.40.0 route-map PERMIT_ALL in  // Import all routes from R4.
+
+//R2
+ip prefix-list LAN_R2 seq 10 permit 192.168.2.0/24
+
+route-map PERMIT_ALL permit 10
+
+route-map YES_R2_OUT permit 10
+ match ip address prefix-list LAN_R2
+
+router bgp 55002
+ neighbor 172.20.10.0 route-map PERMIT_ALL in  // Import all routes from R1.
+ neighbor 172.20.10.0 route-map YES_R2_OUT out // Export only R2 LAN to R1.
+ neighbor 172.20.50.1 route-map PERMIT_ALL in  // Import all routes from R3.
+ neighbor 172.20.50.1 route-map YES_R2_OUT out // Export only R2 LAN to R3.
+
+//R3
+route-map PERMIT_ALL permit 10
+
+router bgp 55010
+ neighbor 172.20.50.0 route-map PERMIT_ALL in // Import all routes from R2.
+ neighbor 172.20.50.0 route-map PERMIT_ALL out // Import all routes from R2.
+
+//R4
+ip prefix-list LAN_R1 seq 10 permit 192.168.1.0/24
+ip prefix-list LAN_R2 seq 10 permit 192.168.2.0/24
+
+route-map PERMIT_ALL permit 10
+
+route-map R4_LAN_INTERNET_OUT permit 10
+ match ip address prefix-list LAN_R1
+route-map R4_LAN_INTERNET_OUT permit 20
+ match ip address prefix-list LAN_R2
+
+ip prefix-list DEFAULT_ONLY seq 5 permit 0.0.0.0/0
+route-map DEFAULT_ONLY permit 10
+ match ip address prefix-list DEFAULT_ONLY
+
+router bgp 55020
+ neighbor 172.20.40.1 route-map DEFAULT_ONLY out  // Export only the default route to R1.
+ neighbor 172.20.40.1 route-map PERMIT_ALL in    // Import all routes from R1.
+ neighbor 172.20.100.0 route-map PERMIT_ALL in   // Import all routes from internet_router.
+ neighbor 172.20.100.0 route-map R4_LAN_INTERNET_OUT out // Export customer LANs to internet_router.
+
+//internet_router
+route-map PERMIT_ALL permit 10
+
+router bgp 54000
+ neighbor 172.20.100.1 route-map PERMIT_ALL out // Export all known routes to R4.
+ neighbor 172.20.100.1 route-map PERMIT_ALL in  // Import all routes from R4.

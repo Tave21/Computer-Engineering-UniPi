@@ -1,0 +1,71 @@
+name: network_topology
+
+topology:
+  nodes:
+    # Router principali per ogni AS
+    r1: #AS55001
+      kind: arista_ceos
+      image: ceos:4.33.0F
+    r2: #AS55002
+      kind: arista_ceos
+      image: ceos:4.33.0F
+    r3: #AS55010
+      kind: arista_ceos
+      image: ceos:4.33.0F
+    r4: #AS54020
+      kind: arista_ceos
+      image: ceos:4.33.0F
+
+    sw1: #AS55001
+      kind: arista_ceos
+      image: ceos:4.33.0F
+    sw2: #AS55002
+      kind: arista_ceos
+      image: ceos:4.33.0F
+
+    # Dispositivi nelle LAN per AS55001 (collegati a SW1)
+    r1_d1:
+      kind: linux
+      image: alpine:latest
+    r1_d2:
+      kind: linux
+      image: alpine:latest
+
+    # Dispositivi nelle LAN per AS55002 (collegati a SW2)
+    r2_d1:
+      kind: linux
+      image: alpine:latest
+    r2_d2:
+      kind: linux
+      image: alpine:latest
+
+    internet_router:
+      kind: arista_ceos
+      image: ceos:4.33.0F
+
+    internet_host:
+      kind: linux
+      image: alpine:latest
+
+
+  links:
+    # Collegamenti tra i 4 router (backbone principale)
+    - endpoints: ["r1:eth1", "r2:eth1"]
+    - endpoints: ["r2:eth2", "r3:eth1"]
+    - endpoints: ["r3:eth2", "r4:eth1"]
+    - endpoints: ["r4:eth2", "r1:eth2"]
+
+    # LAN per AS55001 (R1)
+    - endpoints: ["r1:eth3", "sw1:eth1"]
+    - endpoints: ["sw1:eth2", "r1_d1:eth1"]
+    - endpoints: ["sw1:eth3", "r1_d2:eth1"]
+
+    # LAN per AS55002 (R2)
+    - endpoints: [ "r2:eth3", "sw2:eth1" ]
+    - endpoints: [ "sw2:eth2", "r2_d1:eth1" ]
+    - endpoints: [ "sw2:eth3", "r2_d2:eth1" ]
+
+    #internet
+    - endpoints: ["r4:eth3", "internet_router:eth1"]
+    - endpoints: ["internet_router:eth2", "internet_host:eth1"]
+

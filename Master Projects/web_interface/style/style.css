@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Sposta gli elementi agli estremi, se necessario */
+    background-color: #007bff;
+    height: 60px; /* Alzato per accomodare meglio il bottone */
+    color: white;
+    padding: 0 1rem; /* Spazio interno ai lati */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem; /* Regola il font-size del titolo */
+    flex-grow: 1; /* Consente al titolo di occupare lo spazio rimanente */
+    text-align: center; /* Centro il titolo all'interno del suo spazio */
+}
+
+main {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 60px;
+}
+
+.result_iperf{
+    margin-bottom: 20px; /* Spazio tra i risultati */
+  white-space: pre-wrap; /* Preserva la formattazione e avvolge le righe troppo lunghe */
+  font-family: monospace; /* Usa un font leggibile per i log */
+  background-color: #f4f4f4; /* Colore di sfondo per una migliore leggibilità */
+  padding: 10px; /* Spazio interno */
+  border: 1px solid #ddd; /* Bordo per separare visivamente i risultati */
+  border-radius: 5px; /* Angoli arrotondati */
+}
+
+h2 {
+    font-weight: 300;
+    text-align: center;
+}
+
+#container {
+    width: 100%;
+    height: 90vh;
+    border: 1px solid lightgray;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 270px;
+    text-align: center;
+}
+
+.button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.file-input  {
+    display: none; /* Hide the default file input */
+}
+
+#dropdown-container {
+    display: none; /* Nasconde inizialmente il contenitore */
+}
+
+.dropdown {
+    width: 250px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #53ff75;
+    border-radius: 5px;
+    background-color: #53ff75;
+    color: white;
+    transition: border-color 0.3s;
+    cursor: pointer;
+}
+
+.dropdown:hover {
+    border-color: #53ff9e;
+}
+
+.input-group label {
+    font-weight: bold;
+
+}
+
+.file-upload-button {
+    padding: 8px 15px;
+    font-size: 1rem;
+    border: 1px solid #53ff75;
+    border-radius: 5px;
+    background-color: #53ff75;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto; /* Shorter width */
+}
+
+/* Hover effect specifically for the file upload button */
+.file-upload-button:hover {
+    background-color: #53ff9e; /* Darker green when hovered */
+}
+
+.file-name {
+    font-weight: bold;
+    color: #333;
+    margin-left: 5px; /* Reduce the space between the file name and the button */
+}
+
+.result-message {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.result-message.success {
+    color: green;
+}
+
+.result-message.error {
+    color: red;
+}
+
+.home-button {
+    text-decoration: none; /* Remove underline */
+    color: white; /* White text for the button */
+    background-color: #0056b3; /* Darker blue background */
+    padding: 8px 12px; /* Padding inside the button */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 1rem; /* Font size */
+    transition: background-color 0.3s; /* Smooth color transition */
+}
+
+.home-button:hover {
+    background-color: #004494; /* Darker shade on hover */
+}
+
+footer {
+    height: 40px;
+    text-align: center;
+    padding: 2px;
+    background-color: #007bff;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.home-button {
+    margin-right: 1rem; /* Spazio tra il bottone e il titolo */
+    text-decoration: none; /* Rimuove la sottolineatura */
+    color: white;
+    background-color: #53ff75;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.home-button:hover {
+    background-color: #53ff9e;
+}

@@ -1,0 +1,53 @@
+!-----------------------------------------------
+! GENERAL CONFIGURATION
+! -----------------------------------------------
+
+hostname R3
+
+! DHCP SERVER CONFIGURATION
+
+! STATIC CONFIGURATION
+no aaa root
+management api http-commands
+   no shutdown
+transceiver qsfp default-mode 4x10G
+service routing protocols model multi-agent
+spanning-tree mode mstp
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+management api gnmi
+   transport grpc default
+management api netconf
+   transport ssh default
+
+! -----------------------------------------------
+! INTERFACES CONFIGURATION
+! -----------------------------------------------
+interface Ethernet1
+   no switchport
+   ip address 172.20.50.1/31
+interface Ethernet2
+   no switchport
+   ip address 172.20.30.0/31
+interface Loopback0
+   ip address 10.0.0.3/32
+
+! -----------------------------------------------
+! IP ROUTING CONFIGURATION
+! -----------------------------------------------
+ip routing
+
+! OSPF CONFIGURATION
+
+! BGP CONFIGURATION
+router bgp 55010
+   router-id 10.0.0.3
+   ! default safe policy
+   bgp missing-policy direction in action deny-in-out
+   bgp missing-policy direction out action deny-in-out
+   neighbor 172.20.50.0 remote-as 55002
+
+
+! END CONFIGURATION
+!-----------------------------------------------

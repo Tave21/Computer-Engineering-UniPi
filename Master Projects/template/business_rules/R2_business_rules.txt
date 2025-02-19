@@ -1,0 +1,12 @@
+ip prefix-list LAN_R2 seq 10 permit 192.168.2.0/24
+
+route-map PERMIT_ALL permit 10
+
+route-map YES_R2_OUT permit 10
+ match ip address prefix-list LAN_R2
+
+router bgp 55002
+ neighbor 172.20.10.0 route-map PERMIT_ALL in  
+ neighbor 172.20.10.0 route-map YES_R2_OUT out 
+ neighbor 172.20.50.1 route-map PERMIT_ALL in  
+ neighbor 172.20.50.1 route-map YES_R2_OUT out

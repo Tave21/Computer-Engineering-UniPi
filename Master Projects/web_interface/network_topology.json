@@ -1,0 +1,114 @@
+{
+    "nodes": [
+        {
+            "id": "r1",
+            "label": "r1",
+            "image": "router.png"
+        },
+        {
+            "id": "r2",
+            "label": "r2",
+            "image": "router.png"
+        },
+        {
+            "id": "r3",
+            "label": "r3",
+            "image": "router.png"
+        },
+        {
+            "id": "r4",
+            "label": "r4",
+            "image": "router.png"
+        },
+        {
+            "id": "sw1",
+            "label": "sw1",
+            "image": "switch.png"
+        },
+        {
+            "id": "sw2",
+            "label": "sw2",
+            "image": "switch.png"
+        },
+        {
+            "id": "r1_d1",
+            "label": "r1_d1",
+            "image": "computer.png"
+        },
+        {
+            "id": "r1_d2",
+            "label": "r1_d2",
+            "image": "computer.png"
+        },
+        {
+            "id": "r2_d1",
+            "label": "r2_d1",
+            "image": "computer.png"
+        },
+        {
+            "id": "r2_d2",
+            "label": "r2_d2",
+            "image": "computer.png"
+        },
+        {
+            "id": "internet_router",
+            "label": "internet_router",
+            "image": "router.png"
+        },
+        {
+            "id": "internet_host",
+            "label": "internet_host",
+            "image": "computer.png"
+        }
+    ],
+    "links": [
+        {
+            "from": "r1",
+            "to": "r2"
+        },
+        {
+            "from": "r2",
+            "to": "r3"
+        },
+        {
+            "from": "r3",
+            "to": "r4"
+        },
+        {
+            "from": "r4",
+            "to": "r1"
+        },
+        {
+            "from": "r1",
+            "to": "sw1"
+        },
+        {
+            "from": "sw1",
+            "to": "r1_d1"
+        },
+        {
+            "from": "sw1",
+            "to": "r1_d2"
+        },
+        {
+            "from": "r2",
+            "to": "sw2"
+        },
+        {
+            "from": "sw2",
+            "to": "r2_d1"
+        },
+        {
+            "from": "sw2",
+            "to": "r2_d2"
+        },
+        {
+            "from": "r4",
+            "to": "internet_router"
+        },
+        {
+            "from": "internet_router",
+            "to": "internet_host"
+        }
+    ]
+}

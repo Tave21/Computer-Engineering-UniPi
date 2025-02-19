@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Topology</title>
+
+    <link rel="stylesheet" href="style/style.css">
+     <script src="script/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+      <header>
+        <a href="index.html" class="home-button">Home</a>
+        <h1>Network Management System</h1>
+    </header>
+
+    <div id="container"></div>
+
+    <script>
+        // Chiamata della funzione dopo il caricamento della pagina
+        document.addEventListener("DOMContentLoaded", function() {
+            createNetworkFromJson('network_topology.json');
+        });
+    </script>
+
+</body>
+</html>

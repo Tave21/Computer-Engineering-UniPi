@@ -1,0 +1,165 @@
+devices:
+  - hostname: R1
+    dhcp_server:
+      subnet: 192.168.1.0/24
+      range: 192.168.1.2 192.168.1.254
+    interfaces:
+      - name: Ethernet1
+        switch: 0 # no switchport
+        ipv4_address: 172.20.10.0
+        ipv4_mask: /31
+      - name: Ethernet2
+        switch: 0 # no switchport
+        ipv4_address: 172.20.40.1
+        ipv4_mask: /31
+      - name: Ethernet3
+        switch: 0 # no switchport
+        ipv4_address: 192.168.1.1
+        ipv4_mask: /24
+        dhcp: true
+      - name: Loopback0
+        ipv4_address: 10.0.0.1
+        ipv4_mask: /32
+    ip_routing: true
+    bgp:
+      as_number: 55001
+      router_id: 10.0.0.1
+      neighbors:
+        - ip: 172.20.10.1   # R2 - Ethernet1
+          remote_as: 55002
+        - ip: 172.20.40.0   # R4 - Ethernet2
+          remote_as: 55020
+      networks:
+        - prefix: 192.168.1.0/24
+
+  - hostname: R2
+    dhcp_server:
+      subnet: 192.168.2.0/24
+      range: 192.168.2.2 192.168.2.254
+    interfaces:
+      - name: Ethernet1
+        switch: 0 # no switchport
+        ipv4_address: 172.20.10.1
+        ipv4_mask: /31
+      - name: Ethernet2
+        switch: 0 # no switchport
+        ipv4_address: 172.20.50.0
+        ipv4_mask: /31
+      - name: Ethernet3
+        switch: 0 # no switchport
+        ipv4_address: 192.168.2.1
+        ipv4_mask: /24
+        dhcp: true
+      - name: Loopback0
+        ipv4_address: 10.0.0.2
+        ipv4_mask: /32
+    ip_routing: true
+    bgp:
+      as_number: 55002
+      router_id: 10.0.0.2
+      neighbors:
+        - ip: 172.20.10.0   # R1 - Ethernet1
+          remote_as: 55001
+        - ip: 172.20.50.1   # R3 - Ethernet1
+          remote_as: 55010
+      networks:
+        - prefix: 192.168.2.0/24
+
+  - hostname: R3
+    interfaces:
+      - name: Ethernet1
+        switch: 0 # no switchport
+        ipv4_address: 172.20.50.1
+        ipv4_mask: /31
+      - name: Ethernet2
+        switch: 0 # no switchport
+        ipv4_address: 172.20.30.0
+        ipv4_mask: /31
+      - name: Loopback0
+        ipv4_address: 10.0.0.3
+        ipv4_mask: /32
+    ip_routing: true
+    bgp:
+      as_number: 55010
+      router_id: 10.0.0.3
+      neighbors:
+        - ip: 172.20.50.0   # R2 - Ethernet2
+          remote_as: 55002
+
+  - hostname: R4
+    interfaces:
+      - name: Ethernet1
+        switch: 0 # no switchport
+        ipv4_address: 172.20.30.1
+        ipv4_mask: /31
+      - name: Ethernet2
+        switch: 0 # no switchport
+        ipv4_address: 172.20.40.0
+        ipv4_mask: /31
+      - name: Ethernet3
+        switch: 0 # no switchport
+        ipv4_address: 172.20.100.1
+        ipv4_mask: /31
+      - name: Loopback0
+        ipv4_address: 10.0.0.4
+        ipv4_mask: /32
+    ip_routing: true
+    bgp:
+      as_number: 55020
+      router_id: 10.0.0.4
+      neighbors:
+        - ip: 172.20.40.1   # R1 - Ethernet2
+          remote_as: 55001
+        - ip: 172.20.100.0  # internet_router
+          remote_as: 54000
+      networks:
+        - prefix: 0.0.0.0/0
+
+  - hostname: internet_router
+    interfaces:
+      - name: Ethernet1
+        switch: 0 # no switchport
+        ipv4_address: 172.20.100.0
+        ipv4_mask: /31  # Connection to R4
+      - name: Ethernet2
+        switch: 0 # no switchport
+        ipv4_address: 128.128.128.1
+        ipv4_mask: /24  # Connection to internet_host
+      - name: Loopback0
+        ipv4_address: 1.1.1.1
+        ipv4_mask: /32  # Loopback to identify router
+    ip_routing: true
+    bgp:
+      as_number: 54000
+      router_id: 1.1.1.1
+      neighbors:
+        - ip: 172.20.100.1  # R4
+          remote_as: 55020
+      networks:
+        - prefix: 128.128.128.0/24
+
+  - hostname: SW1
+    interfaces:
+      - name: Ethernet1
+        switch: 1 # switchport
+      - name: Ethernet2
+        switch: 1 # switchport
+      - name: Ethernet3
+        switch: 1 # switchport
+      - name: Loopback0
+        ipv4_address: 10.0.1.1
+        ipv4_mask: /32
+    ip_routing: false
+
+  - hostname: SW2
+    interfaces:
+      - name: Ethernet1
+        switch: 1 # switchport
+      - name: Ethernet2
+        switch: 1 # switchport
+      - name: Ethernet3
+        switch: 1 # switchport
+      - name: Loopback0
+        ipv4_address: 10.0.1.2
+        ipv4_mask: /32
+    ip_routing: false

@@ -1,0 +1,83 @@
+!-----------------------------------------------
+! GENERAL CONFIGURATION
+! -----------------------------------------------
+
+hostname {{ device.hostname }}
+
+! DHCP SERVER CONFIGURATION
+{%- if device.dhcp_server %}
+dhcp server
+   subnet {{ device.dhcp_server.subnet }}
+      range {{ device.dhcp_server.range }}
+{%- endif %}
+
+! STATIC CONFIGURATION
+no aaa root
+management api http-commands
+   no shutdown
+transceiver qsfp default-mode 4x10G
+service routing protocols model multi-agent
+spanning-tree mode mstp
+system l1
+   unsupported speed action error
+   unsupported error-correction action error
+management api gnmi
+   transport grpc default
+management api netconf
+   transport ssh default
+
+! -----------------------------------------------
+! INTERFACES CONFIGURATION
+! -----------------------------------------------
+{%- for intf in device.interfaces %}
+interface {{ intf.name }}
+   {%- if intf.switch is defined and intf.switch == 0 %}
+   no switchport
+   {%- endif %}
+   {%- if intf.ipv4_address %}
+   ip address {{ intf.ipv4_address }}{{ intf.ipv4_mask }}
+   {%- endif %}
+   {%- if intf.ipv6_address %}
+   ipv6 address {{ intf.ipv6_address }}{{ intf.ipv6_mask }}
+   {%- endif %}
+   {%- if intf.dhcp %}
+   dhcp server ipv4
+   {%- endif %}
+{%- endfor %}
+
+! -----------------------------------------------
+! IP ROUTING CONFIGURATION
+! -----------------------------------------------
+{%- if device.ip_routing | default('false') %}
+ip routing
+{%- endif %}
+
+! OSPF CONFIGURATION
+{%- if device.ospf %}
+router ospf
+   process-id {{ device.ospf[0].process_id }}
+   router-id {{ device.ospf[1].router_id }}
+   {%- for net in device.ospf[2].networks %}
+   network {{ net.network }}
+   {%- endfor %}
+   max-lsa {{ device.ospf[3].max_lsa }}
+{%- endif %}
+
+! BGP CONFIGURATION
+{%- if device.bgp %}
+router bgp {{ device.bgp.as_number }}
+   router-id {{ device.bgp.router_id }}
+   ! default safe policy
+   bgp missing-policy direction in action deny-in-out
+   bgp missing-policy direction out action deny-in-out
+   {%- for neighbor in device.bgp.neighbors %}
+   neighbor {{ neighbor.ip }} remote-as {{ neighbor.remote_as }}
+   {%- endfor %}
+   {%- for net in device.bgp.networks %}
+   network {{ net.prefix }}
+   {%- endfor %}
+{%- endif %}
+
+
+! END CONFIGURATION
+!-----------------------------------------------

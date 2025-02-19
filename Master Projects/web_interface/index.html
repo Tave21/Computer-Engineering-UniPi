@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive layout -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title of the web page that appears on the browser tab -->
+    <title>Network Management System</title>
+
+    <!-- External CSS stylesheet for the page -->
+    <link rel="stylesheet" href="style/style.css">
+
+    <!-- External JavaScript file for handling the page logic (loaded after content) -->
+    <script src="script/script.js" defer></script>
+
+    <!-- External libraries for visualization (vis.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+</head>
+<body>
+    <!-- Header section of the page containing the main title -->
+    <header>
+        <h1>Network Management System</h1>
+    </header>
+
+    <main>
+        <!-- Section containing interactive controls for uploading and managing network files -->
+        <section id="actions-section">
+            <br><br><br>
+            <div class="button-group">
+
+                <!-- File upload section for uploading network configuration files -->
+                <div class="input-group">
+                    <!-- Hidden file input to select .yaml file -->
+                    <input type="file" id="file-input" class="file-input" accept=".yaml" onchange="updateFileName(event)">
+                    <!-- Button to trigger file input -->
+                    <button class="file-upload-button" onclick="document.getElementById('file-input').click()">Select File</button>
+                    <!-- Display selected file name -->
+                    <span id="file-name" class="file-name">No file selected</span>
+                    <!-- Button to upload and deploy the selected file -->
+                    <button id="upload-button" class="button" onclick="uploadNetworkFile()">Upload and Deploy</button>
+                    <!-- Message displaying the result of file upload -->
+                    <span id="upload-result" class="result-message"></span>
+                </div>
+
+                <!-- File upload section for sending configurations to network devices -->
+                <div class="input-group">
+                    <input type="file" id="file-input1" class="file-input" accept=".yaml" onchange="updateFileName(event)">
+                    <button class="file-upload-button" onclick="document.getElementById('file-input1').click()">Select File</button>
+                    <span id="file-name1" class="file-name">No file selected</span>
+                    <button id="send-config-button" class="button" onclick="sendConfigurations('conf')">Send Configurations</button>
+                    <span id="config-result" class="result-message"></span>
+                </div>
+
+                <!-- File upload section for BGP configuration files -->
+                <div class="input-group">
+                    <input type="file" id="file-input2" class="file-input" accept=".txt" onchange="updateFileName(event)">
+                    <button class="file-upload-button" onclick="document.getElementById('file-input2').click()">Select File</button>
+                    <span id="file-name2" class="file-name">No file selected</span>
+                    <button id="bgp-config-button" class="button" onclick="sendConfigurations('bgp_conf')">BGP Configurations</button>
+                    <span id="bgp-result" class="result-message"></span>
+                </div>
+
+                <!-- Button to view the network topology -->
+                <div class="input-group">
+                    <button id="view-topology-button" class="button" onclick="viewTopologyPage()">View Topology</button>
+                    <span id="topology-result" class="result-message"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section for initiating and configuring IPERF tests -->
+        <br><br>
+        <section id="testing-section">
+            <form id="testing-form" onsubmit="submit_iperf(event)">
+                <!-- Placeholder for showing a waiting message while IPERF test is running -->
+                <pre id="waiting_iperf" class="result_iperf" hidden></pre>
+
+                <!-- Button to start the process of setting up an IPERF test -->
+                <div class="input-group">
+                    <button id="view-ips-button" type="button" class="button" onclick="get_ips()">Set IPERF test</button>
+                    <span id="ips-result" class="result-message"></span>
+                </div>
+                <br>
+
+                <!-- Dropdown container for selecting hosts, tcpdump device, and network interface for IPERF test -->
+                <div id="dropdown-container" style="display: none;">
+                    <!-- Dropdown for selecting the first host (Host 1) -->
+                    <div class="input-group">
+                        <label for="host1">Select Host 1:</label>
+                        <select id="host1" class="dropdown">
+                            <option value="" disabled selected>Choose Host 1</option>
+                        </select>
+                    </div>
+                    <br>
+
+                    <!-- Dropdown for selecting the second host (Host 2) -->
+                    <div class="input-group">
+                        <label for="host2">Select Host 2:</label>
+                        <select id="host2" class="dropdown">
+                            <option value="" disabled selected>Choose Host 2</option>
+                        </select>
+                    </div>
+                    <br>
+
+                    <!-- Dropdown for selecting a tcpdump device -->
+                    <div class="input-group">
+                        <label for="router_dropdown">Select tcpdump device:</label>
+                        <select id="router_dropdown" class="dropdown">
+                            <option value="" disabled selected>Choose tcpdump device</option>
+                        </select>
+                    </div>
+                    <br>
+
+                    <!-- Dropdown for selecting a network interface on the tcpdump device -->
+                    <div class="input-group">
+                        <label for="router_interface_dropdown">Select tcpdump device interface:</label>
+                        <select id="router_interface_dropdown" class="dropdown">
+                            <option value="" disabled selected>Choose tcpdump device interface</option>
+                        </select>
+                    </div>
+                    <br>
+
+                    <!-- Dropdown for selecting the traffic type (TCP/UDP) -->
+                    <div class="input-group">
+                        <label for="transport_type_dropdown">Select traffic type:</label>
+                        <select id="transport_type_dropdown" class="dropdown">
+                            <option value="tcp">TCP</option>
+                            <option value="udp">UDP</option>
+                        </select>
+                    </div>
+                    <br>
+
+                    <!-- Submit button to initiate the IPERF test -->
+                    <div class="input-group">
+                        <button type="submit" class="button">Submit</button>
+                    </div>
+                </div>
+
+                <!-- Placeholder for displaying the results of the IPERF test -->
+                <div id="result_iperf">
+                    <pre id="client_result" class="result_iperf" hidden></pre>
+                    <pre id="server_result" class="result_iperf" hidden></pre>
+                    <pre id="tcpdump_result" class="result_iperf" hidden></pre>
+                </div>
+            </form>
+        </section>
+
+         <section id="destroy-deployment-section">
+            <div class="button-group">
+                <div class="input-group">
+                    <!-- Button to destroy the deployment -->
+                    <button id="destroy-button" class="button" onclick="destroyNetwork()">Destroy Network</button>
+                    <!-- Message displaying the result of the operation -->
+                    <span id="destroy-result" class="result-message"></span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer section displaying the copyright information -->
+    <footer>
+        <p>&copy; Network Management System</p>
+    </footer>
+</body>
+</html>
+
+<script>
+<!-- Placeholder for any custom JavaScript functionality -->
+</script>
