@@ -1,0 +1,6 @@
+{
+  "move": {"col":5, "row":5},
+  "type_request":"make_move",
+  "player":"Player1",
+  "game_id":"game123"
+}

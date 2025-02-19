@@ -1,0 +1,399 @@
+/*Common section*/
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #256ec9;
+    height: 50px;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*Login and Registration section*/
+.login_header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.login_body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.login_container {
+    background-color: #88bdf9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+#signup-form {
+    margin-top: 200px;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1a3398;
+}
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.form-group input:focus {
+    outline: none; /* Remove the additional border of the browser */
+    border-color: #256ec9;
+    box-shadow: 0 0 5px #256ec9;
+}
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #256ec9;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.toggle-link {
+    text-align: center;
+    margin-top: 10px;
+    color: white;
+}
+.toggle-link a {
+    color: #1a3398;
+    text-decoration: none;
+}
+.toggle-link a:hover {
+    text-decoration: underline;
+}
+.error-message{
+    color: #ff1e00;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+/*Game section*/
+.bodyGame {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f9;
+    overflow-y: auto; /* Add the vertical scroll */
+}
+
+.fleetTitle {
+    margin: 0;
+    font-size: 1.8rem;
+}
+.info-bar{
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #256ec9;
+    margin-left: 5px;
+}
+#homeButton{
+    margin-right: 10px;
+    float: right;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #88bdf9;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 30px;
+    width: 80px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px; /* Distance between the two grids and the upper content */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(11, 30px); /* 10 col + 1 for label */
+    grid-template-rows: repeat(11, 30px);    /* 10 row + 1 for label */
+    border: 2px solid #1a3398;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #88bdf9;
+    border: 1px solid #7f14c7;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.cell-header {
+    background-color: #256ec9;
+    color: white;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#fleet-title{
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.fleet {
+    display: flex;
+    justify-content: flex-start; /* Align the elements in a row */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.fleet_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Necessary for the drag and drop */
+    cursor: move;
+    transform-origin: center;
+    margin-bottom: 10px;
+}
+
+.fleet_item.single {
+    width: 30px;
+    height: 30px;
+    background-color: #88c8f9;
+    border: 1px solid #88A2F9FF;
+}
+
+.fleet_item.double {
+    width: 60px;
+    height: 30px;
+    background-color: #ffb380;
+    border: 1px solid #FF9380FF;
+}
+
+.fleet_item.triple {
+    width: 90px;
+    height: 30px;
+    background-color: #f9f980;
+    border: 1px solid #F9C980FF;
+}
+
+.fleet_item.quadruple {
+    width: 120px;
+    height: 30px;
+    background-color: #f5889c;
+    border: 1px solid #F5889CFF;
+}
+
+.fleet_item.single-vertical {
+    width: 30px;
+    height: 30px;
+    background-color: #88c8f9;
+    border: 1px solid #88A2F9FF;
+}
+
+.fleet_item.double-vertical {
+    width: 30px;
+    height: 60px;
+    background-color: #ffb380;
+    border: 1px solid #FF9380FF;
+}
+
+.fleet_item.triple-vertical {
+    width: 30px;
+    height: 90px;
+    background-color: #f9f980;
+    border: 1px solid #F9C980FF;
+}
+
+.fleet_item.quadruple-vertical {
+    width: 30px;
+    height: 120px;
+    background-color: #f58b88;
+    border: 1px solid #F5889CFF;
+}
+
+.unavailable {
+    background-color: #88f9e8;
+}
+
+.taken{
+    background-color: #65de14;
+}
+.eligible{
+    background-color: #ff8000;
+}
+.sink{
+    background-color: rgba(231, 4, 72, 0.91);
+}
+
+.gameButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #256ec9;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 140px;
+    text-align: center;
+    margin-top: 20px
+}
+
+/*Admin section*/
+.admin_body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+.navbar {
+    width: 100%;
+    background-color: #256ec9;
+    color: white;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    padding: 10px 15px;
+}
+.adminTitle {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.8rem;
+    margin-right: 15px;
+}
+.navbar a {
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.navbar a:hover {
+    background-color: #1a3398;
+}
+#logoutButton {
+    background-color: #88bdf9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 47%;
+}
+.content {
+    margin-top: 60px;
+    padding: 20px;
+}
+#emptyUser, #removeUser, #searchMatch{
+    margin-left: 20px;
+    color: #ff1e00;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid #7f14c7;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+
+}
+th {
+    background-color: #256ec9;
+    color:white;
+    text-align: center;
+}
+td{
+    background-color: #88bdf9;
+    text-align: center;
+}
+.search-bar {
+    margin-bottom: 20px;
+}
+.adminInput{
+    margin-right: 10px;
+    padding: 5px;
+    height:20px;
+}
+.adminInput:focus {
+    outline: none;
+    border-color: #256ec9;
+    box-shadow: 0 0 5px #256ec9;
+}
+.removeButton {
+    background-color: #ff1e00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.removeButton:hover{
+    background-color: firebrick;
+}
+.adminButton{
+    padding: 10px 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #256ec9;
+    color: white;
+    cursor: pointer;
+    width: 120px;
+    text-align: center;
+}
+
+/*Common button section*/
+.gameButton:hover, #homeButton:hover, .form-group button:hover, #logoutButton:hover, .adminButton:hover {
+    background-color: #2d97d3;
+}
+.gameButton:disabled {
+    background-color: rgba(37, 110, 201, 0.5);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: not-allowed;
+    transition: none;
+}

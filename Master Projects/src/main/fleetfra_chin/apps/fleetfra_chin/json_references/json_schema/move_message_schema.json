@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "move": {
+      "type": "object",
+      "properties": {
+        "col": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9
+        },
+        "row": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9
+        }
+      },
+      "required": ["col", "row"]
+    },
+    "type_request": {
+      "type": "string",
+      "enum": ["make_move"]
+    },
+    "player": {
+      "type": "string"
+    },
+    "game_id": {
+      "type": "string"
+    }
+  },
+  "required": ["move", "type_request", "player", "game_id"]
+}
