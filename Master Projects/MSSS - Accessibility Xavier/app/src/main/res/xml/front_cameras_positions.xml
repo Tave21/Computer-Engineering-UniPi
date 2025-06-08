@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <Redmi1223053rn02y>
+        <Name>Redmi12</Name>
+        <Model>23053rn02y</Model>
+        <Brand>Xiaomi</Brand>
+        <x>-32.46</x>
+        <y>4</y>
+        <fps>30</fps>
+    </Redmi1223053rn02y>
+    <HuaweiY62018>
+        <Name>Huawei Y6 2018</Name>
+        <Model>ATU-L11</Model>
+        <Brand>Huawei</Brand>
+        <x>-22.5</x>
+        <y>-0.5</y>
+        <fps>30</fps>
+    </HuaweiY62018>
+    <RedmiNote8Pro>
+        <Name>Redmi Note</Name>
+        <Model>8 Pro</Model>
+        <Brand>Xiaomi</Brand>
+        <x>-34.5</x>
+        <y>0</y>
+        <fps>30</fps>
+    </RedmiNote8Pro>
+    <SamsungGalaxyS22>
+        <Name>Galaxy S22</Name>
+        <Model>SM-S901B</Model>
+        <Brand>Samsung</Brand>
+        <x>-35.0</x>
+        <y>5</y>
+        <fps>60.0</fps>
+    </SamsungGalaxyS22>
+</resources>

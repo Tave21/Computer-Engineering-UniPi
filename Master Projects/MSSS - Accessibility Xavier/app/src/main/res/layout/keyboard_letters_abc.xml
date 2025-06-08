@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:gravity="center"
+    android:background="#EEE">
+
+    <!-- Lettere A B C D E F G H I -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_a" style="@style/KeyboardButton" android:text="a"/>
+        <Button android:id="@+id/btn_b" style="@style/KeyboardButton" android:text="b"/>
+        <Button android:id="@+id/btn_c" style="@style/KeyboardButton" android:text="c"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_d" style="@style/KeyboardButton" android:text="d"/>
+        <Button android:id="@+id/btn_e" style="@style/KeyboardButton" android:text="e"/>
+        <Button android:id="@+id/btn_f" style="@style/KeyboardButton" android:text="f"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_g" style="@style/KeyboardButton" android:text="g"/>
+        <Button android:id="@+id/btn_h" style="@style/KeyboardButton" android:text="h"/>
+        <Button android:id="@+id/btn_i" style="@style/KeyboardButton" android:text="i"/>
+    </LinearLayout>
+
+    <!-- Tasti inferiori -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+        <Button android:id="@+id/btn_maiusc" style="@style/KeyboardButton" android:text="⇧"/>
+        <Button android:id="@+id/btn_space" style="@style/KeyboardButton" android:text="⎵"/>
+        <Button android:id="@+id/btn_back" style="@style/KeyboardButton" android:text="Back"/>
+    </LinearLayout>
+</LinearLayout>

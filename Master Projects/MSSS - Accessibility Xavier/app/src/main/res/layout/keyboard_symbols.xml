@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:gravity="center"
+    android:background="#EEE">
+
+    <!-- Riga 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_comma" style="@style/KeyboardButton" android:text=","/>
+        <Button android:id="@+id/btn_dot" style="@style/KeyboardButton" android:text="."/>
+        <Button android:id="@+id/btn_semi" style="@style/KeyboardButton" android:text=";"/>
+    </LinearLayout>
+
+    <!-- Riga 2 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_excl" style="@style/KeyboardButton" android:text="!"/>
+        <Button android:id="@+id/btn_question" style="@style/KeyboardButton" android:text="\?"/>
+        <Button android:id="@+id/btn_colon" style="@style/KeyboardButton" android:text=":"/>
+    </LinearLayout>
+
+    <!-- Riga 3 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_quote" style="@style/KeyboardButton" android:text='"'/>
+        <Button android:id="@+id/btn_apos" style="@style/KeyboardButton" android:text="'"/>
+        <Button android:id="@+id/btn_dash" style="@style/KeyboardButton" android:text="-"/>
+    </LinearLayout>
+
+    <!-- Riga 4 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_at" style="@style/KeyboardButton" android:text="\@"/>
+        <Button android:id="@+id/btn_space" style="@style/KeyboardButton" android:text="⎵"/>
+        <Button android:id="@+id/btn_back" style="@style/KeyboardButton" android:text="Back"/>
+    </LinearLayout>
+</LinearLayout>

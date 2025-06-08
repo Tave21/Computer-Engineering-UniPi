@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Colore di sfondo semi-trasparente (nero al 50%) -->
+    <solid android:color="#80000000" />
+
+    <!-- Angoli arrotondati -->
+    <corners android:radius="16dp" />
+
+    <!-- (Opzionale) Sfumatura di ombra interna -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp" />
+</shape>

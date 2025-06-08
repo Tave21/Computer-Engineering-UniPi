@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/pointer"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="top|start"
+        android:contentDescription="@string/pointer"
+        android:src="@drawable/mouse_pointer"
+        android:layout_margin="0dp" />
+
+    <LinearLayout
+        android:id="@+id/initialForm"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@android:color/black"
+        android:layout_gravity="center"
+        android:elevation="10dp">
+
+        <Switch
+            android:id="@+id/clickMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#4B4949"
+            android:buttonTint="#ADACAC"
+            android:text="ClickMode: Dwell(off) | Blink(On)"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/X"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etX"
+            android:autofillHints="false"
+            android:hint="@string/inX"
+            android:importantForAccessibility="yes"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:inputType="numberDecimal|numberSigned"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Y"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp" />
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+
+        <EditText
+            android:id="@+id/etY"
+            android:autofillHints="false"
+            android:hint="@string/inY"
+            android:importantForAccessibility="yes"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:inputType="numberDecimal|numberSigned"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/holo_blue_light"
+                android:text="@string/btn_set"
+                android:textColor="@android:color/white" />
+
+            <SearchView
+                android:id="@+id/preset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FAFAFA" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suggest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="150dp"
+            android:visibility="gone"
+            android:overScrollMode="always"
+            android:layout_margin="8dp"/>
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

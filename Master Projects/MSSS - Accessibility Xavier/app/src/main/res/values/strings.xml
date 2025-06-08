@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Xavier</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="accessibility_service_name">Gaze Tracker Service</string>
+    <string name="accessibility_service_description">Control the pointer with the view.</string>
+    <string name="ime_name">Xavier Keyboard</string>
+    <string name="btn_set">Set</string>
+    <string name="X">X</string>
+    <string name="Y">Y</string>
+    <string name="inX">Insert X</string>
+    <string name="inY">Insert Y</string>
+    <string name="pointer">pointer</string>
+</resources>

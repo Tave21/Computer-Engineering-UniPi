@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="#EEE">
+    <!--Un campo LinearLayout è una riga nella grglia della tastiera -->
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_letters_abc"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="ABC\nDEF\nGHI"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp" />
+
+        <Button
+            android:id="@+id/btn_letters_jkl"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="JKL\nMNO\nPQR"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp" />
+
+        <Button
+            android:id="@+id/btn_letters_stu"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="STU\nVWX\nYZ😊"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_123"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="123"
+            android:textSize="20sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp" />
+
+        <Button
+            android:id="@+id/btn_cr"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="↵"
+            android:textSize="35sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="⌫"
+            android:textSize="24sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_symbols"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="\?!."
+            android:textSize="24sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"/>
+
+        <Button
+            android:id="@+id/btn_par_open"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="("
+            android:textSize="24sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp" />
+
+        <Button
+            android:id="@+id/btn_par_close"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text=")"
+            android:textSize="24sp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+</LinearLayout>
